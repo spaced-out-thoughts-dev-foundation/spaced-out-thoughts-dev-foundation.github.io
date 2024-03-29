@@ -43,9 +43,7 @@
   </header>
 
   <div class="post-content">
-    <h2 id="technical-architecture">Technical Architecture</h2>
-
-<h2 id="overview">Overview</h2>
+    <h2 id="overview">Overview</h2>
 
 <h3 id="the-problem">The Problem</h3>
 <p><strong>Consider the following:</strong></p>
@@ -69,6 +67,17 @@
 <p><strong>Hypothesis:</strong> the existence of a visual, block-based programming language which can translate to and from Soroban smart contracts will promote comprehension, adaption, and best practices helping the young, Stellar smart contract community reach maturity at an expedited rate.</p>
 
 <p>Generally described as “scratch for smart contracts”, Digicus (hybrid Soroban) is a compiler which functions as an abstraction layer on top of existing Soroban tooling. Digicus allows users to create smart contracts by piecing together blocks (much like Legos) as well as visualize existing smart contracts.</p>
+
+<hr />
+
+<h2 id="tools">Tools</h2>
+
+<p><img src="../images/tools.png" alt="tools" /></p>
+
+<ul>
+  <li><a href="https://github.com/spaced-out-thoughts-dev-foundation/digicus/tree/main/digit">Digit</a> Rust to DTR two way compiler</li>
+  <li><a href="https://github.com/spaced-out-thoughts-dev-foundation/digicus/tree/main/digicus_ide">Digicus IDE</a> block-based graphical programming environment for Soroban smart contracts</li>
+</ul>
 
 <hr />
 
@@ -111,6 +120,42 @@
 <h3 id="digicus-block-based-visual-represention">Digicus Block Based Visual Represention</h3>
 
 <p><img src="../images/digicus-ide-mockup.png" alt="mockup" /></p>
+
+<hr />
+
+<h2 id="roadmap">Roadmap</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Phase 1 (<a href="https://dashboard.communityfund.stellar.org/scfawards/scf-26/earlybirdsubmission/suggestion/887">SCF #26</a>) - Minimal Viable Digicus Language and IDE (Digicus 0.1)</strong>
+<br />
+  [<em>Description</em>]: develop the core Digicus intermediate representation translation and visualization layer. From this, prove to the community such a concept is possible and gather feedback and suggestions. Begin administering developer experience surveys during this phase.
+&lt;/br&gt;</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Phase 2 - Digicus First Contract Development (Digicus 0.2)</strong>
+<br />
+  [<em>Description</em>]: with suggestions and a minimum viable compiler and React app in hand, continue developing the IDE so folks can create contracts from scratch with a nice and easy drag and drop interface (like what folks familiar with Scratch would expect). 
+&lt;/br&gt;</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Phase 3 - Enhanced, Feedback Driven Contract Development (Digicus 1.0)</strong>
+<br />
+  [<em>Description</em>]: our community is hard at work on security and vulnerability detection frameworks, standardizing smart contract best practices, etc. We plan to incorporate this work into the Digicus IDE (along with Copilot-esque auto-complete suggestions) to give Digicus developers a seriously awesome developer experience.
+&lt;/br&gt;</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" /><strong>Phase 4 - Multi-Targeted Digicus Compiler (Digicus 2.0)</strong>
+<br />
+  [<em>Description</em>]: develop an LLVM-esque compiler for Digicus that targets numerous backends. This should be straightforward for targeting other SDKs (i.e. AssemblyScript), however directly compiling to WASM and decompiling WASM and translating to Digicus (novel work) would unlock some very interesting use cases.
+&lt;/br&gt;</li>
+</ul>
+
+<hr />
+
+<h2 id="kpis">KPIs</h2>
+
+<p>We will work with SDF to administer developer experience surveys. Surveys will be administered before and after each phase of development and then quarterly after the 1.0 release.</p>
+
+<ol>
+  <li>20% of existing (<em>hard-core</em>) Soroban smart contract developers will try Digicus</li>
+  <li>5% of existing (<em>hard-core</em>) Soroban smart contract developers will use Digicus weekly</li>
+  <li>66% of net new Soroban smart contract developers will try Digicus</li>
+  <li>33% of new new Soroban smart contract developers will use Digicus weekly</li>
+</ol>
 
   </div>
 
