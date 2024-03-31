@@ -21,7 +21,7 @@
 title: Spaced Out Thoughts Development Foundation
 # email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
-  A small Ruby shop formed with the goal of helping Soroban adoption.
+  A small Ruby shop determined to make Soroban as easy to use as possible.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 # twitter_username: jekyllrb

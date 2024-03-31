@@ -27,7 +27,13 @@ Generally described as “scratch for smart contracts”, Digicus (hybrid Soroba
 
 ***
 
-## Tools
+## Overall Architecture
+
+
+![overall architecture](../images/overall_architecture.png)
+
+
+### Tools
 
 ![tools](../images/tools.png)
 

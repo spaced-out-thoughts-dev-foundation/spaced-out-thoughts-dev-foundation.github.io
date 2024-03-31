@@ -5,6 +5,10 @@
 layout: home
 ---
 
+<center><img src="../images/DevelopmentFoundation_logo.png" alt="drawing" width="200"/></center>
+
+<br>
+
 A small Ruby shop determined to make Soroban as easy to use as possible.
 
 Projects:
