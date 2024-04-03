@@ -6,6 +6,8 @@ permalink: /digicus/
 
 ## Overview
 
+Digicus, Scratch for smart contracts, simplifies contract creation & modification via an intuitive, Lego-like graphical interface.
+
 ### The Problem
 **Consider the following:**
 1. [While Rust is one of the most admired languages, it is far from one of the most popular](https://survey.stackoverflow.co/2023/#section-admired-and-desired-programming-scripting-and-markup-languages).
@@ -92,15 +94,15 @@ impl HelloContract {
   <br>
     [*Description*]: develop the core Digicus intermediate representation translation and visualization layer. From this, prove to the community such a concept is possible and gather feedback and suggestions. Begin administering developer experience surveys during this phase.
   </br>
-* [ ] **Phase 2 - Digicus First Contract Development (Digicus 0.2)**
+* [ ] **Phase 2 - Digicus First Contract Development (Digicus 1.0)**
   <br>
     [*Description*]: with suggestions and a minimum viable compiler and React app in hand, continue developing the IDE so folks can create contracts from scratch with a nice and easy drag and drop interface (like what folks familiar with Scratch would expect). 
   </br>
-* [ ] **Phase 3 - Enhanced, Feedback Driven Contract Development (Digicus 1.0)**
+* [ ] **Phase 3 - Enhanced, Feedback Driven Contract Development (Digicus 2.0)**
   <br>
     [*Description*]: our community is hard at work on security and vulnerability detection frameworks, standardizing smart contract best practices, etc. We plan to incorporate this work into the Digicus IDE (along with Copilot-esque auto-complete suggestions) to give Digicus developers a seriously awesome developer experience.
   </br>
-* [ ] **Phase 4 - Multi-Targeted Digicus Compiler (Digicus 2.0)**
+* [ ] **Phase 4 - Multi-Targeted Digicus Compiler (Digicus 3.0)**
   <br>
     [*Description*]: develop an LLVM-esque compiler for Digicus that targets numerous backends. This should be straightforward for targeting other SDKs (i.e. AssemblyScript), however directly compiling to WASM and decompiling WASM and translating to Digicus (novel work) would unlock some very interesting use cases.
   </br>
