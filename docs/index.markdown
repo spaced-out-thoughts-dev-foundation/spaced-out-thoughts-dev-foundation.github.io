@@ -9,8 +9,8 @@ layout: home
 
 <br>
 
-A small Ruby shop determined to make Soroban as easy to use as possible.
+A small Ruby shop determined to make programming smart contracts as easy to use as possible.
 
 Projects:
-* [Digicus](digicus): a block-based programming language supporting visual construction, manipulation, and comprehension of Soroban smart contracts
+* [Digicus](digicus): a block-based programming language supporting visual construction, manipulation, and comprehension of smart contracts
 
