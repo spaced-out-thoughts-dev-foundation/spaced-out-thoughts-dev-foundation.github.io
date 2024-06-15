@@ -78,6 +78,17 @@ Digicus is a novel combination of these ideas, designed practically with the int
 
 ***
 
+# Grant Acknowledgements
+
+We're forever grateful for support via the following ecosystem grants:
+
+* [Stellar Community Fund](https://communityfund.stellar.org/) SCF #26 Activation Award
+
+
+Furthermore, as this work is ambitious and ongoing, we're actively seeking additional funding opportunities.
+
+***
+
 # References
 
 [^1]: [Ethereum: A Next-Generation Smart Contract and Decentralized Application Platform. By Vitalik Buterin (2014)](https://ethereum.org/content/whitepaper/whitepaper-pdf/Ethereum_Whitepaper_-_Buterin_2014.pdf)
