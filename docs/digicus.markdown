@@ -33,6 +33,7 @@ We propose a fourth approach: *making the smart contract language itself more ap
     - [Digicus Textual Representation](#digicus-textual-representation)
 
 - [Conclusion](#conclusion)
+- [Grant Acknowledgements](#grant-acknowledgements)
 - [References](#references)
 
 ***
@@ -66,9 +67,57 @@ Digicus is a novel combination of these ideas, designed practically with the int
 
 #### An Overview
 
+Our solution requires three distinct pieces of technology:
+1. an IDE
+2. a compiler plugin framework
+3. a well-defined intermediate representation language
+
+The IDE is where a user will spend most of their time viewing and modifying smart contracts. The IDE is integrated with Digit, our compiler plugin framework which is responsible for transpiling between source language(s), DTR, and target language(s). Within Digit resides an implementation of `dtr_core`, a Ruby gem that adheres to the DTR specification. While `dtr_core` is effectively the reference implementation, based on our appreciation of Rob Pike [^12] and his acknowledgement of the importance of the Go spec [^13], please consider the specification of DTR to be the source of truth and `dtr_core` to be _just an implementation_.
+
 #### The Digicus IDE
 
+Below is an initial mockup of the MVP user interface.
+
+<div style="text-align:center">
+  <img src="../images/digicus-ide-mockup.png" alt="Digit Overview"> 
+</div>
+
+When developing with Digicus, users will be able to name the contract, drag and drop block components into the interactive function creator, and then they will be able to perform minimal, chain agnostic testing of the contract. The UI/UX for this will be based heavily off of the well-tested, mature Scratch programming platform. Furthermore, a plethora of features will be supported to make this a first class smart contract development interface, including but not limited to:
+* common vulnerability detection
+* autocomplete (_eventually_ some sort of Copilot-esque flavor as well [^14])
+* realtime syntax/semantic error recognition with sensible warnings and recommendations for improvement
+* chain specific integration testing
+
+The IDE will support two workflows: (1) upload and modify and (2) net new creation. 
+
+**Workflow #1: Upload and Modify:** users will be able to upload a smart contract from one of the supported smart contract programming languages/frameworks. Once uploaded, users can modify as they wish.
+
+**Workflow #2: Net New Creation:** users will be able to create a generic smart contract from scratch. However, they will not always need to start from scratch; a library of common templates will be available for bootstrapping.
+
+While a full IDE is the goal of this work, we anticipate the visualization feature to be immediately useful with the possibility to embed within existing smart contract analysis/explorer/etc. software today.
+
 #### A Compiler Plugin Framework
+
+Digit, Digicus's compiler plugin framework, enables the ambitious software developer to add support for their blockchain smart contract programming language (or framework) of choice. To do so requires the development of a bidirectional transpiler, from source to DTR and DTR to source. We aid this development by way of example plugins and a central repository for hosting these such that they are discoverable and _auto-magically_ integratable with the IDE. 
+
+A plugin is an executable binary with two methods:
+
+```
+to_dtr(source_language: String) --> String
+from_dtr(dtr: String) --> String
+```
+
+The Spaced Out Thoughts Development Foundation aims to initially support:
+* Stellar's [Soroban Rust SDK](https://github.com/stellar/rs-soroban-sdk)
+* Ethereum's [Solidity](https://soliditylang.org/)
+
+With this, Digit will be able to support the following:
+
+<div style="text-align:center">
+  <img src="../images/digit_overview.png" alt="Digit Overview"> 
+</div>
+
+Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries [^15] and even blockchain interoperability[^16]. Digicus aims to go one step further, the generalization of smart contracts as whole.
 
 #### Digicus Textual Representation
 
@@ -102,4 +151,8 @@ Furthermore, as this work is ambitious and ongoing, we're actively seeking addit
 [^9]: [Aergo blockchain](https://www.aergo.io)
 [^10]: [Scilla: a Smart Contract Intermediate-Level LAnguage: Ilya Sergey, Amrit Kumar, Aquinas Hobor](https://arxiv.org/abs/1801.00687)
 [^11]: [LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation: Chris Lattner, Vikram Adve](https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf)
-
+[^12]: [Rob Pike - Wikipedia](https://en.wikipedia.org/wiki/Rob_Pike)
+[^13]: [Rob Pike - What We Got Right, What We Got Wrong | GopherConAU 2023](https://www.youtube.com/watch?v=yE5Tpp2BSGw)
+[^14]: [Giuthub Copilot](https://github.com/features/copilot)
+[^15]: [Solang: Solidity to Solana](https://github.com/hyperledger/solang)
+[^16]: [Polkadot: any type of data across any type of blockchain](https://polkadot.network/features/technology/)
