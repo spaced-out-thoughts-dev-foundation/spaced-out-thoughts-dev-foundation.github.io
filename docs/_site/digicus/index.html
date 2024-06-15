@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Digicus | Spaced Out Thoughts Development Foundation</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Digicus" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A small Ruby shop determined to make smart contracts as easy to use as possible." />
+<meta property="og:description" content="A small Ruby shop determined to make smart contracts as easy to use as possible." />
+<link rel="canonical" href="http://localhost:4000/digicus/" />
+<meta property="og:url" content="http://localhost:4000/digicus/" />
+<meta property="og:site_name" content="Spaced Out Thoughts Development Foundation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Digicus" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A small Ruby shop determined to make smart contracts as easy to use as possible.","headline":"Digicus","url":"http://localhost:4000/digicus/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Spaced Out Thoughts Development Foundation" /></head>
+<body><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Spaced Out Thoughts Development Foundation</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/about/">About</a><a class="page-link" href="/digicus/">Digicus</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">Digicus</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 align="center"><span align="center" style="font-size: 2em;">Scratch for Smart Contracts</span></h1>
+
+<div align="center">
+Rob Durst<br />
+me[at]robdurst[dot]com
+</div>
+<p><br /></p>
+
+<p>With it’s launch in 2015, Ethereum <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> brought smart contracts to the forefront of the blockchain ecosystem. These smart contracts were based on the (original?) definition laid out by Nick Szabo in 1996 <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>: <em>“[a] smart contract is a set of promises, specified in digital form, including protocols within which the parties perform on these promises.”</em></p>
+
+<p>As implemented today, smart contracts are typically turing complete and rely on a VM coupled with the underlying blockchain nodes. Like any typical VM, a “smart contract handling VM” handles some set of instructions, typically byte code, charging fees for execution, storage, etc. Contracts may be written in a “blockchain native” language like Solidity <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> or a pre-existing language that is compiled to a format the VM supports (i.e. Rust compiled to WASM which may run on Stellar’s Soroban <sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup>). While these smart contract development ecosystems have matured greatly over the past few years, writing a non-trivial, secure, correct smart contract is not easy (<em>Google smart contract hack and you’ll see a plethora of examples</em>). Today, various tools exist to solve this problem. Grouped generally, there are a few approaches:</p>
+
+<ol>
+  <li>Allow folks to use the programming language they are most familiar with (Hyperledger Fabric <sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup>)</li>
+  <li>Give folks the best developer experience possible</li>
+  <li>Provide a set of re-usable, well vetted, well tested, and well understood boiler-plate, templated smart contracts (OpenZepplin <sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">6</a></sup>)</li>
+</ol>
+
+<p>We propose a fourth approach: <em>making the smart contract language itself more approachable</em>. Fundamentally, the barriers to entry are overwhelmingly numerous. For example, in order to be a competent smart contract developer on the Stellar’s Soroban, you need to be familiar with how blockchains work, have a strong foundation in smart contracts, and be functional in the Rust programming language. Expecting non-technical participation <em>and</em> a painless onboarding experience for newcomer developers is not realistic. We believe a blockchain agnostic, visual, block-based programming environment will facilitate a more accessible onboarding experience for all. Specifically, we’ve built Digicus, an intuitive, simple, Lego-like IDE, backed by Digit, a compiler plugin framework for seamless transpilation between existing smart contract languages (i.e. Solidity) and frameworks (i.e Stellar’s Soroban Rust SDK) and our intermediate representation (DTR: Digicus Textual Representation). Digicus is the blockchain ecosystem’s Scratch <sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup>, a smart contract 101 platform that will help onboard newcomers into our world, aiding their journey to <em>“smart contract 201”</em> and beyond.</p>
+
+<hr />
+
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+  <li><a href="#existing-work-and-inspiration">Existing Work and Inspiration</a></li>
+  <li><a href="#section-1">Solution</a>
+    <ul>
+      <li><a href="#an-overview">An Overview</a></li>
+      <li><a href="#the-digicus-ide">The Digicus IDE</a></li>
+      <li><a href="#a-compiler-plugin-framework">A Compiler Plugin Framework</a></li>
+      <li><a href="#digicus-textual-representation">Digicus Textual Representation</a></li>
+    </ul>
+  </li>
+  <li><a href="#conclusion">Conclusion</a></li>
+  <li><a href="#references">References</a></li>
+</ul>
+
+<hr />
+
+<h1 id="existing-work-and-inspiration">Existing Work and Inspiration</h1>
+
+<p>The idea of a platform like Digicus is not a completely novel idea.</p>
+
+<p>A 2021 paper titled <em>SmartBuilder: A Block-based Visual Programming Framework for Smart Contract Development</em> states <sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">8</a></sup>:</p>
+
+<blockquote>
+  <p>In this paper, we introduce SmartBuilder, a block-based visual programming framework for building smart contracts using extended Google Blockly libraries. It allows Hyperledger Fabric smart contract (also known as Chaincode) development learners or non-expert users to build smart contracts using visual blocks without writing a single code</p>
+</blockquote>
+
+<p>This solution claims to have developed a commercial application of their proposed framework for the Aergo blockchain <sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">9</a></sup>.</p>
+
+<p>A second paper, <em>Scilla: a Smart Contract Intermediate-Level LAnguage</em> focuses on the idea of a smart contract intermediate language <sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">10</a></sup>:</p>
+
+<blockquote>
+  <p>This paper outlines key design principles of Scilla—an intermediate-level language for verified smart contracts. Scilla provides a clean separation between the communication aspect of smart contracts on a blockchain, allowing for the rich interaction patterns, and a programming component, which enjoys principled semantics and is amenable to formal verification. Scilla is not meant to be a high-level programming language, and we are going to use it as a translation target for high-level languages, such as Solidity, for performing program analysis and verification, before further compilation to an executable bytecode. We describe the automata-based model of Scilla, present its programming component and show how contract definitions in terms of automata streamline the process of mechanised verification of their safety and temporal properties</p>
+</blockquote>
+
+<p>This paper focuses on verification, not ease of development (however, a very interesting idea Digicus might be able to adopt later).</p>
+
+<p>Furthermore, the idea of a compiler framework is heavily influenced by LLVM <sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">11</a></sup>.</p>
+
+<blockquote>
+  <p>LLVM defines a common, low-level code representation in Static Single Assignment (SSA) form, with several novel features: a simple, language-independent type-system that exposes the primitives commonly used to implement high-level language features; an instruction for typed address arithmetic; and a simple mechanism that can be used to implement the exception handling features of high-level languages (and setjmp/longjmp in C) uniformly and efficiently. The LLVM compiler framework and code representation together provide a combination of key capabilities that are important for practical, lifelong analysis and transformation of programs.</p>
+</blockquote>
+
+<p>The beauty of LLVM as a general target for high level languages allows language developers to get (a) a bunch of optimizations and (b) a whole host of backends for free. Its importance to the compiler ecosystem cannot be understated.</p>
+
+<p>Digicus is a novel combination of these ideas, designed practically with the intention of developing a production application.</p>
+
+<hr />
+<h1 id="solution">Solution</h1>
+
+<h4 id="an-overview">An Overview</h4>
+
+<h4 id="the-digicus-ide">The Digicus IDE</h4>
+
+<h4 id="a-compiler-plugin-framework">A Compiler Plugin Framework</h4>
+
+<h4 id="digicus-textual-representation">Digicus Textual Representation</h4>
+
+<hr />
+
+<h1 id="conclusion">Conclusion</h1>
+
+<hr />
+
+<h1 id="references">References</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://ethereum.org/content/whitepaper/whitepaper-pdf/Ethereum_Whitepaper_-_Buterin_2014.pdf">Ethereum: A Next-Generation Smart Contract and Decentralized Application Platform. By Vitalik Buterin (2014)</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p><a href="https://www.truevaluemetrics.org/DBpdfs/BlockChain/Nick-Szabo-Smart-Contracts-Building-Blocks-for-Digital-Markets-1996-14591.pdf">Smart Contracts: Building Blocks for Digital Markets - Nick Szabo 1996 (partial rewrite of original)</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p><a href="https://soliditylang.org/">Solidity: A statically-typed curly-braces programming language designed for developing smart contracts that run on Ethereum</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p><a href="https://stellar.org/soroban">Soroban Smart Contracts</a> <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p><a href="https://www.hyperledger.org/participate/basics-v2">Hyperledge Foundation: Learn the Basics</a> <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p><a href="https://www.openzeppelin.com/">OpenZepplin: Securely Code, Deploy and Operate your Smart Contracts</a> <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p><a href="https://web.media.mit.edu/~mres/papers/Scratch-CACM-final.pdf">Scratch: Programming for All </a> <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p><a href="https://ieeexplore.ieee.org/document/9680565">SmartBuilder: A Block-based Visual Programming Framework for Smart Contract Development: Mpyana Mwamba Merlec; Youn Kyu Lee; Hoh Peter In</a> <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p><a href="https://www.aergo.io">Aergo blockchain</a> <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10" role="doc-endnote">
+      <p><a href="https://arxiv.org/abs/1801.00687">Scilla: a Smart Contract Intermediate-Level LAnguage: Ilya Sergey, Amrit Kumar, Aquinas Hobor</a> <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11" role="doc-endnote">
+      <p><a href="https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf">LLVM: A Compilation Framework for Lifelong Program Analysis &amp; Transformation: Chris Lattner, Vikram Adve</a> <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+  </div>
+
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Spaced Out Thoughts Development Foundation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Spaced Out Thoughts Development Foundation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/spaced-out-thoughts-dev-foundation"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">spaced-out-thoughts-dev-foundation</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A small Ruby shop determined to make smart contracts as easy to use as possible.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
