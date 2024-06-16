@@ -267,6 +267,7 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 **Basic Operations:**
 * **assign:** given some input value, assign to `ASSIGN_NAME`
 * **evaluate:** given a method name and 0 or more inputs, execute method
+* **log_string:** given a string, log it to standard out
 
 **Terminating Operations**:
 * **exit_with_message:** immediately end execution, returning message
