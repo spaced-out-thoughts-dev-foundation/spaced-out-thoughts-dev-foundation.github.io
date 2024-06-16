@@ -25,18 +25,18 @@ We propose a fourth approach: *making the smart contract language itself more ap
 ***
 
 # <strong><u>Table of Contents</u></strong>
-- [Table of Contents](#table-of-contents)
-- [Existing Work and Inspiration](#existing-work-and-inspiration)
-- [Solution](#solution)
-      - [An Overview](#an-overview)
-      - [The Digicus IDE](#the-digicus-ide)
-      - [A Compiler Plugin Framework](#a-compiler-plugin-framework)
-      - [Digicus Textual Representation](#digicus-textual-representation)
-      - [Supported Instructions](#supported-instructions)
-      - [Valid Types](#valid-types)
-- [Conclusion](#conclusion)
-      - [Latest Status](#latest-status)
-- [Grant Acknowledgements](#grant-acknowledgements)
+- [Table of Contents](#table-of-contents)<br>
+- [Existing Work and Inspiration](#existing-work-and-inspiration)<br>
+- [Solution](#solution)<br>
+      - [An Overview](#an-overview)<br>
+      - [The Digicus IDE](#the-digicus-ide)<br>
+      - [A Compiler Plugin Framework](#a-compiler-plugin-framework)<br>
+      - [Digicus Textual Representation](#digicus-textual-representation)<br>
+      - [Supported Instructions](#supported-instructions)<br>
+      - [Valid Types](#valid-types)<br>
+- [Conclusion](#conclusion)<br>
+      - [Latest Status](#latest-status)<br>
+- [Grant Acknowledgements](#grant-acknowledgements)<br>
 - [References](#references)
 
 ***
