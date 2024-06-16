@@ -25,14 +25,17 @@ We propose a fourth approach: *making the smart contract language itself more ap
 ***
 
 # <strong><u>Table of Contents</u></strong>
+- [Table of Contents](#table-of-contents)
 - [Existing Work and Inspiration](#existing-work-and-inspiration)
-- [Solution](#section-1)
-    - [An Overview](#an-overview)
-    - [The Digicus IDE](#the-digicus-ide)
-    - [A Compiler Plugin Framework](#a-compiler-plugin-framework)
-    - [Digicus Textual Representation](#digicus-textual-representation)
+- [Solution](#solution)
+      - [An Overview](#an-overview)
+      - [The Digicus IDE](#the-digicus-ide)
+      - [A Compiler Plugin Framework](#a-compiler-plugin-framework)
+      - [Digicus Textual Representation](#digicus-textual-representation)
+      - [Supported Instructions](#supported-instructions)
+      - [Valid Types](#valid-types)
 - [Conclusion](#conclusion)
-    - [Latest Status](#latest-status)
+      - [Latest Status](#latest-status)
 - [Grant Acknowledgements](#grant-acknowledgements)
 - [References](#references)
 
@@ -264,47 +267,26 @@ Note:
 
 Defining a set of common instructions across _all_ blockchains is challenging. Thus, it is likely this list will be in flux;until otherwise stated, this list may be incomplete.
 
-**Basic Operations:**
-* **assign:** given some input value, assign to `ASSIGN_NAME`
-* **evaluate:** given a method name and 0 or more inputs, execute method
-* **log_string:** given a string, log it to standard out
+| Operation Name         | Inputs | Assign   | Category     | Description                                                                                                                                                                                                                                              |
+| ---------------------- | ------ | -------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| assign                 | 1      | Required | Basic        | given some input value, assign to `ASSIGN_NAME`                                                                                                                                                                                                          |
+| evaluate               | >1     | Optional | Basic        | given a method name and 0 or more inputs, execute method. At this time, evaluate is a fairly loose catch-all for not explicitly defined operations                                                                                                       |
+| print                  | 1      | None     | Basic        | given some value, print it to standard out                                                                                                                                                                                                               |
+| exit_with_message      | 1      | None     | Terminating  | immediately end execution, returning message                                                                                                                                                                                                             |
+| return                 | 1      | None     | Terminating  | return from function with input value (at most 1 input)                                                                                                                                                                                                  |
+| and                    | 2      | Required | Logical      | assign to `ASSIGN_NAME` result of "and-ing" two values                                                                                                                                                                                                   |
+| or                     | 2      | Required | Logical      | assign to `ASSIGN_NAME` result of "or-ing" two values                                                                                                                                                                                                    |
+| goto                   | 1 or 2 | None     | Control Flow | conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (a label name)                                                                           |
+| jump                   | 1 or 2 | None     | Control Flow | conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, jump to scope level                                                                                                      |
+| end_of_iteration_check | 1      | Required | Control Flow | check on input to see if at end of iteration. Return result to `ASSIGN_NAME`                                                                                                                                                                             |
+| label                  | 1      | None     | Control Flow | a named location within the instruction set for a given function                                                                                                                                                                                         |
+| field                  | 2      | Optional | Object       | access a field on an object and assign result to `ASSIGN_NAME`                                                                                                                                                                                           |
+| instantiate_object     | 1+     | Optional | Object       | initialize an object by first passing in the _type_ of object and the passing in each initial values for its fields. Supported types here include: `Dictionary`, `List`, `Range`, `Tuple`, and `UDT`. For UDTs, the second input is the name of the UDT. |
+| add                    | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of adding two value                                                                                                                                                                                                       |
+| subtract               | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of subtracting two value                                                                                                                                                                                                  |
+| multiply               | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of multiplying two value                                                                                                                                                                                                  |
+| divide                 | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of dividing two value                                                                                                                                                                                                     |
 
-**Terminating Operations**:
-* **exit_with_message:** immediately end execution, returning message
-* **return:** return from function with input value (at most 1 input)
-
-**Logical Operations:**
-* **and:** assign to `ASSIGN_NAME` result of "and-ing" two values
-* **or:** assign to `ASSIGN_NAME` result of "or-ing" two values
-
-**Jump Operations:**
-* **conditional goto:** move in code to the first input (a label name) if first input evaluates to true
-* **conditional_jump:** jump to scope level given as input if first input value evaluates to true
-* **end_of_iteration_check:** check on input to see if at end of iteration. Return result to `ASSIGN_NAME`
-* **label:** a named location within the instruction set for a given function
-* **unconditional goto:** move in code to the first input (a label name)
-* **unconditional_jump:** jump to scope level given as input
-
-**Smart Contract Specific Operations:**
-* **contract_address:** retrieve the address of the executing contract
-
-**Object and UDT Operations:**
-* **create_dictionary:** initialize a dictionary with each input as values for its fields
-* **create_list:** initialize a list with each input as values for its fields
-* **create_range:** initializes an object representing all values from some numeric start to a numeric end
-* **create_tuple:** initialize a tuple with each input as values for its fields
-* **field:** access a field on an object and assign result to `ASSIGN_NAME`
-* **initialize_udt:** initialize a user defined type by passing in the name, then each initial values for its fields
-
-**Typical Binary Operations:**
-* **add:** assign to `ASSIGN_NAME` result of adding two value
-* **add_and_assign:** add second input to first, assigning that value to the first
-* **subtract:** assign to `ASSIGN_NAME` result of subtracting two value
-* **subtract_and_assign:** subtract second input from first, assigning that value to the first
-* **multiply:** assign to `ASSIGN_NAME` result of multiplying two value
-* **multiply_and_assign:** multiply second input and first, assigning that value to the first
-* **divide:** assign to `ASSIGN_NAME` result of dividing two value
-* **divide_and_assign:** divide second input from first, assigning that value to the first
 
 #### <strong><u>Valid Types</u></strong>
 
@@ -313,12 +295,12 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 A.K.A. primitive types.
 
 Digicus supports the following:
-* Integer
-* BigInteger
-* Float
-* String
 * Address
+* BigInteger
 * Boolean
+* Float
+* Integer
+* String
 
 **Container Types**
 
