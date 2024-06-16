@@ -278,9 +278,11 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 * **or:** assign to `ASSIGN_NAME` result of "or-ing" two values
 
 **Jump Operations:**
+* **conditional goto:** move in code to the first input (a label name) if first input evaluates to true
 * **conditional_jump:** jump to scope level given as input if first input value evaluates to true
+* **end_of_iteration_check:** check on input to see if at end of iteration. Return result to `ASSIGN_NAME`
 * **label:** a named location within the instruction set for a given function
-* **goto:** move in code to the first input (a label name)
+* **unconditional goto:** move in code to the first input (a label name)
 * **unconditional_jump:** jump to scope level given as input
 
 **Smart Contract Specific Operations:**
@@ -289,6 +291,7 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 **Object and UDT Operations:**
 * **create_dictionary:** initialize a dictionary with each input as values for its fields
 * **create_list:** initialize a list with each input as values for its fields
+* **create_range:** initializes an object representing all values from some numeric start to a numeric end
 * **create_tuple:** initialize a tuple with each input as values for its fields
 * **field:** access a field on an object and assign result to `ASSIGN_NAME`
 * **initialize_udt:** initialize a user defined type by passing in the name, then each initial values for its fields
@@ -315,6 +318,7 @@ Digicus supports the following:
 * Float
 * String
 * Address
+* Boolean
 
 **Container Types**
 
