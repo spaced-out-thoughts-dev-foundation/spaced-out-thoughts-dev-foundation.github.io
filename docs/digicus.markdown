@@ -309,6 +309,7 @@ Types that contain types.
 Digicus supports the following:
 * **List:** homogenous, single unary (ex. `List<Integer>`)
 * **Dictionary:** homogenous in dimension, binary arity (ex. `Dictionary<String, Integer>`)
+* **Range:** an iterator over some values (ex. `Range<Integer>`)
 * **Tuple**: n-ary arity (ex. `Tuple<Integer, Integer, String>`)
 
 ***
