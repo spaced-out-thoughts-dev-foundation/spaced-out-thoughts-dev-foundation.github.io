@@ -286,14 +286,21 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 * **contract_address:** retrieve the address of the executing contract
 
 **Object and UDT Operations:**
+* **create_dictionary:** initialize a dictionary with each input as values for its fields
+* **create_list:** initialize a list with each input as values for its fields
+* **create_tuple:** initialize a tuple with each input as values for its fields
 * **field:** access a field on an object and assign result to `ASSIGN_NAME`
 * **initialize_udt:** initialize a user defined type by passing in the name, then each initial values for its fields
 
 **Typical Binary Operations:**
 * **add:** assign to `ASSIGN_NAME` result of adding two value
+* **add_and_assign:** add second input to first, assigning that value to the first
 * **subtract:** assign to `ASSIGN_NAME` result of subtracting two value
+* **subtract_and_assign:** subtract second input from first, assigning that value to the first
 * **multiply:** assign to `ASSIGN_NAME` result of multiplying two value
+* **multiply_and_assign:** multiply second input and first, assigning that value to the first
 * **divide:** assign to `ASSIGN_NAME` result of dividing two value
+* **divide_and_assign:** divide second input from first, assigning that value to the first
 
 #### <strong><u>Valid Types</u></strong>
 
