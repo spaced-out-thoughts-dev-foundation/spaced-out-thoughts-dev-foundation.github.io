@@ -67,21 +67,18 @@ me[at]robdurst[dot]com
 
 <h1 id="table-of-contents"><strong><u>Table of Contents</u></strong></h1>
 <ul>
-  <li><a href="#existing-work-and-inspiration">Existing Work and Inspiration</a></li>
-  <li><a href="#section-1">Solution</a>
-    <ul>
-      <li><a href="#an-overview">An Overview</a></li>
-      <li><a href="#the-digicus-ide">The Digicus IDE</a></li>
-      <li><a href="#a-compiler-plugin-framework">A Compiler Plugin Framework</a></li>
-      <li><a href="#digicus-textual-representation">Digicus Textual Representation</a></li>
-    </ul>
-  </li>
-  <li><a href="#conclusion">Conclusion</a>
-    <ul>
-      <li><a href="#latest-status">Latest Status</a></li>
-    </ul>
-  </li>
-  <li><a href="#grant-acknowledgements">Grant Acknowledgements</a></li>
+  <li><a href="#table-of-contents">Table of Contents</a><br /></li>
+  <li><a href="#existing-work-and-inspiration">Existing Work and Inspiration</a><br /></li>
+  <li><a href="#solution">Solution</a><br />
+    - <a href="#an-overview">An Overview</a><br />
+    - <a href="#the-digicus-ide">The Digicus IDE</a><br />
+    - <a href="#a-compiler-plugin-framework">A Compiler Plugin Framework</a><br />
+    - <a href="#digicus-textual-representation">Digicus Textual Representation</a><br />
+    - <a href="#supported-instructions">Supported Instructions</a><br />
+    - <a href="#valid-types">Valid Types</a><br /></li>
+  <li><a href="#conclusion">Conclusion</a><br />
+    - <a href="#latest-status">Latest Status</a><br /></li>
+  <li><a href="#grant-acknowledgements">Grant Acknowledgements</a><br /></li>
   <li><a href="#references">References</a></li>
 </ul>
 
@@ -322,50 +319,138 @@ from_dtr(dtr: String) --&gt; String
 
 <p>Defining a set of common instructions across <em>all</em> blockchains is challenging. Thus, it is likely this list will be in flux;until otherwise stated, this list may be incomplete.</p>
 
-<p><strong>Basic Operations:</strong></p>
-<ul>
-  <li><strong>assign:</strong> given some input value, assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></li>
-  <li><strong>evaluate:</strong> given a method name and 0 or more inputs, execute method</li>
-</ul>
-
-<p><strong>Terminating Operations</strong>:</p>
-<ul>
-  <li><strong>exit_with_message:</strong> immediately end execution, returning message</li>
-  <li><strong>return:</strong> return from function with input value (at most 1 input)</li>
-</ul>
-
-<p><strong>Logical Operations:</strong></p>
-<ul>
-  <li><strong>and:</strong> assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of “and-ing” two values</li>
-  <li><strong>or:</strong> assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of “or-ing” two values</li>
-</ul>
-
-<p><strong>Jump Operations:</strong></p>
-<ul>
-  <li><strong>conditional_jump:</strong> jump to scope level given as input if first input value evaluates to true</li>
-  <li><strong>label:</strong> a named location within the instruction set for a given function</li>
-  <li><strong>goto:</strong> move in code to the first input (a label name)</li>
-  <li><strong>unconditional_jump:</strong> jump to scope level given as input</li>
-</ul>
-
-<p><strong>Smart Contract Specific Operations:</strong></p>
-<ul>
-  <li><strong>contract_address:</strong> retrieve the address of the executing contract</li>
-</ul>
-
-<p><strong>Object and UDT Operations:</strong></p>
-<ul>
-  <li><strong>field:</strong> access a field on an object and assign result to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></li>
-  <li><strong>initialize_udt:</strong> initialize a user defined type by passing in the name, then each initial values for its fields</li>
-</ul>
-
-<p><strong>Typical Binary Operations:</strong></p>
-<ul>
-  <li><strong>add:</strong> assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of adding two value</li>
-  <li><strong>subtract:</strong> assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of subtracting two value</li>
-  <li><strong>multiply:</strong> assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of multiplying two value</li>
-  <li><strong>divide:</strong> assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of dividing two value</li>
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Operation Name</th>
+      <th>Inputs</th>
+      <th>Assign</th>
+      <th>Category</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>assign</td>
+      <td>1</td>
+      <td>Required</td>
+      <td>Basic</td>
+      <td>given some input value, assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
+    </tr>
+    <tr>
+      <td>evaluate</td>
+      <td>&gt;1</td>
+      <td>Optional</td>
+      <td>Basic</td>
+      <td>given a method name and 0 or more inputs, execute method. At this time, evaluate is a fairly loose catch-all for not explicitly defined operations</td>
+    </tr>
+    <tr>
+      <td>print</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Basic</td>
+      <td>given some value, print it to standard out</td>
+    </tr>
+    <tr>
+      <td>exit_with_message</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Terminating</td>
+      <td>immediately end execution, returning message</td>
+    </tr>
+    <tr>
+      <td>return</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Terminating</td>
+      <td>return from function with input value</td>
+    </tr>
+    <tr>
+      <td>and</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Logical</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of “and-ing” two values</td>
+    </tr>
+    <tr>
+      <td>or</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Logical</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of “or-ing” two values</td>
+    </tr>
+    <tr>
+      <td>goto</td>
+      <td>1+</td>
+      <td>None</td>
+      <td>Control Flow</td>
+      <td>conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (a label name)</td>
+    </tr>
+    <tr>
+      <td>jump</td>
+      <td>1+</td>
+      <td>None</td>
+      <td>Control Flow</td>
+      <td>conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, jump to scope level</td>
+    </tr>
+    <tr>
+      <td>end_of_iteration_check</td>
+      <td>1</td>
+      <td>Required</td>
+      <td>Control Flow</td>
+      <td>check on input to see if at end of iteration. Return result to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
+    </tr>
+    <tr>
+      <td>label</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Control Flow</td>
+      <td>a named location within the instruction set for a given function</td>
+    </tr>
+    <tr>
+      <td>field</td>
+      <td>2</td>
+      <td>Optional</td>
+      <td>Object</td>
+      <td>access a field on an object and assign result to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
+    </tr>
+    <tr>
+      <td>instantiate_object</td>
+      <td>1+</td>
+      <td>Optional</td>
+      <td>Object</td>
+      <td>initialize an object by first passing in the <em>type</em> of object and the passing in each initial values for its fields. Supported types here include: <code class="language-plaintext highlighter-rouge">Dictionary</code>, <code class="language-plaintext highlighter-rouge">List</code>, <code class="language-plaintext highlighter-rouge">Range</code>, <code class="language-plaintext highlighter-rouge">Tuple</code>, and <code class="language-plaintext highlighter-rouge">UDT</code>. For UDTs, the second input is the name of the UDT.</td>
+    </tr>
+    <tr>
+      <td>add</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of adding two value</td>
+    </tr>
+    <tr>
+      <td>subtract</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of subtracting two value</td>
+    </tr>
+    <tr>
+      <td>multiply</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of multiplying two value</td>
+    </tr>
+    <tr>
+      <td>divide</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of dividing two value</td>
+    </tr>
+  </tbody>
+</table>
 
 <h4 id="valid-types"><strong><u>Valid Types</u></strong></h4>
 
@@ -375,11 +460,12 @@ from_dtr(dtr: String) --&gt; String
 
 <p>Digicus supports the following:</p>
 <ul>
-  <li>Integer</li>
-  <li>BigInteger</li>
-  <li>Float</li>
-  <li>String</li>
   <li>Address</li>
+  <li>BigInteger</li>
+  <li>Boolean</li>
+  <li>Float</li>
+  <li>Integer</li>
+  <li>String</li>
 </ul>
 
 <p><strong>Container Types</strong></p>
@@ -390,6 +476,7 @@ from_dtr(dtr: String) --&gt; String
 <ul>
   <li><strong>List:</strong> homogenous, single unary (ex. <code class="language-plaintext highlighter-rouge">List&lt;Integer&gt;</code>)</li>
   <li><strong>Dictionary:</strong> homogenous in dimension, binary arity (ex. <code class="language-plaintext highlighter-rouge">Dictionary&lt;String, Integer&gt;</code>)</li>
+  <li><strong>Range:</strong> an iterator over some values (ex. <code class="language-plaintext highlighter-rouge">Range&lt;Integer&gt;</code>)</li>
   <li><strong>Tuple</strong>: n-ary arity (ex. <code class="language-plaintext highlighter-rouge">Tuple&lt;Integer, Integer, String&gt;</code>)</li>
 </ul>
 
