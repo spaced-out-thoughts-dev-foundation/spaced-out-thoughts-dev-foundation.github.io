@@ -1,4 +1,125 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-06-28T22:20:30-07:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">Representing Loops: An Exploration of Non-Sequential Logic Execution</title><link href="http://localhost:4000/2024/06/28/loops.html" rel="alternate" type="text/html" title="Representing Loops: An Exploration of Non-Sequential Logic Execution" /><published>2024-06-28T00:00:00-07:00</published><updated>2024-06-28T00:00:00-07:00</updated><id>http://localhost:4000/2024/06/28/loops</id><content type="html" xml:base="http://localhost:4000/2024/06/28/loops.html"><![CDATA[<p>Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-06-30T17:47:49-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">Prettier Match Statements</title><link href="http://localhost:4000/2024/06/28/prettier-match-statements.html" rel="alternate" type="text/html" title="Prettier Match Statements" /><published>2024-06-28T00:00:00-07:00</published><updated>2024-06-28T00:00:00-07:00</updated><id>http://localhost:4000/2024/06/28/prettier-match-statements</id><content type="html" xml:base="http://localhost:4000/2024/06/28/prettier-match-statements.html"><![CDATA[<h2 id="a-recap-on-scopes">A Recap on Scopes</h2>
+
+<p><strong>Definition:</strong> a scope represents a continuous, uninterrupted block of logic. While one implementation may decide to increment (and decrement) scope sequentially, scopes hold no meaning except that scope 1 == scope 1; thus, it may be more useful to think of a scope like a labelled block.</p>
+
+<p><strong>How do you <em>jump</em> between scopes?</strong></p>
+
+<p>Punny right? To change scope, we use the <code class="language-plaintext highlighter-rouge">jump</code> instruction. This instruction is variadic:</p>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>jump(SCOPE)</td>
+          <td>unconditional scope modification</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>jump(BOOLEAN, SCOPE)</td>
+          <td>conditional scope modification</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p>A scope is not incremented or decremented, but assigned. We’ve intentionally decided to require explicit scope declaration.</p>
+
+<p>Consider the following annotated code:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// [0]</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">10</span> <span class="p">{</span>
+  <span class="c1">// [1]</span>
+  <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+
+  <span class="c1">// [1]</span>
+  <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">7</span> <span class="p">{</span>
+    <span class="c1">// [2a]</span>
+    <span class="n">x</span> <span class="o">-=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// [2b]</span>
+    <span class="n">x</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c1">// [1]</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="c1">// [0]</span>
+</code></pre></div></div>
+
+<p>This results in the following DTR.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ instruction: "evaluate", input: (equal_to, x, 10), assign: CONDITIONAL_0, scope: 0 }
+{ instruction: "jump", input: (CONDITIONAL_0, 1), scope: 0 }
+{ instruction: "evaluate", input: }
+
+</code></pre></div></div>
+
+<p>##
+In Ruby and Rust, we get some pretty nice pattern matching.</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">case</span> <span class="n">x</span>
+<span class="k">when</span> <span class="mi">10</span>
+  <span class="s2">"ten"</span>
+<span class="k">when</span> <span class="mi">20</span>
+  <span class="s2">"twenty"</span>
+<span class="k">else</span>
+  <span class="s2">"Not ten and not twenty"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>In simple cases, where we don’t leverage the pattern matching, this is basically syntactic sugar for:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">10</span>
+  <span class="s2">"ten"</span>
+<span class="k">elsif</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">20</span>
+  <span class="s2">"twenty"</span>
+<span class="k">else</span>
+  <span class="s2">"Not ten and not twenty"</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>This is equivalent to:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">10</span>
+  <span class="s2">"ten"</span>
+<span class="k">else</span>
+  <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">20</span>
+    <span class="s2">"twenty"</span>
+  <span class="k">else</span>
+    <span class="s2">"Not ten and not twenty"</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Which translates quite well into DTR.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// [0] CONDITONAL_0 = x == 10
+{ instruction: "evaluate", input: ("equal_to", x, 10), assign: CONDITONAL_0, scope: 0 }
+// [0] if CONDITONAL_0, scope = 1
+{ instruction: "jump", input: (CONDITONAL_0, x, 1), scope: 0 }
+// [1] print "ten"
+{ instruction: "print", input: ("ten"), scope: 1 }
+
+// [0] CONDITONAL_1 = x == 20
+{ instruction: "evaluate", input: ("equal_to", x, 20), assign: CONDITONAL_1, scope: 0 }
+// [0] if CONDITONAL_0, scope = 1
+{ instruction: "jump", input: (CONDITONAL_0, x, 1), scope: 0 }
+// [1] print "ten"
+{ instruction: "print", input: ("ten"), scope: 1 }
+
+
+{ instruction: "evaluate", input: ("equal_to", x, 10), assign: CONDITONAL_0, scope: 0 }
+{ instruction: "jump", input: (CONDITONAL_0, x, 1), scope: 0 }
+{ instruction: "print", input: ("ten"), scope: 1 }
+
+</code></pre></div></div>]]></content><author><name></name></author><summary type="html"><![CDATA[A Recap on Scopes]]></summary></entry><entry><title type="html">Representing Loops: An Exploration of Non-Sequential Logic Execution</title><link href="http://localhost:4000/2024/06/27/loops.html" rel="alternate" type="text/html" title="Representing Loops: An Exploration of Non-Sequential Logic Execution" /><published>2024-06-27T00:00:00-07:00</published><updated>2024-06-27T00:00:00-07:00</updated><id>http://localhost:4000/2024/06/27/loops</id><content type="html" xml:base="http://localhost:4000/2024/06/27/loops.html"><![CDATA[<p>Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.</p>
 
 <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
@@ -58,9 +179,9 @@
 
 <p>Notice that (1) can be completed <em>outside the actual loop evaluation</em>. Furthermore, the “<em>if continuing</em>” flow can leverage the scoping behavior as already defined for conditionals following the sequential instruction flow.</p>
 
-<p>Thus, with what we defined above, we are almost there. Let’s now take what we had, add ids, then add a sixth <code class="language-plaintext highlighter-rouge">goto</code> instruction which exists in scope 1 and goes back to instruction 1:</p>
+<p>Thus, with what we defined above, we are almost there. Let’s now take what we had, add id’s, then add a sixth <code class="language-plaintext highlighter-rouge">goto</code> instruction which exists in scope 1 and goes back to instruction 1:</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ id: 0, instruction: "assign", input: (0), assign: i, scope: 0 }
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ id: 0, instruction: "assign", input: (1), assign: i, scope: 0 }
 
 ########### Loop ###########
 // [0] CONDITIONAL_JUMP_0 = i &lt;= 10
@@ -71,6 +192,7 @@
 { id: 3, instruction: "add", input: (num, i), assign: num, scope: 1 }
 // [1] i = i + 1
 { id: 4, instruction: "add", input: (i, 1), assign: i, scope: 1 }
+// [1] go back to conditional (instruction id = 1)
 { id: 5, instruction: "goto", input: (1), scope: 1 }
 ############################
 </code></pre></div></div>
@@ -82,7 +204,7 @@
 <p>With each instruction having an id above, we can associate the instructions to the generated Rust.</p>
 
 <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// [0]</span>
-<span class="k">let</span> <span class="k">mut</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">let</span> <span class="k">mut</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 
 <span class="c1">// [1] &amp; [2]                </span>
 <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">{</span> <span class="c1">// &lt;------------</span>
@@ -94,4 +216,61 @@
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p><em>Note:</em> while we <em>did</em> translate back to a <code class="language-plaintext highlighter-rouge">while</code> instead of a <code class="language-plaintext highlighter-rouge">for</code> loop, these are functionally the same.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.]]></summary></entry></feed>
+<p><em>Note:</em> while we <em>did</em> translate back to a <code class="language-plaintext highlighter-rouge">while</code> instead of a <code class="language-plaintext highlighter-rouge">for</code> loop, these are functionally the same.</p>
+
+<h3 id="a-final-test-nested-loops">A Final Test: Nested Loops</h3>
+
+<p>This time, let’s try a nested loop (in this simplified example, we will ignore each block’s body).</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">..</span><span class="mi">10</span> <span class="p">{</span>
+  <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="mi">5</span> <span class="p">{}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Now for the DTR.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// [0] i = 1
+{ id: 0, instruction: "assign", input: (1), assign: i, scope: 0 }
+
+########### Loop ###########
+// [0] CONDITIONAL_JUMP_0 = i &lt;= 10
+{ id: 1, instruction: "evaluate", input: (less_than_or_equal_to, i, 10), assign: CONDITIONAL_JUMP_0, scope: 0 }
+// [0] if CONDITIONAL_JUMP_0, scope = 1
+{ id: 2, instruction: "jump", input: (CONDITIONAL_JUMP_0, 1), scope: 0 }
+// [1] j = 0
+{ id: 3, instruction: "assign", input: (0), assign: j, scope: 1 }
+// [1] CONDITIONAL_JUMP_1 = j &lt;= 5
+{ id: 4, instruction: "evaluate", input: (less_than_or_equal_to, j, 10), assign: CONDITIONAL_JUMP_1, scope: 1 }
+// [1] if CONDITIONAL_JUMP_1, scope = 2
+{ id: 5, instruction: "jump", input: (CONDITIONAL_JUMP_1, 2), scope: 1 }
+// [2] j = j + 1
+{ id: 6, instruction: "add", input: (j, 1), assign: j, scope: 2 }
+// [2] go back to conditional (instruction id = 4)
+{ id: 7, instruction: "goto", input: (33333), scope: 2 }
+// [1] i = i + 1
+{ id: 8, instruction: "add", input: (i, 1), assign: i, scope: 1 }
+// [1] go back to conditional (instruction id = 1)
+{ id: 9, instruction: "goto", input: (1), scope: 1 }
+############################
+</code></pre></div></div>
+
+<p>And finally back to Rust.</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// [0]</span>
+<span class="k">let</span> <span class="k">mut</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="c1">// [1] &amp; [2]                </span>
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="p">{</span> <span class="c1">// &lt;------------</span>
+   <span class="c1">// [3]                      |</span>
+   <span class="k">let</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>               <span class="c1">// |</span>
+   <span class="c1">// [4] &amp; [5]                |</span>
+   <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="mi">5</span> <span class="p">{</span> <span class="c1">// &lt;---      |</span>
+      <span class="c1">// [6]         // |      |</span>
+      <span class="n">j</span> <span class="o">=</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>     <span class="c1">// |      |</span>
+      <span class="c1">// [7]------------|      |</span>
+   <span class="p">}</span>                        <span class="c1">// |</span>
+   <span class="c1">// [8]                   // |</span>
+   <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>               <span class="c1">// |</span>
+   <span class="c1">// [9]----------------------|</span>
+<span class="p">}</span>
+</code></pre></div></div>]]></content><author><name></name></author><summary type="html"><![CDATA[Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.]]></summary></entry></feed>
