@@ -75,6 +75,7 @@ me[at]robdurst[dot]com
     - <a href="#a-compiler-plugin-framework">A Compiler Plugin Framework</a><br />
     - <a href="#digicus-textual-representation">Digicus Textual Representation</a><br />
     - <a href="#supported-instructions">Supported Instructions</a><br />
+    - <a href="#instruction-execution-flow">Instruction Execution Flow</a><br />
     - <a href="#valid-types">Valid Types</a><br /></li>
   <li><a href="#conclusion">Conclusion</a><br />
     - <a href="#latest-status">Latest Status</a><br /></li>
@@ -298,9 +299,9 @@ from_dtr(dtr: String) --&gt; String
     * Output: TYPE_NAME
     * Instructions:
       $
-        { instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL },
+        { id: UUID, instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL },
         ...
-        { instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL }
+        { id: UUID, instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL }
       $
 </code></pre></div></div>
 
@@ -384,7 +385,7 @@ from_dtr(dtr: String) --&gt; String
       <td>1+</td>
       <td>None</td>
       <td>Control Flow</td>
-      <td>conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (a label name)</td>
+      <td>conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (an instruction id)</td>
     </tr>
     <tr>
       <td>jump</td>
@@ -399,13 +400,6 @@ from_dtr(dtr: String) --&gt; String
       <td>Required</td>
       <td>Control Flow</td>
       <td>check on input to see if at end of iteration. Return result to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
-    </tr>
-    <tr>
-      <td>label</td>
-      <td>1</td>
-      <td>None</td>
-      <td>Control Flow</td>
-      <td>a named location within the instruction set for a given function</td>
     </tr>
     <tr>
       <td>field</td>
@@ -451,6 +445,86 @@ from_dtr(dtr: String) --&gt; String
     </tr>
   </tbody>
 </table>
+
+<h4 id="instruction-execution-flow"><strong><u>Instruction Execution Flow</u></strong></h4>
+
+<p>Instruction flow is determined by two main factors:</p>
+<ol>
+  <li>the top to bottom position of the instruction within the collection</li>
+  <li>the scope of the instruction</li>
+</ol>
+
+<p>Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the <em>instruction pointer</em> <sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup> is scope-aware; thus, if the current scope is <code class="language-plaintext highlighter-rouge">7</code>, but the instruction pointed at is a scope of anything besides <code class="language-plaintext highlighter-rouge">7</code>, the <em>instruction pointer</em> will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.</p>
+
+<p>To illustrate, consider the representation of an <code class="language-plaintext highlighter-rouge">if-else</code> block in DTR:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// ====== scope 0 ======
+// CONDITONAL_RESULT_1 = x &gt; 10
+{ instruction: evaluate, input: (greater_than, x, 10), assign: CONDITONAL_RESULT_1, scope: 0 }
+// if CONDITONAL_RESULT_1, scope =&gt; 2
+{ instruction: jump, input: (CONDITONAL_RESULT_1, 2), scope: 0 }
+// else, scope =&gt; 3
+{ instruction: jump, input: (3), scope: 0 }
+
+// ====== scope 2 ======
+// print("we are in scope 2")
+{ instruction: print, input: ("we are in scope 2"), scope: 2 }
+// scope =&gt; 0
+{ instruction: jump, input(0), scope: 2}
+
+// ====== scope 3 ======
+// print("we are in scope 3")
+{ instruction: print, input: ("we are in scope 3"), scope: 3 }
+// scope =&gt; 0
+{ instruction: jump, input(0), scope: 3}
+
+// ====== scope 0 ======
+{ instruction: print, input: ("we are back in scope 0"), scope: 2 }
+</code></pre></div></div>
+
+<p>We start by evaluating <code class="language-plaintext highlighter-rouge">x &gt; 10</code>. If it is true, we navigate to scope 2, print “we are in scope 2”, then navigate back to scope 0 where we print “we are in scope 0”. If x is less than or equal to 10, then we navigate to scope 3, print “we are in scope 3”, finally navigating back to scope 0 where we print “we are in scope 0”.</p>
+
+<p>Equivalent ruby code would look like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span>
+  <span class="nb">print</span> <span class="s2">"we are in scope 2"</span>
+<span class="k">else</span>
+  <span class="nb">print</span> <span class="s2">"we are in scope 3"</span>
+<span class="k">end</span>
+
+<span class="nb">print</span> <span class="s2">"we are in scope 0"</span>
+</code></pre></div></div>
+
+<p><strong>Going “backwards” to <em>repeat</em> ourselves</strong></p>
+
+<p>There are times where it might be useful to repeat some logic. In most programming languages, you can accomplish this with a <code class="language-plaintext highlighter-rouge">loop</code>:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">println!</span><span class="p">(</span><span class="s">"Before loop"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="mi">42</span> <span class="p">{</span>
+  <span class="nd">println!</span><span class="p">(</span><span class="s">"Iteration: {}"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">println!</span><span class="p">(</span><span class="s">"After loop"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With only the basic scope-based sequential execution we’ve laid out thus far, the only way to replicate the above looping logic is by loop unrolling <sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">18</a></sup>. However, that is not practical. Thus, we’ve introduced the concept of an <code class="language-plaintext highlighter-rouge">instruction id</code> and a <code class="language-plaintext highlighter-rouge">goto</code> instruction type. The <code class="language-plaintext highlighter-rouge">goto</code> instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ id: 0, instruction: "print", input: ("Before loop"), scope: 0 }
+{ id: 1, instruction: assign, input: (0), assign: i, scope: 0 }
+{ id: 2, instruction: evaluate, input: (less than, i, 42), assign: LOOP_CHECK, scope: 0 }
+{ id: 3, instruction: jump, input: (LOOP_CHECK, 1), scope: 0 }
+
+{ id: 4, instruction: "print", input: ("Iteration: {}", i), scope: 1 }
+{ id: 5, instruction: "increment", input: (i), scope: 1}
+{ id: 6, instruction: "goto", input: (3), scope: 1}
+
+{ id: 7, instruction: "print", input: ("After loop", scope: 0) }
+</code></pre></div></div>
+
+<p>Here we assign <code class="language-plaintext highlighter-rouge">0</code> to <code class="language-plaintext highlighter-rouge">i</code>. Then we check if <code class="language-plaintext highlighter-rouge">i</code> is less than <code class="language-plaintext highlighter-rouge">42</code>. If so, we navigate to scope 1. In scope 1, we print our message, increment i, then navigate back to the loop check. This code will continue executing until we fail the loop check. Once we fail, we don’t jump to scope 1 and so instructions with the ids of 4, 5, and 6 are skipped. Thus, we print “After loop” and the program terminates.</p>
+
+<p>At this point, we’ve outlined the basics of instruction execution flow for DTR.</p>
 
 <h4 id="valid-types"><strong><u>Valid Types</u></strong></h4>
 
@@ -557,6 +631,12 @@ from_dtr(dtr: String) --&gt; String
     </li>
     <li id="fn:16" role="doc-endnote">
       <p><a href="https://polkadot.network/features/technology/">Polkadot: any type of data across any type of blockchain</a> <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:17" role="doc-endnote">
+      <p><a href="https://en.wikipedia.org/wiki/Program_counter">Program Counter - Wikipedia</a> <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:18" role="doc-endnote">
+      <p><a href="https://en.wikipedia.org/wiki/Loop_unrolling">Loop unrolling - Wikipedia</a> <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>

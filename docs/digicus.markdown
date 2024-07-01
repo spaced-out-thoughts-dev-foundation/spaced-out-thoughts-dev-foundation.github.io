@@ -33,6 +33,7 @@ We propose a fourth approach: *making the smart contract language itself more ap
       - [A Compiler Plugin Framework](#a-compiler-plugin-framework)<br>
       - [Digicus Textual Representation](#digicus-textual-representation)<br>
       - [Supported Instructions](#supported-instructions)<br>
+      - [Instruction Execution Flow](#instruction-execution-flow)<br>
       - [Valid Types](#valid-types)<br>
 - [Conclusion](#conclusion)<br>
       - [Latest Status](#latest-status)<br>
@@ -248,9 +249,9 @@ enum Shape {
     * Output: TYPE_NAME
     * Instructions:
       $
-        { instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL },
+        { id: UUID, instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL },
         ...
-        { instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL }
+        { id: UUID, instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL }
       $
 ```
 
@@ -276,16 +277,97 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 | return                 | 1      | None     | Terminating  | return from function with input value                                                                                                                                                                                                                    |
 | and                    | 2      | Required | Logical      | assign to `ASSIGN_NAME` result of "and-ing" two values                                                                                                                                                                                                   |
 | or                     | 2      | Required | Logical      | assign to `ASSIGN_NAME` result of "or-ing" two values                                                                                                                                                                                                    |
-| goto                   | 1+     | None     | Control Flow | conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (a label name)                                                                           |
+| goto                   | 1+     | None     | Control Flow | conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (an instruction id)                                                                      |
 | jump                   | 1+     | None     | Control Flow | conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, jump to scope level                                                                                                      |
 | end_of_iteration_check | 1      | Required | Control Flow | check on input to see if at end of iteration. Return result to `ASSIGN_NAME`                                                                                                                                                                             |
-| label                  | 1      | None     | Control Flow | a named location within the instruction set for a given function                                                                                                                                                                                         |
 | field                  | 2      | Optional | Object       | access a field on an object and assign result to `ASSIGN_NAME`                                                                                                                                                                                           |
 | instantiate_object     | 1+     | Optional | Object       | initialize an object by first passing in the _type_ of object and the passing in each initial values for its fields. Supported types here include: `Dictionary`, `List`, `Range`, `Tuple`, and `UDT`. For UDTs, the second input is the name of the UDT. |
 | add                    | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of adding two value                                                                                                                                                                                                       |
 | subtract               | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of subtracting two value                                                                                                                                                                                                  |
 | multiply               | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of multiplying two value                                                                                                                                                                                                  |
 | divide                 | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of dividing two value                                                                                                                                                                                                     |
+
+#### <strong><u>Instruction Execution Flow</u></strong>
+
+Instruction flow is determined by two main factors:
+1. the top to bottom position of the instruction within the collection
+2. the scope of the instruction
+
+Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the _instruction pointer_ [^17] is scope-aware; thus, if the current scope is `7`, but the instruction pointed at is a scope of anything besides `7`, the _instruction pointer_ will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.
+
+To illustrate, consider the representation of an `if-else` block in DTR:
+
+```
+// ====== scope 0 ======
+// CONDITONAL_RESULT_1 = x > 10
+{ instruction: evaluate, input: (greater_than, x, 10), assign: CONDITONAL_RESULT_1, scope: 0 }
+// if CONDITONAL_RESULT_1, scope => 2
+{ instruction: jump, input: (CONDITONAL_RESULT_1, 2), scope: 0 }
+// else, scope => 3
+{ instruction: jump, input: (3), scope: 0 }
+
+// ====== scope 2 ======
+// print("we are in scope 2")
+{ instruction: print, input: ("we are in scope 2"), scope: 2 }
+// scope => 0
+{ instruction: jump, input(0), scope: 2}
+
+// ====== scope 3 ======
+// print("we are in scope 3")
+{ instruction: print, input: ("we are in scope 3"), scope: 3 }
+// scope => 0
+{ instruction: jump, input(0), scope: 3}
+
+// ====== scope 0 ======
+{ instruction: print, input: ("we are back in scope 0"), scope: 2 }
+```
+
+We start by evaluating `x > 10`. If it is true, we navigate to scope 2, print "we are in scope 2", then navigate back to scope 0 where we print "we are in scope 0". If x is less than or equal to 10, then we navigate to scope 3, print "we are in scope 3", finally navigating back to scope 0 where we print "we are in scope 0".
+
+Equivalent ruby code would look like this:
+
+```ruby
+if x > 10
+  print "we are in scope 2"
+else
+  print "we are in scope 3"
+end
+
+print "we are in scope 0"
+```
+
+**Going "backwards" to _repeat_ ourselves**
+
+There are times where it might be useful to repeat some logic. In most programming languages, you can accomplish this with a `loop`:
+
+```rust
+println!("Before loop")
+
+for i in 0..42 {
+  println!("Iteration: {}", i);
+}
+
+println!("After loop");
+```
+
+With only the basic scope-based sequential execution we've laid out thus far, the only way to replicate the above looping logic is by loop unrolling [^18]. However, that is not practical. Thus, we've introduced the concept of an `instruction id` and a `goto` instruction type. The `goto` instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.
+
+```
+{ id: 0, instruction: "print", input: ("Before loop"), scope: 0 }
+{ id: 1, instruction: assign, input: (0), assign: i, scope: 0 }
+{ id: 2, instruction: evaluate, input: (less than, i, 42), assign: LOOP_CHECK, scope: 0 }
+{ id: 3, instruction: jump, input: (LOOP_CHECK, 1), scope: 0 }
+
+{ id: 4, instruction: "print", input: ("Iteration: {}", i), scope: 1 }
+{ id: 5, instruction: "increment", input: (i), scope: 1}
+{ id: 6, instruction: "goto", input: (3), scope: 1}
+
+{ id: 7, instruction: "print", input: ("After loop", scope: 0) }
+```
+
+Here we assign `0` to `i`. Then we check if `i` is less than `42`. If so, we navigate to scope 1. In scope 1, we print our message, increment i, then navigate back to the loop check. This code will continue executing until we fail the loop check. Once we fail, we don't jump to scope 1 and so instructions with the ids of 4, 5, and 6 are skipped. Thus, we print "After loop" and the program terminates.
+
+At this point, we've outlined the basics of instruction execution flow for DTR.
 
 
 #### <strong><u>Valid Types</u></strong>
@@ -355,3 +437,5 @@ Furthermore, as this work is ambitious and ongoing, we're actively seeking addit
 [^14]: [Giuthub Copilot](https://github.com/features/copilot)
 [^15]: [Solang: Solidity to Solana](https://github.com/hyperledger/solang)
 [^16]: [Polkadot: any type of data across any type of blockchain](https://polkadot.network/features/technology/)
+[^17]: [Program Counter - Wikipedia](https://en.wikipedia.org/wiki/Program_counter)
+[^18]: [Loop unrolling - Wikipedia](https://en.wikipedia.org/wiki/Loop_unrolling)
