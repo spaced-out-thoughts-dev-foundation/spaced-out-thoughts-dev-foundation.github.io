@@ -1,4 +1,132 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-06-30T23:53:23-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">Representing Loops: An Exploration of Non-Sequential Logic Execution</title><link href="http://localhost:4000/2024/06/27/loops.html" rel="alternate" type="text/html" title="Representing Loops: An Exploration of Non-Sequential Logic Execution" /><published>2024-06-27T00:00:00-06:00</published><updated>2024-06-27T00:00:00-06:00</updated><id>http://localhost:4000/2024/06/27/loops</id><content type="html" xml:base="http://localhost:4000/2024/06/27/loops.html"><![CDATA[<p>Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-07-03T20:41:57-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">Rust Specific Construct Representations ep. 2: Let-Else</title><link href="http://localhost:4000/2024/07/03/let-else.html" rel="alternate" type="text/html" title="Rust Specific Construct Representations ep. 2: Let-Else" /><published>2024-07-03T00:00:00-06:00</published><updated>2024-07-03T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/03/let-else</id><content type="html" xml:base="http://localhost:4000/2024/07/03/let-else.html"><![CDATA[<p>Stable since <a href="https://releases.rs/docs/1.65.0/">November 3, 2022</a>, Rust’s <a href="https://doc.rust-lang.org/rust-by-example/flow_control/let_else.html"><code class="language-plaintext highlighter-rouge">let-else</code></a> is a bit of an odd one (<a href="https://rust-lang.github.io/rfcs/3137-let-else.html">RFC</a>).</p>
+
+<p>As defined by the linked <code class="language-plaintext highlighter-rouge">Rust by Example</code> docs above:</p>
+<blockquote>
+  <p>With let-else, a refutable pattern can match and bind variables in the surrounding scope like a normal let, or else diverge (e.g. break, return, panic!) when the pattern doesn’t match.</p>
+</blockquote>
+
+<p>The RFC doc more formally defines it as:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>let PATTERN: TYPE = EXPRESSION else DIVERGING_BLOCK;
+</code></pre></div></div>
+
+<p>and notes that this is the <em>the counterpart of if-let expressions</em> which we covered in a previous post.</p>
+
+<p>Essentially, we are attempting to bind some expression to some type and if this is “non-bindable”, then execute the diverging block.</p>
+
+<p>In generalized DTR, we’d get something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ instruction: evaluate, input: (SOME_EXPRESSION), assign: SOME_EXPRESSION_RESULT, scope: 0 }
+{ instruction: evaluate, input: (try_assign, SOME_EXPRESSION_RESULT, SOME_TYPE), assign: SUCCESSFUL_ASSIGN_RESULT, scope: 0 }
+{ instruction: jump, input: (SUCCESSFUL_ASSIGN_RESULT, 1), scope: 0 }
+{ instruction: jump, input: (2), scope: 0 }
+{ instruction: jump, input: (0), scope: 1 } // effectively "jump" over the diverging block
+*** DIVERGING BLOCK at scope 2 ***
+{ instruction: jump, input: (0), scope: 2 }
+</code></pre></div></div>
+
+<h3 id="specific-example">Specific Example</h3>
+
+<p>For a specific example, consider the following rust code:</p>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fn</span> <span class="nf">get_count_item</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="o">&amp;</span><span class="nb">str</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="nf">Ok</span><span class="p">(</span><span class="n">foobar</span><span class="p">)</span> <span class="o">=</span> <span class="n">ok_foobar</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nd">panic!</span><span class="p">(</span><span class="s">"Can't parse ok foobar"</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>We can then translate this to DTR leveraging the notion of a <code class="language-plaintext highlighter-rouge">try_assign</code> from the <code class="language-plaintext highlighter-rouge">if-let</code> post.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// [0] let Ok(foobar) = ok_foobar
+{ instruction: evaluate, input: (try_assign, Ok(foobar), ok_foobar), assign: SUCCESSFUL_ASSIGN_RESULT, scope: 0 }
+// [0] if let ..., scope = 1
+{ instruction: jump, input: (SUCCESSFUL_ASSIGN_RESULT, 1), scope: 0 }
+// [0] else, scope = 2
+{ instruction: jump, input: (2), scope: 0 }
+// [1] scope = 0
+{ instruction: jump, input: (0), scope: 1 }
+// [2] panic!("Can't parse ok foobar");
+{ instruction: exit_with_message, input: ("\"Can't parse ok foobar\""), scope: 2}
+</code></pre></div></div>
+
+<p><strong>Note:</strong> here we don’t have to “jump back to scope 0” since <code class="language-plaintext highlighter-rouge">exit_with_message</code> is a terminal instruction.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Stable since November 3, 2022, Rust’s let-else is a bit of an odd one (RFC).]]></summary></entry><entry><title type="html">Rust Specific Construct Representations ep. 1: If-Let</title><link href="http://localhost:4000/2024/07/01/if-let.html" rel="alternate" type="text/html" title="Rust Specific Construct Representations ep. 1: If-Let" /><published>2024-07-01T00:00:00-06:00</published><updated>2024-07-01T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/01/if-let</id><content type="html" xml:base="http://localhost:4000/2024/07/01/if-let.html"><![CDATA[<p>The <code class="language-plaintext highlighter-rouge">if-let</code> (<a href="https://rust-lang.github.io/rfcs/0160-if-let.html">RFC</a>) was initially proposed August 16, 2014. A brief description from the RFC:</p>
+
+<blockquote>
+  <p>Introduce a new if let PAT = EXPR { BODY } construct. This allows for refutable pattern matching without the syntactic and semantic overhead of a full match, and without the corresponding extra rightward drift. Informally this is known as an “if-let statement”.</p>
+</blockquote>
+
+<p>This pattern/expression bring syntactic sugar to <a href="https://doc.rust-lang.org/rust-by-example/flow_control/if_let.html">awkward match expressions</a> such as:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Make `optional` of type `Option&lt;i32&gt;`</span>
+<span class="k">let</span> <span class="n">optional</span> <span class="o">=</span> <span class="nf">Some</span><span class="p">(</span><span class="mi">7</span><span class="p">);</span>
+
+<span class="k">match</span> <span class="n">optional</span> <span class="p">{</span>
+    <span class="nf">Some</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">=&gt;</span> <span class="p">{</span>
+        <span class="nd">println!</span><span class="p">(</span><span class="s">"This is a really long string and `{:?}`"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="c1">// ^ Needed 2 indentations just so we could destructure</span>
+        <span class="c1">// `i` from the option.</span>
+    <span class="p">},</span>
+    <span class="n">_</span> <span class="k">=&gt;</span> <span class="p">{},</span>
+    <span class="c1">// ^ Required because `match` is exhaustive. Doesn't it seem</span>
+    <span class="c1">// like wasted space?</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<p>Instead, (<em>here continuing to reference the Rust by Example linked above</em>) we could do:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="k">let</span> <span class="nf">Some</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">=</span> <span class="n">letter</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Matched {:?}!"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"Didn't match a number. Let's go with a letter!"</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>From the RFC, we get the generalized pattern:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>if let PAT = EXPR { BODY }
+</code></pre></div></div>
+
+<p>Generalizing to DTR, we can do something like this:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ instruction: evaluate, input: (SOME_EXPRESSION), assign: SOME_EXPRESSION_RESULT, scope: 0 }
+{ instruction: evaluate, input: (try_assign, SOME_EXPRESSION_RESULT, SOME_TYPE), assign: SUCCESSFUL_ASSIGN_RESULT, scope: 0 }
+{ instruction: jump, input: (SUCCESSFUL_ASSIGN_RESULT, 1), scope: 0 }
+*** BODY at scope 1 ***
+{ instruction: jump, input: (0), scope: 1 }
+</code></pre></div></div>
+
+<p>Let’s now handle that the specific example above and translate to DTR.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// [0] let Some(i) = letter
+{ instruction: evaluate, input: (try_assign, Some(i), letter), assign: SUCCESSFUL_ASSIGN_RESULT, scope: 0 }
+// [0] if let ..., scope = 1
+{ instruction: jump, input: (SUCCESSFUL_ASSIGN_RESULT, 1), scope: 0 }
+// [0] else, scope = 2
+{ instruction: jump, input: (2), scope: 0 }
+// [1] println!("Matched {:?}!", i);
+{ instruction: print, input: ("\"Matched {:?}!\"", i), scope: 1}
+// [1] scope = 0
+{ instruction: jump, input: (0), scope: 1 }
+// [2]  println!("Didn't match a number. Let's go with a letter!");
+{ instruction: print, input: (\""Didn't match a number. Let's go with a letter!\""), scope: 2}
+// [2] scope = 0
+{ instruction: jump, input: (0), scope: 2 }
+</code></pre></div></div>
+
+<h3 id="try_assign">try_assign</h3>
+
+<p>In order to handle the <code class="language-plaintext highlighter-rouge">if-let</code>, we introduced a new valid method (first arg to the <code class="language-plaintext highlighter-rouge">evaluate</code> instruction). A <code class="language-plaintext highlighter-rouge">try_assign</code> is not something we expect to offer in the Digicus native IDE. However, it is helpful to represent the following concept from Rust:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>An attempted assignment to a variable that may fail due to invalid pattern matching.
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">try_assign</code> accepts two inputs:</p>
+<ol>
+  <li>the left hand side of the conditional let application</li>
+  <li>the right hand side</li>
+</ol>
+
+<p>The result of this operation is the value indicated by the <code class="language-plaintext highlighter-rouge">assign</code> field of the instruction.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[The if-let (RFC) was initially proposed August 16, 2014. A brief description from the RFC:]]></summary></entry><entry><title type="html">Break Dancing out of Loops</title><link href="http://localhost:4000/2024/06/29/break-statement.html" rel="alternate" type="text/html" title="Break Dancing out of Loops" /><published>2024-06-29T00:00:00-06:00</published><updated>2024-06-29T00:00:00-06:00</updated><id>http://localhost:4000/2024/06/29/break-statement</id><content type="html" xml:base="http://localhost:4000/2024/06/29/break-statement.html"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Representing Loops: An Exploration of Non-Sequential Logic Execution</title><link href="http://localhost:4000/2024/06/27/loops.html" rel="alternate" type="text/html" title="Representing Loops: An Exploration of Non-Sequential Logic Execution" /><published>2024-06-27T00:00:00-06:00</published><updated>2024-06-27T00:00:00-06:00</updated><id>http://localhost:4000/2024/06/27/loops</id><content type="html" xml:base="http://localhost:4000/2024/06/27/loops.html"><![CDATA[<p>Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.</p>
 
 <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
