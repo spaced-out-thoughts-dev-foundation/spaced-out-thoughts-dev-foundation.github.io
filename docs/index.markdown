@@ -24,7 +24,7 @@ layout: home
 
 ***
 
-<h2>Grant Award History</h2>
+<h2>Grant Receipt History</h2>
 
 We extend our deepest gratitude to our grantors and sponsors for their invaluable financial support. Their generosity enables our foundation to continue its vital work and pursue our mission with unwavering dedication. We are profoundly appreciative of their contributions.
 
