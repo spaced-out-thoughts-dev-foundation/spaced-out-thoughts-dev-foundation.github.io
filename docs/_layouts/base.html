@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: " en" }}">
+
+{%- include head.html -%}
+
+<body>
+
+  <style>
+    body {
+      background-color: black;
+      color: white;
+    }
+
+    .site-title {
+      color: black !important;
+    }
+
+    table th,
+    table td {
+      padding: 10px 15px;
+      border: 1px solid black;
+      color: black;
+      /* background-color: #4C8BF5; */
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: rgb(175, 173, 173) !important;
+      color: black;
+    }
+
+    a {
+      color: #b840ce !important;
+    }
+
+    td {
+      color: rgba(255, 255, 255, 0.769);
+    }
+
+    a:visited {
+      color: #1756a9;
+    }
+
+    .site-header {
+      background-color: #27cfe6;
+      border: black;
+      border-radius: 10px;
+      padding: 10px;
+      font: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .highlight {
+      background-color: #641972 !important;
+    }
+
+    code {
+      background-color: #641972 !important;
+
+    }
+  </style>
+
+  {%- include header.html -%}
+
+  <main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+
+  {%- include footer.html -%}
+
+</body>
+
+</html>

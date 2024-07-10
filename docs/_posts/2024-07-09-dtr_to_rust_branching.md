@@ -226,5 +226,6 @@ And it's a success! We've designed an algorithm to construct a left child prefer
 * nested if-else
 * match statements
 
-
-<div style="width:480px"><iframe allow="fullscreen" frameBorder="0" height="225" src="https://giphy.com/embed/wC0vtI1lyP2bZVImfh/video" width="480"></iframe></div>
+<div style="text-align: center;">
+    <img src="https://media1.tenor.com/m/CgjirlJs7xsAAAAC/nice-nooice.gif" alt="noice">
+</div>

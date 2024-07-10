@@ -13,21 +13,23 @@ layout: home
 
 <br>
 
-<h2 style=" font-family: 'Playwrite IT Moderna', cursive"> We are a small Ruby shop determined to make programming smart contracts as easy as possible. </h2>
+<h2 style=" font-family: 'Playwrite IT Moderna', cursive"> A small Ruby shop determined to make programming smart contracts as easy as possible. </h2>
 
 <br>
 
 ***
 
-<h2>Portfolio:</h2>
+<h2>Portfolio</h2>
 * [Digicus](digicus): a block-based programming language supporting visual construction, manipulation, and comprehension of smart contracts
 
 ***
 
-<ul>
-  {% for post in posts %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+<h2>Grant Award History</h2>
+
+We extend our deepest gratitude to our grantors and sponsors for their invaluable financial support. Their generosity enables our foundation to continue its vital work and pursue our mission with unwavering dedication. We are profoundly appreciative of their contributions.
+
+
+
+* [SCF #26](https://communityfund.stellar.org/): we received the Activation Award from the Stellar Community Fund. This award supports our proposal to develop the initial read-only version of Digicus, facilitating the development of a two-way compiler to perform translation of smart contracts between the Soroban Rust SDK and Digicus Textual Representation (DTR).
+
+***

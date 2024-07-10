@@ -1,7 +1,7 @@
 ---
 layout: page
-title: About
-permalink: /about/
+title: Team
+permalink: /team/
 ---
 
 The Spaced Out Thoughts Development Foundation.
