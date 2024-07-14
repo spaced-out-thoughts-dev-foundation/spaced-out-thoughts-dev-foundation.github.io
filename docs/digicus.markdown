@@ -313,6 +313,7 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 | try_assign             | 2      | Required | Basic        | assign to `ASSIGN_NAME` the result of the attempted assign of input index 0 to input index 1                                                                                                                                                             |
 | increment              | 1      | None     | Unary        | An operation to increment the input (however that may be implemented)                                                                                                                                                                                    |
 | unary                  | 2      | Optional | Unary        | Basic unary operations like `!` and `-`                                                                                                                                                                                                                  |
+| break                  | 0      | None     | Control Flow | Breaks out of the current execution flow.                                                                                                                                                                                                                |
 
 #### <strong><u>Instruction Execution Flow</u></strong>
 
