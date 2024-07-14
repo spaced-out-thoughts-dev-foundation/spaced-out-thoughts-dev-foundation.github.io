@@ -78,6 +78,24 @@ Our solution requires three distinct pieces of technology:
 
 The IDE is where a user will spend most of their time viewing and modifying smart contracts. The IDE is integrated with Digit, our compiler plugin framework which is responsible for transpiling between source language(s), DTR, and target language(s). Within Digit resides an implementation of `dtr_core`, a Ruby gem that adheres to the DTR specification. While `dtr_core` is effectively the reference implementation, based on our appreciation of Rob Pike [^12] and his acknowledgement of the importance of the Go spec [^13], please consider the specification of DTR to be the source of truth and `dtr_core` to be _just an implementation_.
 
+**Architecture:**
+
+<center><img src="../images/revamped_architecture_doc.png" alt="current architecture diagram"/></center>
+
+Our compiler plugin framework is leveraged by Digit via the Bean Stock Compiler Plugin (pod) Hub [^14]. Bean Stock sources pods via `git submodules`, where each submodule has a `bean_stock_manifest.yaml` file describing the pod. Here is an example:
+
+```yaml
+name: soroban_rust_frontend
+type: backend
+version: 0.16.1
+description: Frontend for Soroban Rust SDK. Compiles Rust to DTR.
+command: make run FILEPATH
+author: rob | me@robdurst.com
+source: https://github.com/spaced-out-thoughts-dev-foundation/soroban_rust_frontend
+```
+
+The Digit server's Dockerfile can then fetch and compile/setup each submodule upon `docker build` based on the manifest. Wthi this in place, Digit will be able to handle various transpilations at runtime as requested by Digicus.
+
 #### <strong><u>The Digicus IDE</u></strong>
 
 Below is an initial mockup of the MVP user interface.
@@ -88,7 +106,7 @@ Below is an initial mockup of the MVP user interface.
 
 When developing with Digicus, users will be able to name the contract, drag and drop block components into the interactive function creator, and then they will be able to perform minimal, chain agnostic testing of the contract. The UI/UX for this will be based heavily off of the well-tested, mature Scratch programming platform. Furthermore, a plethora of features will be supported to make this a first class smart contract development interface, including but not limited to:
 * common vulnerability detection
-* autocomplete (_eventually_ some sort of Copilot-esque flavor as well [^14])
+* autocomplete (_eventually_ some sort of Copilot-esque flavor as well [^15])
 * realtime syntax/semantic error recognition with sensible warnings and recommendations for improvement
 * chain specific integration testing
 
@@ -113,15 +131,16 @@ from_dtr(dtr: String) --> String
 
 The Spaced Out Thoughts Development Foundation aims to initially support:
 * Stellar's [Soroban Rust SDK](https://github.com/stellar/rs-soroban-sdk)
-* Ethereum's [Solidity](https://soliditylang.org/)
 
-With this, Digit will be able to support the following:
+We're biased, we love Stellar and given the novelty of their solution to global cross border payments, a strong technical foundation, and the very recent launch of Soroban, focusing here was a no brainer.
+
+However, given the flexibility of the compiler plugin designed, one day, Digit will be able to support the following:
 
 <div style="text-align:center">
   <img src="../images/digit_overview.png" alt="Digit Overview"> 
 </div>
 
-Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries [^15] and even blockchain interoperability[^16]. Digicus aims to go one step further, the generalization of smart contracts as whole.
+Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries [^16] and even blockchain interoperability[^17]. Digicus aims to go one step further, the generalization of smart contracts as whole. *We believe this is layer 3 at its finest!*
 
 #### <strong><u>Digicus Textual Representation</u></strong>
 
@@ -131,7 +150,8 @@ DTR is defined by ASCII text files with the `.dtr` ending. Each file contains th
 2. **State**: where we define the type and initial data for each variable
 3. **UDTS**: where we define user defined types
 4. **Interface**: where we define each externally visible method (name, input, output, body)
-4. **Helpers**: where we define each internal method (name, input, output, body)
+5. **Helpers**: where we define each internal method (name, input, output, body)
+6. **Non-translatables:** some source languages are more expressive than the target language. Thus, in an effort to allow _easier_ transpilation back, we've included an optional section to store relevant metadata unique to the source.
 
 If a section is omitted, it will be assumed to be non-existent.
 
@@ -162,6 +182,10 @@ If a section is omitted, it will be assumed to be non-existent.
   ...
   * FUNCTION_DEFINITION
 :[Helpers]
+
+[NonTranslatable]:
+   TEXT_IN_ANY_FORMAT
+:[NonTranslatable]
 ```
 
 **STATE_DEFINITION**:
@@ -286,6 +310,9 @@ Defining a set of common instructions across _all_ blockchains is challenging. T
 | subtract               | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of subtracting two value                                                                                                                                                                                                  |
 | multiply               | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of multiplying two value                                                                                                                                                                                                  |
 | divide                 | 2      | Required | Binary       | assign to `ASSIGN_NAME` result of dividing two value                                                                                                                                                                                                     |
+| try_assign             | 2      | Required | Basic        | assign to `ASSIGN_NAME` the result of the attempted assign of input index 0 to input index 1                                                                                                                                                             |
+| increment              | 1      | None     | Unary        | An operation to increment the input (however that may be implemented)                                                                                                                                                                                    |
+| unary                  | 2      | Optional | Unary        | Basic unary operations like `!` and `-`                                                                                                                                                                                                                  |
 
 #### <strong><u>Instruction Execution Flow</u></strong>
 
@@ -293,7 +320,7 @@ Instruction flow is determined by two main factors:
 1. the top to bottom position of the instruction within the collection
 2. the scope of the instruction
 
-Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the _instruction pointer_ [^17] is scope-aware; thus, if the current scope is `7`, but the instruction pointed at is a scope of anything besides `7`, the _instruction pointer_ will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.
+Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the _instruction pointer_ [^18] is scope-aware; thus, if the current scope is `7`, but the instruction pointed at is a scope of anything besides `7`, the _instruction pointer_ will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.
 
 To illustrate, consider the representation of an `if-else` block in DTR:
 
@@ -350,7 +377,7 @@ for i in 0..42 {
 println!("After loop");
 ```
 
-With only the basic scope-based sequential execution we've laid out thus far, the only way to replicate the above looping logic is by loop unrolling [^18]. However, that is not practical. Thus, we've introduced the concept of an `instruction id` and a `goto` instruction type. The `goto` instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.
+With only the basic scope-based sequential execution we've laid out thus far, the only way to replicate the above looping logic is by loop unrolling [^19]. However, that is not practical. Thus, we've introduced the concept of an `instruction id` and a `goto` instruction type. The `goto` instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.
 
 ```
 { id: 0, instruction: "print", input: ("Before loop"), scope: 0 }
@@ -400,11 +427,11 @@ Digicus supports the following:
 
 We believe Digicus will revolutionize the way budding smart contract newcomers onboard into this powerful and wonderful ecosystem. As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on [our website](https://spaced-out-thoughts-dev-foundation.github.io/).
 
-Until then, please feel free to follow [our coding journey here](https://github.com/spaced-out-thoughts-dev-foundation) and experiment with [the IDE here](https://digicus.dev/).
+Until then, please feel free to follow [our coding journey here](https://github.com/spaced-out-thoughts-dev-foundation) and experiment with [the IDE here](https://ide.digicus.dev/).
 
 #### <strong><u>Latest Status</u></strong>
 
-At time of writing (_June 2024_), we are deep into development of our first compiler plugin: Stellar's Rust Soroban SDK; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.
+At time of writing (_July 2024_) we have accomplished our SCF #26 Activation Award deliverables ([demo'd here](https://www.youtube.com/watch?v=NhFTr5Cj4lU)) and just submitted for the SCF #29 Community Award; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.
 
 ***
 
@@ -434,8 +461,9 @@ Furthermore, as this work is ambitious and ongoing, we're actively seeking addit
 [^11]: [LLVM: A Compilation Framework for Lifelong Program Analysis & Transformation: Chris Lattner, Vikram Adve](https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf)
 [^12]: [Rob Pike - Wikipedia](https://en.wikipedia.org/wiki/Rob_Pike)
 [^13]: [Rob Pike - What We Got Right, What We Got Wrong, GopherConAU 2023](https://www.youtube.com/watch?v=yE5Tpp2BSGw)
-[^14]: [Giuthub Copilot](https://github.com/features/copilot)
-[^15]: [Solang: Solidity to Solana](https://github.com/hyperledger/solang)
-[^16]: [Polkadot: any type of data across any type of blockchain](https://polkadot.network/features/technology/)
-[^17]: [Program Counter - Wikipedia](https://en.wikipedia.org/wiki/Program_counter)
-[^18]: [Loop unrolling - Wikipedia](https://en.wikipedia.org/wiki/Loop_unrolling)
+[^14]: [Bean Stock Compiler Plugin Hub](https://github.com/spaced-out-thoughts-dev-foundation/bean-**stock**)
+[^15]: [Giuthub Copilot](https://github.com/features/copilot)
+[^16]: [Solang: Solidity to Solana](https://github.com/hyperledger/solang)
+[^17]: [Polkadot: any type of data across any type of blockchain](https://polkadot.network/features/technology/)
+[^18]: [Program Counter - Wikipedia](https://en.wikipedia.org/wiki/Program_counter)
+[^19]: [Loop unrolling - Wikipedia](https://en.wikipedia.org/wiki/Loop_unrolling)

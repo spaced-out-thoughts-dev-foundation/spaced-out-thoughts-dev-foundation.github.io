@@ -183,6 +183,23 @@ me[at]robdurst[dot]com
 
 <p>The IDE is where a user will spend most of their time viewing and modifying smart contracts. The IDE is integrated with Digit, our compiler plugin framework which is responsible for transpiling between source language(s), DTR, and target language(s). Within Digit resides an implementation of <code class="language-plaintext highlighter-rouge">dtr_core</code>, a Ruby gem that adheres to the DTR specification. While <code class="language-plaintext highlighter-rouge">dtr_core</code> is effectively the reference implementation, based on our appreciation of Rob Pike <sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">12</a></sup> and his acknowledgement of the importance of the Go spec <sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">13</a></sup>, please consider the specification of DTR to be the source of truth and <code class="language-plaintext highlighter-rouge">dtr_core</code> to be <em>just an implementation</em>.</p>
 
+<p><strong>Architecture:</strong></p>
+
+<center><img src="../images/revamped_architecture_doc.png" alt="current architecture diagram" /></center>
+
+<p>Our compiler plugin framework is leveraged by Digit via the Bean Stock Compiler Plugin (pod) Hub <sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">14</a></sup>. Bean Stock sources pods via <code class="language-plaintext highlighter-rouge">git submodules</code>, where each submodule has a <code class="language-plaintext highlighter-rouge">bean_stock_manifest.yaml</code> file describing the pod. Here is an example:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">soroban_rust_frontend</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">backend</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s">0.16.1</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s">Frontend for Soroban Rust SDK. Compiles Rust to DTR.</span>
+<span class="na">command</span><span class="pi">:</span> <span class="s">make run FILEPATH</span>
+<span class="na">author</span><span class="pi">:</span> <span class="s">rob | me@robdurst.com</span>
+<span class="na">source</span><span class="pi">:</span> <span class="s">https://github.com/spaced-out-thoughts-dev-foundation/soroban_rust_frontend</span>
+</code></pre></div></div>
+
+<p>The Digit server’s Dockerfile can then fetch and compile/setup each submodule upon <code class="language-plaintext highlighter-rouge">docker build</code> based on the manifest. Wthi this in place, Digit will be able to handle various transpilations at runtime as requested by Digicus.</p>
+
 <h4 id="the-digicus-ide"><strong><u>The Digicus IDE</u></strong></h4>
 
 <p>Below is an initial mockup of the MVP user interface.</p>
@@ -194,7 +211,7 @@ me[at]robdurst[dot]com
 <p>When developing with Digicus, users will be able to name the contract, drag and drop block components into the interactive function creator, and then they will be able to perform minimal, chain agnostic testing of the contract. The UI/UX for this will be based heavily off of the well-tested, mature Scratch programming platform. Furthermore, a plethora of features will be supported to make this a first class smart contract development interface, including but not limited to:</p>
 <ul>
   <li>common vulnerability detection</li>
-  <li>autocomplete (<em>eventually</em> some sort of Copilot-esque flavor as well <sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">14</a></sup>)</li>
+  <li>autocomplete (<em>eventually</em> some sort of Copilot-esque flavor as well <sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">15</a></sup>)</li>
   <li>realtime syntax/semantic error recognition with sensible warnings and recommendations for improvement</li>
   <li>chain specific integration testing</li>
 </ul>
@@ -220,16 +237,17 @@ from_dtr(dtr: String) --&gt; String
 <p>The Spaced Out Thoughts Development Foundation aims to initially support:</p>
 <ul>
   <li>Stellar’s <a href="https://github.com/stellar/rs-soroban-sdk">Soroban Rust SDK</a></li>
-  <li>Ethereum’s <a href="https://soliditylang.org/">Solidity</a></li>
 </ul>
 
-<p>With this, Digit will be able to support the following:</p>
+<p>We’re biased, we love Stellar and given the novelty of their solution to global cross border payments, a strong technical foundation, and the very recent launch of Soroban, focusing here was a no brainer.</p>
+
+<p>However, given the flexibility of the compiler plugin designed, one day, Digit will be able to support the following:</p>
 
 <div style="text-align:center">
   <img src="../images/digit_overview.png" alt="Digit Overview" /> 
 </div>
 
-<p>Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries <sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">15</a></sup> and even blockchain interoperability<sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">16</a></sup>. Digicus aims to go one step further, the generalization of smart contracts as whole.</p>
+<p>Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries <sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">16</a></sup> and even blockchain interoperability<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup>. Digicus aims to go one step further, the generalization of smart contracts as whole. <em>We believe this is layer 3 at its finest!</em></p>
 
 <h4 id="digicus-textual-representation"><strong><u>Digicus Textual Representation</u></strong></h4>
 
@@ -241,6 +259,7 @@ from_dtr(dtr: String) --&gt; String
   <li><strong>UDTS</strong>: where we define user defined types</li>
   <li><strong>Interface</strong>: where we define each externally visible method (name, input, output, body)</li>
   <li><strong>Helpers</strong>: where we define each internal method (name, input, output, body)</li>
+  <li><strong>Non-translatables:</strong> some source languages are more expressive than the target language. Thus, in an effort to allow <em>easier</em> transpilation back, we’ve included an optional section to store relevant metadata unique to the source.</li>
 </ol>
 
 <p>If a section is omitted, it will be assumed to be non-existent.</p>
@@ -271,6 +290,10 @@ from_dtr(dtr: String) --&gt; String
   ...
   * FUNCTION_DEFINITION
 :[Helpers]
+
+[NonTranslatable]:
+   TEXT_IN_ANY_FORMAT
+:[NonTranslatable]
 </code></pre></div></div>
 
 <p><strong>STATE_DEFINITION</strong>:</p>
@@ -497,6 +520,27 @@ from_dtr(dtr: String) --&gt; String
       <td>Binary</td>
       <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of dividing two value</td>
     </tr>
+    <tr>
+      <td>try_assign</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Basic</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> the result of the attempted assign of input index 0 to input index 1</td>
+    </tr>
+    <tr>
+      <td>increment</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Unary</td>
+      <td>An operation to increment the input (however that may be implemented)</td>
+    </tr>
+    <tr>
+      <td>unary</td>
+      <td>2</td>
+      <td>Optional</td>
+      <td>Unary</td>
+      <td>Basic unary operations like <code class="language-plaintext highlighter-rouge">!</code> and <code class="language-plaintext highlighter-rouge">-</code></td>
+    </tr>
   </tbody>
 </table>
 
@@ -508,7 +552,7 @@ from_dtr(dtr: String) --&gt; String
   <li>the scope of the instruction</li>
 </ol>
 
-<p>Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the <em>instruction pointer</em> <sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup> is scope-aware; thus, if the current scope is <code class="language-plaintext highlighter-rouge">7</code>, but the instruction pointed at is a scope of anything besides <code class="language-plaintext highlighter-rouge">7</code>, the <em>instruction pointer</em> will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.</p>
+<p>Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the <em>instruction pointer</em> <sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">18</a></sup> is scope-aware; thus, if the current scope is <code class="language-plaintext highlighter-rouge">7</code>, but the instruction pointed at is a scope of anything besides <code class="language-plaintext highlighter-rouge">7</code>, the <em>instruction pointer</em> will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.</p>
 
 <p>To illustrate, consider the representation of an <code class="language-plaintext highlighter-rouge">if-else</code> block in DTR:</p>
 
@@ -562,7 +606,7 @@ from_dtr(dtr: String) --&gt; String
 <span class="nd">println!</span><span class="p">(</span><span class="s">"After loop"</span><span class="p">);</span>
 </code></pre></div></div>
 
-<p>With only the basic scope-based sequential execution we’ve laid out thus far, the only way to replicate the above looping logic is by loop unrolling <sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">18</a></sup>. However, that is not practical. Thus, we’ve introduced the concept of an <code class="language-plaintext highlighter-rouge">instruction id</code> and a <code class="language-plaintext highlighter-rouge">goto</code> instruction type. The <code class="language-plaintext highlighter-rouge">goto</code> instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.</p>
+<p>With only the basic scope-based sequential execution we’ve laid out thus far, the only way to replicate the above looping logic is by loop unrolling <sup id="fnref:19" role="doc-noteref"><a href="#fn:19" class="footnote" rel="footnote">19</a></sup>. However, that is not practical. Thus, we’ve introduced the concept of an <code class="language-plaintext highlighter-rouge">instruction id</code> and a <code class="language-plaintext highlighter-rouge">goto</code> instruction type. The <code class="language-plaintext highlighter-rouge">goto</code> instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.</p>
 
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ id: 0, instruction: "print", input: ("Before loop"), scope: 0 }
 { id: 1, instruction: assign, input: (0), assign: i, scope: 0 }
@@ -614,11 +658,11 @@ from_dtr(dtr: String) --&gt; String
 
 <p>We believe Digicus will revolutionize the way budding smart contract newcomers onboard into this powerful and wonderful ecosystem. As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on <a href="https://spaced-out-thoughts-dev-foundation.github.io/">our website</a>.</p>
 
-<p>Until then, please feel free to follow <a href="https://github.com/spaced-out-thoughts-dev-foundation">our coding journey here</a> and experiment with <a href="https://digicus.dev/">the IDE here</a>.</p>
+<p>Until then, please feel free to follow <a href="https://github.com/spaced-out-thoughts-dev-foundation">our coding journey here</a> and experiment with <a href="https://ide.digicus.dev/">the IDE here</a>.</p>
 
 <h4 id="latest-status"><strong><u>Latest Status</u></strong></h4>
 
-<p>At time of writing (<em>June 2024</em>), we are deep into development of our first compiler plugin: Stellar’s Rust Soroban SDK; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.</p>
+<p>At time of writing (<em>July 2024</em>) we have accomplished our SCF #26 Activation Award deliverables (<a href="https://www.youtube.com/watch?v=NhFTr5Cj4lU">demo’d here</a>) and just submitted for the SCF #29 Community Award; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.</p>
 
 <hr />
 
@@ -678,19 +722,22 @@ from_dtr(dtr: String) --&gt; String
       <p><a href="https://www.youtube.com/watch?v=yE5Tpp2BSGw">Rob Pike - What We Got Right, What We Got Wrong, GopherConAU 2023</a> <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:14" role="doc-endnote">
-      <p><a href="https://github.com/features/copilot">Giuthub Copilot</a> <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p><a href="https://github.com/spaced-out-thoughts-dev-foundation/bean-**stock**">Bean Stock Compiler Plugin Hub</a> <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:15" role="doc-endnote">
-      <p><a href="https://github.com/hyperledger/solang">Solang: Solidity to Solana</a> <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p><a href="https://github.com/features/copilot">Giuthub Copilot</a> <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:16" role="doc-endnote">
-      <p><a href="https://polkadot.network/features/technology/">Polkadot: any type of data across any type of blockchain</a> <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p><a href="https://github.com/hyperledger/solang">Solang: Solidity to Solana</a> <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:17" role="doc-endnote">
-      <p><a href="https://en.wikipedia.org/wiki/Program_counter">Program Counter - Wikipedia</a> <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p><a href="https://polkadot.network/features/technology/">Polkadot: any type of data across any type of blockchain</a> <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
     <li id="fn:18" role="doc-endnote">
-      <p><a href="https://en.wikipedia.org/wiki/Loop_unrolling">Loop unrolling - Wikipedia</a> <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+      <p><a href="https://en.wikipedia.org/wiki/Program_counter">Program Counter - Wikipedia</a> <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:19" role="doc-endnote">
+      <p><a href="https://en.wikipedia.org/wiki/Loop_unrolling">Loop unrolling - Wikipedia</a> <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
 </div>
