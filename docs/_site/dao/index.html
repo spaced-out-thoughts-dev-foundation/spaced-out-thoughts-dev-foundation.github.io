@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang=" en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>DAO | Spaced Out Thoughts Development Foundation</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="DAO" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A small Ruby shop determined to make smart contracts as easy to use as possible." />
+<meta property="og:description" content="A small Ruby shop determined to make smart contracts as easy to use as possible." />
+<link rel="canonical" href="http://localhost:4000/dao/" />
+<meta property="og:url" content="http://localhost:4000/dao/" />
+<meta property="og:site_name" content="Spaced Out Thoughts Development Foundation" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="DAO" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"A small Ruby shop determined to make smart contracts as easy to use as possible.","headline":"DAO","url":"http://localhost:4000/dao/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Spaced Out Thoughts Development Foundation" /></head>
+<body>
+
+  <style>
+    body {
+      background-color: black;
+      color: white;
+    }
+
+    .site-title {
+      color: black !important;
+    }
+
+    table th,
+    table td {
+      padding: 10px 15px;
+      border: 1px solid black;
+      color: black;
+      /* background-color: #4C8BF5; */
+    }
+
+    tbody tr:nth-child(odd) {
+      background-color: rgb(175, 173, 173) !important;
+      color: black;
+    }
+
+    a {
+      color: #b840ce !important;
+    }
+
+    td {
+      color: rgba(255, 255, 255, 0.769);
+    }
+
+    a:visited {
+      color: #1756a9;
+    }
+
+    .site-header {
+      background-color: #27cfe6;
+      border: black;
+      border-radius: 10px;
+      padding: 10px;
+      font: 20px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .highlight {
+      background-color: #641972 !important;
+    }
+
+    code {
+      background-color: #641972 !important;
+
+    }
+  </style><header class="site-header" role="banner">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/">Spaced Out Thoughts Development Foundation</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/">Blog</a><a class="page-link" href="/dao/">DAO</a><a class="page-link" href="/digicus/">Digicus</a><a class="page-link" href="/team/">Team</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+    <div class="wrapper">
+      <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">DAO</h1>
+  </header>
+
+  <div class="post-content">
+    <p>The Spaced Out Thoughts Development Foundation is evolving from an informal entity to a DAO (<a href="https://en.wikipedia.org/wiki/Decentralized_autonomous_organization">a Decentralized Autonomous Organization</a>) in order to establish a self-sufficient, trustless organization with the goal of incentivizing development of <a href="https://spaced-out-thoughts-dev-foundation.github.io/digicus/">Digicus</a>, a platform to make <strong>smart contract development as easy as possible</strong>.</p>
+
+<p>A DAO is an abstraction over a smart contract and a smart contract is <em>simply</em> (a bit tongue in cheek, we know) a collection of functions autonomously executed in a VM running sidecar to a blockchain, operating on a shared set of data, maintained by the underlying network. Why consider a DAO over a traditional web2 organization?</p>
+
+<ol>
+  <li>public visibility: <em>all actions, rules, etc. are in the open for anyone to read</em></li>
+  <li>strong preference for as many nines as possible: <em>blockchains typically operate at an availability rarely seen in conventional tech, paramount for operational governance of an organization</em></li>
+  <li>operating in a resource constrained environment is not an issue: <em>while we get (2), a tradeoff is we have to accept an exceptionally constrained execution environment in terms of resources, speed, etc.</em></li>
+  <li>automated transfer of value: <em>we can leverage oracles to define goals, linking rewards to these goals, automatically transferring rewards upon successful completion</em></li>
+</ol>
+
+<p><strong>Document Overview:</strong> we set forth exactly what functionality is required in order to codify it in <em>Functions</em> and the philosophy in which we strive to operate in <em>Operating Philosophy</em>. Finally, we layout the proposed design of the DAO architecture in <em>Contract Design</em> (note that design will change over time as our understanding and assumptions evolve).</p>
+
+<hr />
+
+<h2 id="functions">Functions</h2>
+
+<h4 id="function-1-incentiviation-of-work">[Function 1]: Incentiviation of Work</h4>
+
+<p>Progress is not free. Thus, the primary purpose of this DAO is to incentivize work. We expect two <em>types</em> of contributors:</p>
+
+<ol>
+  <li><strong>core:</strong> folks interested in ongoing work. These people will be <em>members</em> of the DAO, have voting rights, and receive an ongoing <em>salary</em> based on the value they provide (as voted on by their peers).</li>
+  <li><strong>ad hoc:</strong> spontaneous workers. These folks will contribute when they have spare time, but not necessarily in a continuous or ongoing manner.</li>
+</ol>
+
+<p>Based on these two types of workers, funds will initially be allocated as follows: <code class="language-plaintext highlighter-rouge">75%</code> to core contributors and <code class="language-plaintext highlighter-rouge">25%</code> to ad hoc contributors. This <em>law</em> will be codified.</p>
+
+<p>In order to facilitate the distinction between core and ad hoc contributors <em>and</em> in order to define tasks and criteria for completion, we will be leveraging a Github Oracle (<em>to be developed</em>).</p>
+
+<h4 id="function-2-prioritization-of-funds">[Function 2]: Prioritization of Funds</h4>
+
+<p>Since this work is open source, we expect three sources:</p>
+
+<ol>
+  <li><strong>core sponsorship</strong>: angel/anonymous/supporter funding. This category of funding, while similar to (3), grants fractional voting rights similar to a board member in a traditional, stock based organization.</li>
+  <li><strong>ad hoc sponsorship</strong>: while this work is open source, thus free to use and free to fork, we are the subject matter experts and thus we are the ones most able to ship functional features in a reasonable timeframe. Thus, we will allow third parties to post <em>request for work</em> proposals. These will be very similar to how we post <code class="language-plaintext highlighter-rouge">ad hoc</code> work requests, except that the source of funding will come externally instead of out of the DAO’s internal account.</li>
+  <li><strong>foundational sponsorship</strong>: ongoing and future grants (i.e. <a href="https://dashboard.communityfund.stellar.org/">Stellar Community Fund</a>)</li>
+  <li><strong>fee for service</strong>: it is often said that the creators of tooling, especially tooling that enables insight into the core functionality of a service, often have the best understanding of how those services work. We expect that over time we will develop Soroban expertise that we can lend out to the community for a fee (<em>consultation</em> work). A majority of fee for service rewards will go directly to the DAO member who handles the request, however a small percent will go back to the DAO to support further development.</li>
+</ol>
+
+<p>Time and money are both limited. We will democratically decide:</p>
+
+<ul>
+  <li>how to spend our capital (money and time)</li>
+  <li>which ad hoc requests and fee for service requests to address in what order</li>
+  <li>who is best to address these requests</li>
+</ul>
+
+<p>As stated above, voting members will be <em>core</em> contributors (full voting rights) and <em>core sponsors</em> (fractional voting rights).</p>
+
+<hr />
+
+<h2 id="operating-philosophy">Operating Philosophy</h2>
+
+<ol>
+  <li>Voting power is earned: <em>votes will be proportional to stake (time and money invested) with a preference for time</em></li>
+  <li>We serve the greater good: <em>everything is public</em></li>
+  <li>Optimize for developer happiness (<a href="https://rubyonrails.org/doctrine">borrowed from the Rails Doctrine</a>): <em>when competing priorities arise, this is the tie breaker, “what will make our users happier?”</em></li>
+  <li>Avoid flame wars at all costs: <em>we make technology and tool decisions based on group consensus and what is best for the job, avoiding basing purely on personal preference at all costs</em></li>
+</ol>
+
+<hr />
+
+<h2 id="contract-design">Contract Design</h2>
+
+<p>As stated in the introduction, this is just an initial basic sketch. We fully expect the design to change as oru assumptions and understanding evolve. Furthermore, the source of truth is always the code. We will do our best to maintain this document, however, please always consult the code as well, especially for particular implementation details.</p>
+
+<center><img src="../images/Dao_Architecture_v1.png" alt="architecture of DAO" /></center>
+
+<p><br /></p>
+<h4 id="components">Components</h4>
+
+<p><strong>[Corpus of Work]</strong>: a Github repository that functions as the source of truth for work. Here each instance of work will have a timeline, a set of well defined deliverables, and a reward (optionally we may assign to a user).
+<br /><br />
+<strong>[GH Action]</strong>: maintains the state of the oracle contract
+<br /><br />
+<strong>[Github Oracle Contract</strong>]: maintains the state of relevant Github information such as work, work progress, work details, etc.
+<br /><br />
+<strong>[DAO Contract]</strong>: leveraging the oracle, facilitates voting, proposals for new work, reward distribution, etc.
+<br /><br />
+<strong>[DAO Hub Backend]</strong>: surfaces information from the DAO contract to be consumed by other services. Likely will also include the hosting a Horizon and a Soroban RPC service as well.
+<br /><br />
+<strong>[DAO Hub Website]</strong>: a visual of the pertinent information from the DAO contract. Will have basic functionality to interact with the contract as well.</p>
+
+<hr />
+
+  </div>
+
+</article>
+    </div>
+  </main><footer class="site-footer h-card">
+  <data class="u-url" href="/"></data>
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">Spaced Out Thoughts Development Foundation</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">Spaced Out Thoughts Development Foundation</li></ul>
+      </div>
+
+      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/spaced-out-thoughts-dev-foundation"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">spaced-out-thoughts-dev-foundation</span></a></li></ul>
+</div>
+
+      <div class="footer-col footer-col-3">
+        <p>A small Ruby shop determined to make smart contracts as easy to use as possible.</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
