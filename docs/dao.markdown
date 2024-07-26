@@ -13,8 +13,6 @@ A DAO is an abstraction over a smart contract and a smart contract is _simply_ (
 3. operating in a resource constrained environment is not an issue: *while we get (2), a tradeoff is we have to accept an exceptionally constrained execution environment in terms of resources, speed, etc.*
 4. automated transfer of value: *we can leverage oracles to define goals, linking rewards to these goals, automatically transferring rewards upon successful completion*
 
-**Document Overview:** we set forth exactly what functionality is required in order to codify it in *Functions* and the philosophy in which we strive to operate in *Operating Philosophy*. Finally, we layout the proposed design of the DAO architecture in *Contract Design* (note that design will change over time as our understanding and assumptions evolve).
-
 ***
 
 ## Functions
@@ -32,10 +30,10 @@ In order to facilitate the distinction between core and ad hoc contributors _and
 
 #### [Function 2]: Prioritization of Funds
 
-Since this work is open source, we expect three sources:
+Since this work is open source, we expect four sources:
 
 1. **core sponsorship**: angel/anonymous/supporter funding. This category of funding, while similar to (3), grants fractional voting rights similar to a board member in a traditional, stock based organization. 
-2. **ad hoc sponsorship**: while this work is open source, thus free to use and free to fork, we are the subject matter experts and thus we are the ones most able to ship functional features in a reasonable timeframe. Thus, we will allow third parties to post *request for work* proposals. These will be very similar to how we post `ad hoc` work requests, except that the source of funding will come externally instead of out of the DAO's internal account.
+2. **ad hoc sponsorship**: while this work is open source and free to use and free to fork, we are the subject matter experts and thus we are the ones most able to ship functional features in a reasonable timeframe. Thus, we will allow third parties to post *request for work* proposals. These will be very similar to how we post `ad hoc` work requests, except that the source of funding will come externally instead of out of the DAO's internal account.
 3. **foundational sponsorship**: ongoing and future grants (i.e. [Stellar Community Fund](https://dashboard.communityfund.stellar.org/))
 4. **fee for service**: it is often said that the creators of tooling, especially tooling that enables insight into the core functionality of a service, often have the best understanding of how those services work. We expect that over time we will develop Soroban expertise that we can lend out to the community for a fee (*consultation* work). A majority of fee for service rewards will go directly to the DAO member who handles the request, however a small percent will go back to the DAO to support further development.
 
@@ -45,7 +43,19 @@ Time and money are both limited. We will democratically decide:
 * which ad hoc requests and fee for service requests to address in what order
 * who is best to address these requests
 
-As stated above, voting members will be _core_ contributors (full voting rights) and _core sponsors_ (fractional voting rights). 
+***
+
+## Membership
+
+As noted, a DAO is supported by two resources: money and time. Based on how folks contribute and how much they contribute will define what privileges they receive.
+
+<center><img src="../images/dao_tiers.png" alt="membership tiers of DAO"/></center>
+
+***
+
+## Tokenomics
+
+**TBD**
 
 ***
 
