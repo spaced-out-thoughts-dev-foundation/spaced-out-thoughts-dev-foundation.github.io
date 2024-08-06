@@ -426,13 +426,21 @@ Digicus supports the following:
 
 # <strong><u>Conclusion</u></strong>
 
-We believe Digicus will revolutionize the way budding smart contract newcomers onboard into this powerful and wonderful ecosystem. As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on [our website](https://spaced-out-thoughts-dev-foundation.github.io/).
+We believe Digicus will revolutionize the way budding smart contract newcomers onboard into this powerful and wonderful ecosystem. Furthermore, as with scratch **we expect folks to eventually graduate from Digicus native smart contracts to leveraging the core programming language of their blockchain of choice**. At this point, Digicus will become a _sidecar_ IDE; opened in a window adjacent to their text editor, smart contract developers will be able to leverage the incredible tooling of Digicus to _enhance_ their current development flow.
+
+Presented visually, we believe the evolution of Digicus will look like this:
+
+<div style="text-align:center">
+  <img src="../images/stairway_to_success.png" alt="Digicus Stairway to Success"> 
+</div>
+
+As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on [our website](https://spaced-out-thoughts-dev-foundation.github.io/).
 
 Until then, please feel free to follow [our coding journey here](https://github.com/spaced-out-thoughts-dev-foundation) and experiment with [the IDE here](https://ide.digicus.dev/).
 
 #### <strong><u>Latest Status</u></strong>
 
-At time of writing (_July 2024_) we have accomplished our SCF #26 Activation Award deliverables ([demo'd here](https://www.youtube.com/watch?v=NhFTr5Cj4lU)) and just submitted for the SCF #29 Community Award; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.
+At time of writing (_August 2024_) we have accomplished our SCF #26 Activation Award deliverables ([demo'd here](https://www.youtube.com/watch?v=NhFTr5Cj4lU)) and just recently [pitched during the SCF #29 Community Award demos](https://youtu.be/z4zRXWfrTxc?si=6MkSZJOf7qaN5hUe&t=2696); we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.
 
 ***
 
