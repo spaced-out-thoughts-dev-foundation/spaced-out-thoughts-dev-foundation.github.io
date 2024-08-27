@@ -19,6 +19,16 @@
 {"@context":"https://schema.org","@type":"WebPage","description":"A small Ruby shop determined to make smart contracts as easy to use as possible.","headline":"DAO","url":"http://localhost:4000/dao/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Spaced Out Thoughts Development Foundation" /></head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T8C6QMG0PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-T8C6QMG0PJ');
+</script>
+
 <body>
 
   <style>
@@ -193,6 +203,253 @@
 <strong>[DAO Hub Website]</strong>: a visual of the pertinent information from the DAO contract. Will have basic functionality to interact with the contract as well.</p>
 
 <hr />
+
+<h2 id="decentralized-oracle-network">Decentralized Oracle Network</h2>
+
+<p>An oracle:</p>
+<blockquote>
+  <p>Oracles are applications that produce data feeds that make off-chain data sources available to the blockchain for smart contracts… [w]ithout an oracle, a smart contract would be limited entirely to on-chain data. Oracles differ based on the source of data (one or multiple sources), trust models (centralized or decentralized), and system architecture (immediate-read, publish-subscribe, and request-response). We can also distinguish between oracles based on whether they retrieve external data for use by on-chain contracts (input oracles), send information from the blockchain to the off-chain applications (output oracles), or perform computational tasks off-chain (computational oracles)… [s]ince information stored on-chain is unalterable and publicly available, Ethereum nodes can safely use the oracle imported off-chain data to compute state changes without breaking consensus… [t]o do this, an oracle is typically made up of a smart contract running on-chain and some off-chain components. The on-chain contract receives requests for data from other smart contracts, which it passes to the off-chain component (called an oracle node). This oracle node can query data sources—using application programming interfaces (APIs), for example—and send transactions to store the requested data in the smart contract’s storage.
+– Ethereum.org (https://ethereum.org/en/developers/docs/oracles/)</p>
+</blockquote>
+
+<p>A smart contract is</p>
+
+<p>A blockchain is essentially a closed network. Oracles allow info to flow in and out of the network from a trusted source - folks decide which Oracles to trust.</p>
+
+<p>To design an oracle,</p>
+
+<center><img src="../images/github_issue_state_machine.png" alt="architecture of DAO" /></center>
+
+<h3 id="sub-goals">Sub Goals</h3>
+<ul>
+  <li><strong>Cheap</strong>: some folks may wish to operate with minimal resources. It should be possible to operate on a minimal raspberry pi</li>
+</ul>
+
+<p>Oracle Design pattern: <em>pub-sub</em></p>
+
+<p>Decentralized oracle:</p>
+<ul>
+  <li>correctness
+    <ul>
+      <li>authenticity proof</li>
+      <li>consensus</li>
+      <li>Voting &amp; staking</li>
+    </ul>
+  </li>
+  <li>Schelling point? (chain link does this)</li>
+  <li>Reputation of correctness based on past historical performance</li>
+</ul>
+
+<p>Best Source</p>
+
+<h4 id="what-we-want-it-to-do">What we want it to do</h4>
+
+<p>Synchronize critical github issue information.</p>
+
+<p>States of an issue.</p>
+
+<ol>
+  <li>initially posted (lock funds to issue)</li>
+  <li>unclaimed</li>
+  <li>claimed (someone staked and attached github to some address)</li>
+  <li>started (PR opened linking PR)</li>
+  <li>ready for review</li>
+  <li>accepted (will trigger release of funds)</li>
+  <li>[misc. path] timed out, released (but stake not released. Dev gets less back in refund if they give up based on time)</li>
+</ol>
+
+<p>Connecting Github and Stellar</p>
+
+<p>[Organization]:</p>
+<ul>
+  <li>Data
+    <ul>
+      <li>Stellar Address</li>
+      <li>Github handle</li>
+      <li>Domain</li>
+    </ul>
+  </li>
+  <li>Github side
+    <ul>
+      <li>Proof posted in oracle repo (signed data with username using public key)</li>
+    </ul>
+  </li>
+  <li>Stellar side
+    <ul>
+      <li>Proof posted in contract along with mapping</li>
+    </ul>
+  </li>
+  <li>Domain side
+    <ul>
+      <li>Manifest</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Github Side</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>organizations:
+  - name: "Spaced Out Thoughts Development Foundation"
+    website: "https://spaced-out-thoughts-dev-foundation.github.io/"
+    proof: "TBD"
+    github_name: "robertDurst"
+    public_key: "GD5I4NMCQLYS464YS6ANTI55JLLPO6PPL4KYHP3YKBJ4B7R7MPVQK7IM"
+</code></pre></div></div>
+
+<p>Proof Algorithm
+[library]: https://github.com/spaced-out-thoughts-dev-foundation/github-soroban-proof-generator
+[Pseudocode]:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LINK_TO_ORG = initial SHA of proof-less verified PR to organization repository
+LINK_TO_MANIFEST = manifest url from their domain
+PROOF = sign_with_stellar_key(LINK_TO_ORG &amp; GITHUB_USERNAME &amp; LINK_TO_MANIFEST)
+</code></pre></div></div>
+
+<p>[User]:</p>
+<ul>
+  <li>Data
+    <ul>
+      <li>Stellar Address</li>
+      <li>Github handle</li>
+    </ul>
+  </li>
+  <li>Github side
+    <ul>
+      <li>Proof posted in oracle repo (signed data with username using public key)</li>
+    </ul>
+  </li>
+  <li>Stellar side
+    <ul>
+      <li>Proof posted in contract along with mapping</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Github Side</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>users:
+  - github_name: "robertDurst"
+    proof: "TBD"
+    public_key: "GD5I4NMCQLYS464YS6ANTI55JLLPO6PPL4KYHP3YKBJ4B7R7MPVQK7IM"
+</code></pre></div></div>
+
+<p>Proof Algorithm
+[library]: https://github.com/spaced-out-thoughts-dev-foundation/github-soroban-proof-generator
+[Pseudocode]:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LINK_TO_ORG = initial SHA of proof-less verified PR to organization repository
+PROOF = sign_with_stellar_key(LINK_TO_ORG &amp; GITHUB_USERNAME)
+</code></pre></div></div>
+
+<h2 id="incentives">Incentives</h2>
+
+<ol>
+  <li>review code</li>
+  <li>put up code</li>
+  <li>run a node</li>
+</ol>
+
+<h2 id="things-to-vote-on">Things to Vote on</h2>
+
+<ol>
+  <li>issues to prioritize</li>
+  <li>ecosystem proposals</li>
+  <li>core reviewer acceptance</li>
+</ol>
+
+<h2 id="reputation-score">Reputation Score</h2>
+
+<ul>
+  <li>reviews</li>
+  <li>contirbutions</li>
+  <li>voting</li>
+  <li>hosting a node</li>
+</ul>
+
+<h2 id="contract-actions">Contract Actions</h2>
+
+<ol>
+  <li>[Users] map github usernames to stellar addresses</li>
+  <li>[Repos] list of repos to sync</li>
+  <li>[Issues] per repo issue information
+    <ol>
+      <li>[Github] Phase</li>
+      <li>[Github &amp; Contract] If claimed, which account?</li>
+      <li>[Contract] Stake
+        <ol>
+          <li>Organization</li>
+          <li>Contributor</li>
+          <li>Reviewer</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<ul>
+  <li>CRUD user</li>
+  <li>CRUD repo</li>
+  <li>CRUD issue</li>
+  <li>stake
+    <ul>
+      <li>post issue
+        <ul>
+          <li>stake
+            <ul>
+              <li>issue accepted</li>
+            </ul>
+          </li>
+          <li>refund
+            <ul>
+              <li>issue times out</li>
+            </ul>
+          </li>
+          <li>distribute to user
+            <ul>
+              <li>pull request accepted</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>claim issue
+        <ul>
+          <li>stake
+            <ul>
+              <li>issue claimed</li>
+            </ul>
+          </li>
+          <li>refund
+            <ul>
+              <li>partial
+                <ul>
+                  <li>times out</li>
+                  <li>changes mind</li>
+                  <li>too many submissions</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>review issue
+        <ul>
+          <li>stake
+            <ul>
+              <li>selected as reviewer</li>
+            </ul>
+          </li>
+          <li>refund
+            <ul>
+              <li>submission fails</li>
+              <li>submission completed successfully</li>
+            </ul>
+          </li>
+          <li>distribute to user
+            <ul>
+              <li>times out review</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 
   </div>
 

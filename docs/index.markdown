@@ -28,8 +28,7 @@ layout: home
 
 We extend our deepest gratitude to our grantors and sponsors for their invaluable financial support. Their generosity enables our foundation to continue its vital work and pursue our mission with unwavering dedication. We are profoundly appreciative of their contributions.
 
-
-
 * [SCF #26](https://communityfund.stellar.org/project/digicus): we received the Activation Award from the Stellar Community Fund. This award supports our proposal to develop the initial read-only version of Digicus, facilitating the development of a two-way compiler to perform translation of smart contracts between the Soroban Rust SDK and Digicus Textual Representation (DTR).
+* [SCF #29](https://communityfund.stellar.org/project/digicus): we received the Community Award from the Stellar Community Fund. This award supports our proposal to develop Digicus 1.0. We will seek guidance and support from the visual programming community to build something truly novel to aid budding smart contract programmers towards becoming competent, security conscious, smart contract developers.
 
 ***

@@ -72,7 +72,7 @@ Digicus is a novel combination of these ideas, designed practically with the int
 #### <strong><u>An Overview</u></strong>
 
 Our solution requires three distinct pieces of technology:
-1. an IDE
+1. an IDE (a visual programming language)
 2. a compiler plugin framework
 3. a well-defined intermediate representation language
 
@@ -449,7 +449,7 @@ At time of writing (_August 2024_) we have accomplished our SCF #26 Activation A
 We're forever grateful for support via the following ecosystem grants:
 
 * [Stellar Community Fund](https://communityfund.stellar.org/) SCF #26 Activation Award
-
+* [Stellar Community Fund](https://communityfund.stellar.org/) SCF #29 Community Award
 
 Furthermore, as this work is ambitious and ongoing, we're actively seeking additional funding opportunities.
 
