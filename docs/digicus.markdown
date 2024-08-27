@@ -78,6 +78,19 @@ Our solution requires three distinct pieces of technology:
 
 The IDE is where a user will spend most of their time viewing and modifying smart contracts. The IDE is integrated with Digit, our compiler plugin framework which is responsible for transpiling between source language(s), DTR, and target language(s). Within Digit resides an implementation of `dtr_core`, a Ruby gem that adheres to the DTR specification. While `dtr_core` is effectively the reference implementation, based on our appreciation of Rob Pike [^12] and his acknowledgement of the importance of the Go spec [^13], please consider the specification of DTR to be the source of truth and `dtr_core` to be _just an implementation_.
 
+**Visual Programming Language**
+
+The smart contract developer tooling community has yet to find PMF for a tool to aid novice developers in the creation of secure and performant smart contracts. While we don't naively believe this is due to a lack of effort, we instead attribute it to implementations focused on the wrong level of abstraction.
+
+Today, there are _more-or-less_ three levels of abstraction:
+1. high level programming languages (i.e. Solidity)
+2. visual programming languages that syntactically mirror source code
+3. well-vetted template libraries (i.e. OpenZepplin)
+
+Thus far, Digicus (and many of the earlier VPL attempts in this space) have been focused on (2). While not yet fully formed, designed, or even really described in this specification document, we believe there is a 2.5. In such a world, we will design an abstraction over high level source code which eliminates known security violations and/or performance degradations, guiding the novice developer towards a _happy path_ solution (we call this a "shift left" solution" as we're shifting the addressing of security and performance closer to the beginning of the SDLC). 
+
+[August 2024] We don't yet know what this looks like. We're engaging in conversations across our network in pursuit of a solution... stay tuned!
+
 **Architecture:**
 
 <center><img src="../images/revamped_architecture_doc.png" alt="current architecture diagram"/></center>
