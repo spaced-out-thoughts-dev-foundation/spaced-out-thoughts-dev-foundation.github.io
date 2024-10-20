@@ -1,7 +1,7 @@
 ---
-layout: page
-title: Digicus
-permalink: /digicus/
+layout: post
+title:  "Digicus Whitepaper"
+date: 2024-10-10
 ---
 
 <h1 align="center"><span align="center" style="font-size: 2em;">Scratch for Smart Contracts</span></h1>

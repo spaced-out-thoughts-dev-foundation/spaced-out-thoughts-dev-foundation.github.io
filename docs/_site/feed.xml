@@ -1,4 +1,1020 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-08-26T23:03:32-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust</title><link href="http://localhost:4000/2024/07/10/if-let-back-to-rust.html" rel="alternate" type="text/html" title="Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust" /><published>2024-07-10T00:00:00-06:00</published><updated>2024-07-10T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/10/if-let-back-to-rust</id><content type="html" xml:base="http://localhost:4000/2024/07/10/if-let-back-to-rust.html"><![CDATA[<p>In a previous post title <em>Rust Specific Construct Representations ep. 2: Let-Else</em>, I demonstrated how we can translate <code class="language-plaintext highlighter-rouge">if let</code> from Rust to DTR.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-10-19T18:01:53-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">DAO Overview</title><link href="http://localhost:4000/2024/10/19/dao.html" rel="alternate" type="text/html" title="DAO Overview" /><published>2024-10-19T00:00:00-06:00</published><updated>2024-10-19T00:00:00-06:00</updated><id>http://localhost:4000/2024/10/19/dao</id><content type="html" xml:base="http://localhost:4000/2024/10/19/dao.html"><![CDATA[<p>The Spaced Out Thoughts Development Foundation is evolving from an informal entity to a DAO (<a href="https://en.wikipedia.org/wiki/Decentralized_autonomous_organization">a Decentralized Autonomous Organization</a>) in order to establish a self-sufficient, trustless organization with the goal of incentivizing development of <a href="https://spaced-out-thoughts-dev-foundation.github.io/digicus/">Digicus</a>, a platform to make <strong>smart contract development as easy as possible</strong>.</p>
+
+<p>A DAO is an abstraction over a smart contract and a smart contract is <em>simply</em> (a bit tongue in cheek, we know) a collection of functions autonomously executed in a VM running sidecar to a blockchain, operating on a shared set of data, maintained by the underlying network. Why consider a DAO over a traditional web2 organization?</p>
+
+<ol>
+  <li>public visibility: <em>all actions, rules, etc. are in the open for anyone to read</em></li>
+  <li>strong preference for as many nines as possible: <em>blockchains typically operate at an availability rarely seen in conventional tech, paramount for operational governance of an organization</em></li>
+  <li>operating in a resource constrained environment is not an issue: <em>while we get (2), a tradeoff is we have to accept an exceptionally constrained execution environment in terms of resources, speed, etc.</em></li>
+  <li>automated transfer of value: <em>we can leverage oracles to define goals, linking rewards to these goals, automatically transferring rewards upon successful completion</em></li>
+</ol>
+
+<hr />
+
+<h2 id="functions">Functions</h2>
+
+<h4 id="function-1-incentiviation-of-work">[Function 1]: Incentiviation of Work</h4>
+
+<p>Progress is not free. Thus, the primary purpose of this DAO is to incentivize work. We expect two <em>types</em> of contributors:</p>
+
+<ol>
+  <li><strong>core:</strong> folks interested in ongoing work. These people will be <em>members</em> of the DAO, have voting rights, and receive an ongoing <em>salary</em> based on the value they provide (as voted on by their peers).</li>
+  <li><strong>ad hoc:</strong> spontaneous workers. These folks will contribute when they have spare time, but not necessarily in a continuous or ongoing manner.</li>
+</ol>
+
+<p>Based on these two types of workers, funds will initially be allocated as follows: <code class="language-plaintext highlighter-rouge">75%</code> to core contributors and <code class="language-plaintext highlighter-rouge">25%</code> to ad hoc contributors. This <em>law</em> will be codified.</p>
+
+<p>In order to facilitate the distinction between core and ad hoc contributors <em>and</em> in order to define tasks and criteria for completion, we will be leveraging a Github Oracle (<em>to be developed</em>).</p>
+
+<h4 id="function-2-prioritization-of-funds">[Function 2]: Prioritization of Funds</h4>
+
+<p>Since this work is open source, we expect four sources:</p>
+
+<ol>
+  <li><strong>core sponsorship</strong>: angel/anonymous/supporter funding. This category of funding, while similar to (3), grants fractional voting rights similar to a board member in a traditional, stock based organization.</li>
+  <li><strong>ad hoc sponsorship</strong>: while this work is open source and free to use and free to fork, we are the subject matter experts and thus we are the ones most able to ship functional features in a reasonable timeframe. Thus, we will allow third parties to post <em>request for work</em> proposals. These will be very similar to how we post <code class="language-plaintext highlighter-rouge">ad hoc</code> work requests, except that the source of funding will come externally instead of out of the DAO’s internal account.</li>
+  <li><strong>foundational sponsorship</strong>: ongoing and future grants (i.e. <a href="https://dashboard.communityfund.stellar.org/">Stellar Community Fund</a>)</li>
+  <li><strong>fee for service</strong>: it is often said that the creators of tooling, especially tooling that enables insight into the core functionality of a service, often have the best understanding of how those services work. We expect that over time we will develop Soroban expertise that we can lend out to the community for a fee (<em>consultation</em> work). A majority of fee for service rewards will go directly to the DAO member who handles the request, however a small percent will go back to the DAO to support further development.</li>
+</ol>
+
+<p>Time and money are both limited. We will democratically decide:</p>
+
+<ul>
+  <li>how to spend our capital (money and time)</li>
+  <li>which ad hoc requests and fee for service requests to address in what order</li>
+  <li>who is best to address these requests</li>
+</ul>
+
+<hr />
+
+<h2 id="membership">Membership</h2>
+
+<p>As noted, a DAO is supported by two resources: money and time. Based on how folks contribute and how much they contribute will define what privileges they receive.</p>
+
+<center><img src="../images/dao_tiers.png" alt="membership tiers of DAO" /></center>
+
+<hr />
+
+<h2 id="tokenomics">Tokenomics</h2>
+
+<p><strong>TBD</strong></p>
+
+<hr />
+
+<h2 id="operating-philosophy">Operating Philosophy</h2>
+
+<ol>
+  <li>Voting power is earned: <em>votes will be proportional to stake (time and money invested) with a preference for time</em></li>
+  <li>We serve the greater good: <em>everything is public</em></li>
+  <li>Optimize for developer happiness (<a href="https://rubyonrails.org/doctrine">borrowed from the Rails Doctrine</a>): <em>when competing priorities arise, this is the tie breaker, “what will make our users happier?”</em></li>
+  <li>Avoid flame wars at all costs: <em>we make technology and tool decisions based on group consensus and what is best for the job, avoiding basing purely on personal preference at all costs</em></li>
+</ol>
+
+<hr />
+
+<h2 id="contract-design">Contract Design</h2>
+
+<p>As stated in the introduction, this is just an initial basic sketch. We fully expect the design to change as oru assumptions and understanding evolve. Furthermore, the source of truth is always the code. We will do our best to maintain this document, however, please always consult the code as well, especially for particular implementation details.</p>
+
+<center><img src="../images/Dao_Architecture_v1.png" alt="architecture of DAO" /></center>
+
+<p><br /></p>
+<h4 id="components">Components</h4>
+
+<p><strong>[Corpus of Work]</strong>: a Github repository that functions as the source of truth for work. Here each instance of work will have a timeline, a set of well defined deliverables, and a reward (optionally we may assign to a user).
+<br /><br />
+<strong>[GH Action]</strong>: maintains the state of the oracle contract
+<br /><br />
+<strong>[Github Oracle Contract</strong>]: maintains the state of relevant Github information such as work, work progress, work details, etc.
+<br /><br />
+<strong>[DAO Contract]</strong>: leveraging the oracle, facilitates voting, proposals for new work, reward distribution, etc.
+<br /><br />
+<strong>[DAO Hub Backend]</strong>: surfaces information from the DAO contract to be consumed by other services. Likely will also include the hosting a Horizon and a Soroban RPC service as well.
+<br /><br />
+<strong>[DAO Hub Website]</strong>: a visual of the pertinent information from the DAO contract. Will have basic functionality to interact with the contract as well.</p>
+
+<hr />
+
+<h2 id="decentralized-oracle-network">Decentralized Oracle Network</h2>
+
+<p>An oracle:</p>
+<blockquote>
+  <p>Oracles are applications that produce data feeds that make off-chain data sources available to the blockchain for smart contracts… [w]ithout an oracle, a smart contract would be limited entirely to on-chain data. Oracles differ based on the source of data (one or multiple sources), trust models (centralized or decentralized), and system architecture (immediate-read, publish-subscribe, and request-response). We can also distinguish between oracles based on whether they retrieve external data for use by on-chain contracts (input oracles), send information from the blockchain to the off-chain applications (output oracles), or perform computational tasks off-chain (computational oracles)… [s]ince information stored on-chain is unalterable and publicly available, Ethereum nodes can safely use the oracle imported off-chain data to compute state changes without breaking consensus… [t]o do this, an oracle is typically made up of a smart contract running on-chain and some off-chain components. The on-chain contract receives requests for data from other smart contracts, which it passes to the off-chain component (called an oracle node). This oracle node can query data sources—using application programming interfaces (APIs), for example—and send transactions to store the requested data in the smart contract’s storage.
+– Ethereum.org (https://ethereum.org/en/developers/docs/oracles/)</p>
+</blockquote>
+
+<p>A smart contract is</p>
+
+<p>A blockchain is essentially a closed network. Oracles allow info to flow in and out of the network from a trusted source - folks decide which Oracles to trust.</p>
+
+<p>To design an oracle,</p>
+
+<center><img src="../images/github_issue_state_machine.png" alt="architecture of DAO" /></center>
+
+<h3 id="sub-goals">Sub Goals</h3>
+<ul>
+  <li><strong>Cheap</strong>: some folks may wish to operate with minimal resources. It should be possible to operate on a minimal raspberry pi</li>
+</ul>
+
+<p>Oracle Design pattern: <em>pub-sub</em></p>
+
+<p>Decentralized oracle:</p>
+<ul>
+  <li>correctness
+    <ul>
+      <li>authenticity proof</li>
+      <li>consensus</li>
+      <li>Voting &amp; staking</li>
+    </ul>
+  </li>
+  <li>Schelling point? (chain link does this)</li>
+  <li>Reputation of correctness based on past historical performance</li>
+</ul>
+
+<p>Best Source</p>
+
+<h4 id="what-we-want-it-to-do">What we want it to do</h4>
+
+<p>Synchronize critical github issue information.</p>
+
+<p>States of an issue.</p>
+
+<ol>
+  <li>initially posted (lock funds to issue)</li>
+  <li>unclaimed</li>
+  <li>claimed (someone staked and attached github to some address)</li>
+  <li>started (PR opened linking PR)</li>
+  <li>ready for review</li>
+  <li>accepted (will trigger release of funds)</li>
+  <li>[misc. path] timed out, released (but stake not released. Dev gets less back in refund if they give up based on time)</li>
+</ol>
+
+<p>Connecting Github and Stellar</p>
+
+<p>[Organization]:</p>
+<ul>
+  <li>Data
+    <ul>
+      <li>Stellar Address</li>
+      <li>Github handle</li>
+      <li>Domain</li>
+    </ul>
+  </li>
+  <li>Github side
+    <ul>
+      <li>Proof posted in oracle repo (signed data with username using public key)</li>
+    </ul>
+  </li>
+  <li>Stellar side
+    <ul>
+      <li>Proof posted in contract along with mapping</li>
+    </ul>
+  </li>
+  <li>Domain side
+    <ul>
+      <li>Manifest</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Github Side</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>organizations:
+  - name: "Spaced Out Thoughts Development Foundation"
+    website: "https://spaced-out-thoughts-dev-foundation.github.io/"
+    proof: "TBD"
+    github_name: "robertDurst"
+    public_key: "GD5I4NMCQLYS464YS6ANTI55JLLPO6PPL4KYHP3YKBJ4B7R7MPVQK7IM"
+</code></pre></div></div>
+
+<p>Proof Algorithm
+[library]: https://github.com/spaced-out-thoughts-dev-foundation/github-soroban-proof-generator
+[Pseudocode]:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LINK_TO_ORG = initial SHA of proof-less verified PR to organization repository
+LINK_TO_MANIFEST = manifest url from their domain
+PROOF = sign_with_stellar_key(LINK_TO_ORG &amp; GITHUB_USERNAME &amp; LINK_TO_MANIFEST)
+</code></pre></div></div>
+
+<p>[User]:</p>
+<ul>
+  <li>Data
+    <ul>
+      <li>Stellar Address</li>
+      <li>Github handle</li>
+    </ul>
+  </li>
+  <li>Github side
+    <ul>
+      <li>Proof posted in oracle repo (signed data with username using public key)</li>
+    </ul>
+  </li>
+  <li>Stellar side
+    <ul>
+      <li>Proof posted in contract along with mapping</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Github Side</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>users:
+  - github_name: "robertDurst"
+    proof: "TBD"
+    public_key: "GD5I4NMCQLYS464YS6ANTI55JLLPO6PPL4KYHP3YKBJ4B7R7MPVQK7IM"
+</code></pre></div></div>
+
+<p>Proof Algorithm
+[library]: https://github.com/spaced-out-thoughts-dev-foundation/github-soroban-proof-generator
+[Pseudocode]:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LINK_TO_ORG = initial SHA of proof-less verified PR to organization repository
+PROOF = sign_with_stellar_key(LINK_TO_ORG &amp; GITHUB_USERNAME)
+</code></pre></div></div>
+
+<h2 id="incentives">Incentives</h2>
+
+<ol>
+  <li>review code</li>
+  <li>put up code</li>
+  <li>run a node</li>
+</ol>
+
+<h2 id="things-to-vote-on">Things to Vote on</h2>
+
+<ol>
+  <li>issues to prioritize</li>
+  <li>ecosystem proposals</li>
+  <li>core reviewer acceptance</li>
+</ol>
+
+<h2 id="reputation-score">Reputation Score</h2>
+
+<ul>
+  <li>reviews</li>
+  <li>contirbutions</li>
+  <li>voting</li>
+  <li>hosting a node</li>
+</ul>
+
+<h2 id="contract-actions">Contract Actions</h2>
+
+<ol>
+  <li>[Users] map github usernames to stellar addresses</li>
+  <li>[Repos] list of repos to sync</li>
+  <li>[Issues] per repo issue information
+    <ol>
+      <li>[Github] Phase</li>
+      <li>[Github &amp; Contract] If claimed, which account?</li>
+      <li>[Contract] Stake
+        <ol>
+          <li>Organization</li>
+          <li>Contributor</li>
+          <li>Reviewer</li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+</ol>
+
+<ul>
+  <li>CRUD user</li>
+  <li>CRUD repo</li>
+  <li>CRUD issue</li>
+  <li>stake
+    <ul>
+      <li>post issue
+        <ul>
+          <li>stake
+            <ul>
+              <li>issue accepted</li>
+            </ul>
+          </li>
+          <li>refund
+            <ul>
+              <li>issue times out</li>
+            </ul>
+          </li>
+          <li>distribute to user
+            <ul>
+              <li>pull request accepted</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>claim issue
+        <ul>
+          <li>stake
+            <ul>
+              <li>issue claimed</li>
+            </ul>
+          </li>
+          <li>refund
+            <ul>
+              <li>partial
+                <ul>
+                  <li>times out</li>
+                  <li>changes mind</li>
+                  <li>too many submissions</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>review issue
+        <ul>
+          <li>stake
+            <ul>
+              <li>selected as reviewer</li>
+            </ul>
+          </li>
+          <li>refund
+            <ul>
+              <li>submission fails</li>
+              <li>submission completed successfully</li>
+            </ul>
+          </li>
+          <li>distribute to user
+            <ul>
+              <li>times out review</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[The Spaced Out Thoughts Development Foundation is evolving from an informal entity to a DAO (a Decentralized Autonomous Organization) in order to establish a self-sufficient, trustless organization with the goal of incentivizing development of Digicus, a platform to make smart contract development as easy as possible.]]></summary></entry><entry><title type="html">Digicus Whitepaper</title><link href="http://localhost:4000/2024/10/10/digicus-whitepaper.html" rel="alternate" type="text/html" title="Digicus Whitepaper" /><published>2024-10-10T00:00:00-06:00</published><updated>2024-10-10T00:00:00-06:00</updated><id>http://localhost:4000/2024/10/10/digicus-whitepaper</id><content type="html" xml:base="http://localhost:4000/2024/10/10/digicus-whitepaper.html"><![CDATA[<h1 align="center"><span align="center" style="font-size: 2em;">Scratch for Smart Contracts</span></h1>
+
+<div align="center">
+Rob Durst<br />
+me[at]robdurst[dot]com
+</div>
+<p><br /></p>
+
+<p>With it’s launch in 2015, Ethereum <sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup> brought smart contracts to the forefront of the blockchain ecosystem. These smart contracts were based on the (original?) definition laid out by Nick Szabo in 1996 <sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup>: <em>“[a] smart contract is a set of promises, specified in digital form, including protocols within which the parties perform on these promises.”</em></p>
+
+<p>As implemented today, smart contracts are typically turing complete and rely on a VM coupled with the underlying blockchain nodes. Like any typical VM, a “smart contract handling VM” handles some set of instructions, typically byte code, charging fees for execution, storage, etc. Contracts may be written in a “blockchain native” language like Solidity <sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">3</a></sup> or a pre-existing language that is compiled to a format the VM supports (i.e. Rust compiled to WASM which may run on Stellar’s Soroban <sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">4</a></sup>). While these smart contract development ecosystems have matured greatly over the past few years, writing a non-trivial, secure, correct smart contract is not easy (<em>Google smart contract hack and you’ll see a plethora of examples</em>). Today, various tools exist to solve this problem. Grouped generally, there are a few approaches:</p>
+
+<ol>
+  <li>Allow folks to use the programming language they are most familiar with (Hyperledger Fabric <sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">5</a></sup>)</li>
+  <li>Give folks the best developer experience possible</li>
+  <li>Provide a set of re-usable, well vetted, well tested, and well understood boiler-plate, templated smart contracts (OpenZepplin <sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">6</a></sup>)</li>
+</ol>
+
+<p>We propose a fourth approach: <em>making the smart contract language itself more approachable</em>. Fundamentally, the barriers to entry are overwhelmingly numerous. For example, in order to be a competent smart contract developer on the Stellar’s Soroban, you need to be familiar with how blockchains work, have a strong foundation in smart contracts, and be functional in the Rust programming language. Expecting non-technical participation <em>and</em> a painless onboarding experience for newcomer developers is not realistic. We believe a blockchain agnostic, visual, block-based programming environment will facilitate a more accessible onboarding experience for all. Specifically, we’ve built Digicus, an intuitive, simple, Lego-like IDE, backed by Digit, a compiler plugin framework for seamless transpilation between existing smart contract languages (i.e. Solidity) and frameworks (i.e Stellar’s Soroban Rust SDK) and our intermediate representation (DTR: Digicus Textual Representation). Digicus is the blockchain ecosystem’s Scratch <sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">7</a></sup>, a smart contract 101 platform that will help onboard newcomers into our world, aiding their journey to <em>“smart contract 201”</em> and beyond.</p>
+
+<hr />
+
+<h1 id="table-of-contents"><strong><u>Table of Contents</u></strong></h1>
+<ul>
+  <li><a href="#table-of-contents">Table of Contents</a><br /></li>
+  <li><a href="#existing-work-and-inspiration">Existing Work and Inspiration</a><br /></li>
+  <li><a href="#solution">Solution</a><br />
+    - <a href="#an-overview">An Overview</a><br />
+    - <a href="#the-digicus-ide">The Digicus IDE</a><br />
+    - <a href="#a-compiler-plugin-framework">A Compiler Plugin Framework</a><br />
+    - <a href="#digicus-textual-representation">Digicus Textual Representation</a><br />
+    - <a href="#supported-instructions">Supported Instructions</a><br />
+    - <a href="#instruction-execution-flow">Instruction Execution Flow</a><br />
+    - <a href="#valid-types">Valid Types</a><br /></li>
+  <li><a href="#conclusion">Conclusion</a><br />
+    - <a href="#latest-status">Latest Status</a><br /></li>
+  <li><a href="#grant-acknowledgements">Grant Acknowledgements</a><br /></li>
+  <li><a href="#references">References</a></li>
+</ul>
+
+<hr />
+
+<h1 id="existing-work-and-inspiration"><strong><u>Existing Work and Inspiration</u></strong></h1>
+
+<p>The idea of a platform like Digicus is not a completely novel idea.</p>
+
+<p>A 2021 paper titled <em>SmartBuilder: A Block-based Visual Programming Framework for Smart Contract Development</em> states <sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">8</a></sup>:</p>
+
+<blockquote>
+  <p>In this paper, we introduce SmartBuilder, a block-based visual programming framework for building smart contracts using extended Google Blockly libraries. It allows Hyperledger Fabric smart contract (also known as Chaincode) development learners or non-expert users to build smart contracts using visual blocks without writing a single code</p>
+</blockquote>
+
+<p>This solution claims to have developed a commercial application of their proposed framework for the Aergo blockchain <sup id="fnref:9" role="doc-noteref"><a href="#fn:9" class="footnote" rel="footnote">9</a></sup>.</p>
+
+<p>A second paper, <em>Scilla: a Smart Contract Intermediate-Level LAnguage</em> focuses on the idea of a smart contract intermediate language <sup id="fnref:10" role="doc-noteref"><a href="#fn:10" class="footnote" rel="footnote">10</a></sup>:</p>
+
+<blockquote>
+  <p>This paper outlines key design principles of Scilla—an intermediate-level language for verified smart contracts. Scilla provides a clean separation between the communication aspect of smart contracts on a blockchain, allowing for the rich interaction patterns, and a programming component, which enjoys principled semantics and is amenable to formal verification. Scilla is not meant to be a high-level programming language, and we are going to use it as a translation target for high-level languages, such as Solidity, for performing program analysis and verification, before further compilation to an executable bytecode. We describe the automata-based model of Scilla, present its programming component and show how contract definitions in terms of automata streamline the process of mechanised verification of their safety and temporal properties</p>
+</blockquote>
+
+<p>This paper focuses on verification, not ease of development (however, a very interesting idea Digicus might be able to adopt later).</p>
+
+<p>Furthermore, the idea of a compiler framework is heavily influenced by LLVM <sup id="fnref:11" role="doc-noteref"><a href="#fn:11" class="footnote" rel="footnote">11</a></sup>.</p>
+
+<blockquote>
+  <p>LLVM defines a common, low-level code representation in Static Single Assignment (SSA) form, with several novel features: a simple, language-independent type-system that exposes the primitives commonly used to implement high-level language features; an instruction for typed address arithmetic; and a simple mechanism that can be used to implement the exception handling features of high-level languages (and setjmp/longjmp in C) uniformly and efficiently. The LLVM compiler framework and code representation together provide a combination of key capabilities that are important for practical, lifelong analysis and transformation of programs.</p>
+</blockquote>
+
+<p>The beauty of LLVM as a general target for high level languages allows language developers to get (a) a bunch of optimizations and (b) a whole host of backends for free. Its importance to the compiler ecosystem cannot be understated.</p>
+
+<p>Digicus is a novel combination of these ideas, designed practically with the intention of developing a production application.</p>
+
+<hr />
+<h1 id="solution"><strong><u>Solution</u></strong></h1>
+
+<h4 id="an-overview"><strong><u>An Overview</u></strong></h4>
+
+<p>Our solution requires three distinct pieces of technology:</p>
+<ol>
+  <li>an IDE (a visual programming language)</li>
+  <li>a compiler plugin framework</li>
+  <li>a well-defined intermediate representation language</li>
+</ol>
+
+<p>The IDE is where a user will spend most of their time viewing and modifying smart contracts. The IDE is integrated with Digit, our compiler plugin framework which is responsible for transpiling between source language(s), DTR, and target language(s). Within Digit resides an implementation of <code class="language-plaintext highlighter-rouge">dtr_core</code>, a Ruby gem that adheres to the DTR specification. While <code class="language-plaintext highlighter-rouge">dtr_core</code> is effectively the reference implementation, based on our appreciation of Rob Pike <sup id="fnref:12" role="doc-noteref"><a href="#fn:12" class="footnote" rel="footnote">12</a></sup> and his acknowledgement of the importance of the Go spec <sup id="fnref:13" role="doc-noteref"><a href="#fn:13" class="footnote" rel="footnote">13</a></sup>, please consider the specification of DTR to be the source of truth and <code class="language-plaintext highlighter-rouge">dtr_core</code> to be <em>just an implementation</em>.</p>
+
+<p><strong>Visual Programming Language</strong></p>
+
+<p>The smart contract developer tooling community has yet to find PMF for a tool to aid novice developers in the creation of secure and performant smart contracts. While we don’t naively believe this is due to a lack of effort, we instead attribute it to implementations focused on the wrong level of abstraction.</p>
+
+<p>Today, there are <em>more-or-less</em> three levels of abstraction:</p>
+<ol>
+  <li>high level programming languages (i.e. Solidity)</li>
+  <li>visual programming languages that syntactically mirror source code</li>
+  <li>well-vetted template libraries (i.e. OpenZepplin)</li>
+</ol>
+
+<p>Thus far, Digicus (and many of the earlier VPL attempts in this space) have been focused on (2). While not yet fully formed, designed, or even really described in this specification document, we believe there is a 2.5. In such a world, we will design an abstraction over high level source code which eliminates known security violations and/or performance degradations, guiding the novice developer towards a <em>happy path</em> solution (we call this a “shift left” solution” as we’re shifting the addressing of security and performance closer to the beginning of the SDLC).</p>
+
+<p>[August 2024] We don’t yet know what this looks like. We’re engaging in conversations across our network in pursuit of a solution… stay tuned!</p>
+
+<p><strong>Architecture:</strong></p>
+
+<center><img src="../images/revamped_architecture_doc.png" alt="current architecture diagram" /></center>
+
+<p>Our compiler plugin framework is leveraged by Digit via the Bean Stock Compiler Plugin (pod) Hub <sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">14</a></sup>. Bean Stock sources pods via <code class="language-plaintext highlighter-rouge">git submodules</code>, where each submodule has a <code class="language-plaintext highlighter-rouge">bean_stock_manifest.yaml</code> file describing the pod. Here is an example:</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">soroban_rust_frontend</span>
+<span class="na">type</span><span class="pi">:</span> <span class="s">backend</span>
+<span class="na">version</span><span class="pi">:</span> <span class="s">0.16.1</span>
+<span class="na">description</span><span class="pi">:</span> <span class="s">Frontend for Soroban Rust SDK. Compiles Rust to DTR.</span>
+<span class="na">command</span><span class="pi">:</span> <span class="s">make run FILEPATH</span>
+<span class="na">author</span><span class="pi">:</span> <span class="s">rob | me@robdurst.com</span>
+<span class="na">source</span><span class="pi">:</span> <span class="s">https://github.com/spaced-out-thoughts-dev-foundation/soroban_rust_frontend</span>
+</code></pre></div></div>
+
+<p>The Digit server’s Dockerfile can then fetch and compile/setup each submodule upon <code class="language-plaintext highlighter-rouge">docker build</code> based on the manifest. Wthi this in place, Digit will be able to handle various transpilations at runtime as requested by Digicus.</p>
+
+<h4 id="the-digicus-ide"><strong><u>The Digicus IDE</u></strong></h4>
+
+<p>Below is an initial mockup of the MVP user interface.</p>
+
+<div style="text-align:center">
+  <img src="../images/digicus-ide-mockup.png" alt="Digit Overview" /> 
+</div>
+
+<p>When developing with Digicus, users will be able to name the contract, drag and drop block components into the interactive function creator, and then they will be able to perform minimal, chain agnostic testing of the contract. The UI/UX for this will be based heavily off of the well-tested, mature Scratch programming platform. Furthermore, a plethora of features will be supported to make this a first class smart contract development interface, including but not limited to:</p>
+<ul>
+  <li>common vulnerability detection</li>
+  <li>autocomplete (<em>eventually</em> some sort of Copilot-esque flavor as well <sup id="fnref:15" role="doc-noteref"><a href="#fn:15" class="footnote" rel="footnote">15</a></sup>)</li>
+  <li>realtime syntax/semantic error recognition with sensible warnings and recommendations for improvement</li>
+  <li>chain specific integration testing</li>
+</ul>
+
+<p>The IDE will support two workflows: (1) upload and modify and (2) net new creation.</p>
+
+<p><strong>Workflow #1: Upload and Modify:</strong> users will be able to upload a smart contract from one of the supported smart contract programming languages/frameworks. Once uploaded, users can modify as they wish.</p>
+
+<p><strong>Workflow #2: Net New Creation:</strong> users will be able to create a generic smart contract from scratch. However, they will not always need to start from scratch; a library of common templates will be available for bootstrapping.</p>
+
+<p>While a full IDE is the goal of this work, we anticipate the visualization feature to be immediately useful with the possibility to embed within existing smart contract analysis/explorer/etc. software today.</p>
+
+<h4 id="a-compiler-plugin-framework"><strong><u>A Compiler Plugin Framework</u></strong></h4>
+
+<p>Digit, Digicus’s compiler plugin framework, enables the ambitious software developer to add support for their blockchain smart contract programming language (or framework) of choice. To do so requires the development of a bidirectional transpiler, from source to DTR and DTR to source. We aid this development by way of example plugins and a central repository for hosting these such that they are discoverable and <em>auto-magically</em> integratable with the IDE.</p>
+
+<p>A plugin is an executable binary with two methods:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>to_dtr(source_language: String) --&gt; String
+from_dtr(dtr: String) --&gt; String
+</code></pre></div></div>
+
+<p>The Spaced Out Thoughts Development Foundation aims to initially support:</p>
+<ul>
+  <li>Stellar’s <a href="https://github.com/stellar/rs-soroban-sdk">Soroban Rust SDK</a></li>
+</ul>
+
+<p>We’re biased, we love Stellar and given the novelty of their solution to global cross border payments, a strong technical foundation, and the very recent launch of Soroban, focusing here was a no brainer.</p>
+
+<p>However, given the flexibility of the compiler plugin designed, one day, Digit will be able to support the following:</p>
+
+<div style="text-align:center">
+  <img src="../images/digit_overview.png" alt="Digit Overview" /> 
+</div>
+
+<p>Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries <sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">16</a></sup> and even blockchain interoperability<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup>. Digicus aims to go one step further, the generalization of smart contracts as whole. <em>We believe this is layer 3 at its finest!</em></p>
+
+<h4 id="digicus-textual-representation"><strong><u>Digicus Textual Representation</u></strong></h4>
+
+<p>DTR is defined by ASCII text files with the <code class="language-plaintext highlighter-rouge">.dtr</code> ending. Each file contains the definition for a single contract and consists of five sections:</p>
+
+<ol>
+  <li><strong>Contract</strong>: where the name of the contract is specified</li>
+  <li><strong>State</strong>: where we define the type and initial data for each variable</li>
+  <li><strong>UDTS</strong>: where we define user defined types</li>
+  <li><strong>Interface</strong>: where we define each externally visible method (name, input, output, body)</li>
+  <li><strong>Helpers</strong>: where we define each internal method (name, input, output, body)</li>
+  <li><strong>Non-translatables:</strong> some source languages are more expressive than the target language. Thus, in an effort to allow <em>easier</em> transpilation back, we’ve included an optional section to store relevant metadata unique to the source.</li>
+</ol>
+
+<p>If a section is omitted, it will be assumed to be non-existent.</p>
+
+<p><strong>Overall structure</strong>:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Contract]: CONTRACT_NAME
+
+[State]:
+  * STATE_DEFINITION
+  ...
+  * STATE_DEFINITION
+:[State]
+
+[UDTs]:
+  * UDT_DEFINITION
+  ...
+  * UDT_DEFINITION
+:[UDTs]
+
+[Interface]:
+  * FUNCTION_DEFINITION
+  ...
+  * FUNCTION_DEFINITION
+:[Interface]
+
+[Helpers]:
+  * FUNCTION_DEFINITION
+  ...
+  * FUNCTION_DEFINITION
+:[Helpers]
+
+[NonTranslatable]:
+   TEXT_IN_ANY_FORMAT
+:[NonTranslatable]
+</code></pre></div></div>
+
+<p><strong>STATE_DEFINITION</strong>:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  [STATE_NAME]:
+    * Type: TYPE_NAME
+    * Initial Value: VALUE
+</code></pre></div></div>
+
+<p>Where <code class="language-plaintext highlighter-rouge">TYPE_NAME</code> can be any <a href="#valid-types">valid type</a>. (TBD) do we want a 1-to-1 mapping of Rust types to .dtr types? Yes for MVP, but maybe as we implement this it will be (a) easier to generalize and/or (b) clear that new users need not care about this and so we can make <em>smart</em> decisions for them. Eventually we may rethink this when we expand to other frontend targets.</p>
+
+<p><strong>UDT_DEFINITION</strong>:</p>
+
+<p>All user defined types are objects. An object is a named entity with zero or more typed fields.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[Foo]:
+  * Bar: Integer
+  * Baz: String
+</code></pre></div></div>
+
+<p>Enums are fairly typical. Consider how we might represent the two flavors of Rust enums as objects.</p>
+
+<p>Typical enum:</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Rust</span>
+<span class="k">enum</span> <span class="n">TrafficLight</span> <span class="p">{</span>
+    <span class="n">Red</span><span class="p">,</span>
+    <span class="n">Green</span><span class="p">,</span>
+    <span class="n">Yellow</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="o">...</span>
+
+<span class="c1">// Digicus</span>
+<span class="c1">// UDT</span>
+<span class="p">[</span><span class="n">TrafficLight</span><span class="p">]</span>
+  <span class="o">*</span> <span class="n">Kind</span><span class="p">:</span> <span class="n">Integer</span>
+
+<span class="c1">// Function</span>
+<span class="p">[</span><span class="n">TrafficLightValue</span><span class="p">]</span>
+  <span class="o">*</span> <span class="n">Input</span>
+  <span class="p">{</span>
+    <span class="n">traffic_light</span><span class="p">:</span> <span class="n">TrafficLight</span>
+  <span class="p">}</span>
+  <span class="o">*</span> <span class="n">Output</span><span class="p">:</span> <span class="n">Boolean</span>
+  <span class="o">*</span> <span class="n">Instructions</span>
+    <span class="err">$</span>
+      <span class="p">{</span> <span class="n">instruction</span><span class="p">:</span> <span class="n">conditional_jump</span><span class="p">,</span> <span class="n">input</span><span class="p">:</span> <span class="p">(</span><span class="n">greater_than</span><span class="p">,</span> <span class="n">traffic_light</span><span class="py">.Kind</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">scope</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+      <span class="p">{</span> <span class="n">instruction</span><span class="p">:</span> <span class="k">return</span><span class="p">,</span> <span class="n">input</span><span class="p">:</span> <span class="p">(</span><span class="n">False</span><span class="p">),</span> <span class="n">scope</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+      <span class="p">{</span> <span class="n">instruction</span><span class="p">:</span> <span class="k">return</span><span class="p">,</span> <span class="n">input</span><span class="p">:</span> <span class="p">(</span><span class="n">True</span><span class="p">),</span> <span class="n">scope</span><span class="p">:</span> <span class="mi">1</span> <span class="p">}</span>
+    <span class="err">$</span>
+<span class="o">...</span>
+
+
+</code></pre></div></div>
+
+<p>Enum variant:</p>
+
+<div class="language-rs highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Rust</span>
+<span class="k">enum</span> <span class="n">Shape</span> <span class="p">{</span>
+    <span class="nf">Circle</span><span class="p">(</span><span class="nb">f64</span><span class="p">),</span>
+    <span class="nf">Rectangle</span><span class="p">(</span><span class="nb">f64</span><span class="p">,</span> <span class="nb">f64</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="o">...</span>
+
+<span class="c1">// Digicus</span>
+<span class="p">[</span><span class="n">Shape</span><span class="p">]</span>
+  <span class="o">*</span> <span class="n">Circle</span><span class="p">:</span> <span class="n">Tuple</span><span class="o">&lt;</span><span class="n">Float</span><span class="o">&gt;</span>
+  <span class="o">*</span> <span class="n">Rectangle</span><span class="p">:</span> <span class="n">Tuple</span><span class="o">&lt;</span><span class="n">Float</span><span class="p">,</span> <span class="n">Float</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<p><strong>FUNCTION_DEFINITION</strong>:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  [FUNCTION_NAME]:
+    * Input:
+      {
+        INPUT_NAME: TYPE_NAME,
+        ...
+        INPUT_NAME: TYPE_NAME
+      }
+    * Output: TYPE_NAME
+    * Instructions:
+      $
+        { id: UUID, instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL },
+        ...
+        { id: UUID, instruction: INSTRUCTION_NAME, input: (VALUE_NAME: VALUE,..., VALUE_NAME: VALUE), assign: ASSIGN_NAME, scope: SCOPE_LEVEL }
+      $
+</code></pre></div></div>
+
+<p>Note:</p>
+<ul>
+  <li>the input section is optional</li>
+  <li>the output section is optional</li>
+  <li>output may be at most one value</li>
+  <li>an instruction need not have an input nor an output</li>
+  <li>an <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> is a local variable which may be referenced by following instructions</li>
+  <li><code class="language-plaintext highlighter-rouge">INSTRUCTION_NAME</code> is the name of a subset of supported rust expressions <a href="#supported-instructions">see supported instructions</a></li>
+  <li><code class="language-plaintext highlighter-rouge">SCOPE_LEVEL</code> is an unsigned integer detailing which level of accessibility an instruction is executed within. It is required</li>
+</ul>
+
+<h4 id="supported-instructions"><strong><u>Supported Instructions</u></strong></h4>
+
+<p>Defining a set of common instructions across <em>all</em> blockchains is challenging. Thus, it is likely this list will be in flux;until otherwise stated, this list may be incomplete.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Operation Name</th>
+      <th>Inputs</th>
+      <th>Assign</th>
+      <th>Category</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>assign</td>
+      <td>1</td>
+      <td>Required</td>
+      <td>Basic</td>
+      <td>given some input value, assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
+    </tr>
+    <tr>
+      <td>evaluate</td>
+      <td>&gt;1</td>
+      <td>Optional</td>
+      <td>Basic</td>
+      <td>given a method name and 0 or more inputs, execute method. At this time, evaluate is a fairly loose catch-all for not explicitly defined operations</td>
+    </tr>
+    <tr>
+      <td>print</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Basic</td>
+      <td>given some value, print it to standard out</td>
+    </tr>
+    <tr>
+      <td>exit_with_message</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Terminating</td>
+      <td>immediately end execution, returning message</td>
+    </tr>
+    <tr>
+      <td>return</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Terminating</td>
+      <td>return from function with input value</td>
+    </tr>
+    <tr>
+      <td>and</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Logical</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of “and-ing” two values</td>
+    </tr>
+    <tr>
+      <td>or</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Logical</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of “or-ing” two values</td>
+    </tr>
+    <tr>
+      <td>goto</td>
+      <td>1+</td>
+      <td>None</td>
+      <td>Control Flow</td>
+      <td>conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, move in code to the first input (an instruction id)</td>
+    </tr>
+    <tr>
+      <td>jump</td>
+      <td>1+</td>
+      <td>None</td>
+      <td>Control Flow</td>
+      <td>conditional if two inputs. In this case, first input is the condition to evaluate. If that is true, or there is only one input, jump to scope level</td>
+    </tr>
+    <tr>
+      <td>end_of_iteration_check</td>
+      <td>1</td>
+      <td>Required</td>
+      <td>Control Flow</td>
+      <td>check on input to see if at end of iteration. Return result to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
+    </tr>
+    <tr>
+      <td>field</td>
+      <td>2</td>
+      <td>Optional</td>
+      <td>Object</td>
+      <td>access a field on an object and assign result to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code></td>
+    </tr>
+    <tr>
+      <td>instantiate_object</td>
+      <td>1+</td>
+      <td>Optional</td>
+      <td>Object</td>
+      <td>initialize an object by first passing in the <em>type</em> of object and the passing in each initial values for its fields. Supported types here include: <code class="language-plaintext highlighter-rouge">Dictionary</code>, <code class="language-plaintext highlighter-rouge">List</code>, <code class="language-plaintext highlighter-rouge">Range</code>, <code class="language-plaintext highlighter-rouge">Tuple</code>, and <code class="language-plaintext highlighter-rouge">UDT</code>. For UDTs, the second input is the name of the UDT.</td>
+    </tr>
+    <tr>
+      <td>add</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of adding two value</td>
+    </tr>
+    <tr>
+      <td>subtract</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of subtracting two value</td>
+    </tr>
+    <tr>
+      <td>multiply</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of multiplying two value</td>
+    </tr>
+    <tr>
+      <td>divide</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Binary</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> result of dividing two value</td>
+    </tr>
+    <tr>
+      <td>try_assign</td>
+      <td>2</td>
+      <td>Required</td>
+      <td>Basic</td>
+      <td>assign to <code class="language-plaintext highlighter-rouge">ASSIGN_NAME</code> the result of the attempted assign of input index 0 to input index 1</td>
+    </tr>
+    <tr>
+      <td>increment</td>
+      <td>1</td>
+      <td>None</td>
+      <td>Unary</td>
+      <td>An operation to increment the input (however that may be implemented)</td>
+    </tr>
+    <tr>
+      <td>unary</td>
+      <td>2</td>
+      <td>Optional</td>
+      <td>Unary</td>
+      <td>Basic unary operations like <code class="language-plaintext highlighter-rouge">!</code> and <code class="language-plaintext highlighter-rouge">-</code></td>
+    </tr>
+    <tr>
+      <td>break</td>
+      <td>0</td>
+      <td>None</td>
+      <td>Control Flow</td>
+      <td>Breaks out of the current execution flow.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="instruction-execution-flow"><strong><u>Instruction Execution Flow</u></strong></h4>
+
+<p>Instruction flow is determined by two main factors:</p>
+<ol>
+  <li>the top to bottom position of the instruction within the collection</li>
+  <li>the scope of the instruction</li>
+</ol>
+
+<p>Much like traditional computing, instructions here, are executed in the order defined, from top to bottom. However, the <em>instruction pointer</em> <sup id="fnref:18" role="doc-noteref"><a href="#fn:18" class="footnote" rel="footnote">18</a></sup> is scope-aware; thus, if the current scope is <code class="language-plaintext highlighter-rouge">7</code>, but the instruction pointed at is a scope of anything besides <code class="language-plaintext highlighter-rouge">7</code>, the <em>instruction pointer</em> will transition to the next instruction in the collection. Scopes help us isolate functional blocks of logic and as we move through the execution of a program, we simulate a stack frame based on these scopes.</p>
+
+<p>To illustrate, consider the representation of an <code class="language-plaintext highlighter-rouge">if-else</code> block in DTR:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// ====== scope 0 ======
+// CONDITONAL_RESULT_1 = x &gt; 10
+{ instruction: evaluate, input: (greater_than, x, 10), assign: CONDITONAL_RESULT_1, scope: 0 }
+// if CONDITONAL_RESULT_1, scope =&gt; 2
+{ instruction: jump, input: (CONDITONAL_RESULT_1, 2), scope: 0 }
+// else, scope =&gt; 3
+{ instruction: jump, input: (3), scope: 0 }
+
+// ====== scope 2 ======
+// print("we are in scope 2")
+{ instruction: print, input: ("we are in scope 2"), scope: 2 }
+// scope =&gt; 0
+{ instruction: jump, input(0), scope: 2}
+
+// ====== scope 3 ======
+// print("we are in scope 3")
+{ instruction: print, input: ("we are in scope 3"), scope: 3 }
+// scope =&gt; 0
+{ instruction: jump, input(0), scope: 3}
+
+// ====== scope 0 ======
+{ instruction: print, input: ("we are back in scope 0"), scope: 2 }
+</code></pre></div></div>
+
+<p>We start by evaluating <code class="language-plaintext highlighter-rouge">x &gt; 10</code>. If it is true, we navigate to scope 2, print “we are in scope 2”, then navigate back to scope 0 where we print “we are in scope 0”. If x is less than or equal to 10, then we navigate to scope 3, print “we are in scope 3”, finally navigating back to scope 0 where we print “we are in scope 0”.</p>
+
+<p>Equivalent ruby code would look like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span>
+  <span class="nb">print</span> <span class="s2">"we are in scope 2"</span>
+<span class="k">else</span>
+  <span class="nb">print</span> <span class="s2">"we are in scope 3"</span>
+<span class="k">end</span>
+
+<span class="nb">print</span> <span class="s2">"we are in scope 0"</span>
+</code></pre></div></div>
+
+<p><strong>Going “backwards” to <em>repeat</em> ourselves</strong></p>
+
+<p>There are times where it might be useful to repeat some logic. In most programming languages, you can accomplish this with a <code class="language-plaintext highlighter-rouge">loop</code>:</p>
+
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">println!</span><span class="p">(</span><span class="s">"Before loop"</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..</span><span class="mi">42</span> <span class="p">{</span>
+  <span class="nd">println!</span><span class="p">(</span><span class="s">"Iteration: {}"</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nd">println!</span><span class="p">(</span><span class="s">"After loop"</span><span class="p">);</span>
+</code></pre></div></div>
+
+<p>With only the basic scope-based sequential execution we’ve laid out thus far, the only way to replicate the above looping logic is by loop unrolling <sup id="fnref:19" role="doc-noteref"><a href="#fn:19" class="footnote" rel="footnote">19</a></sup>. However, that is not practical. Thus, we’ve introduced the concept of an <code class="language-plaintext highlighter-rouge">instruction id</code> and a <code class="language-plaintext highlighter-rouge">goto</code> instruction type. The <code class="language-plaintext highlighter-rouge">goto</code> instruction (as outline in the table of the preceding section) accepts a single input, the instruction id to navigate to. Thus, we can replicate the above code with the following collection of DTR instructions.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ id: 0, instruction: "print", input: ("Before loop"), scope: 0 }
+{ id: 1, instruction: assign, input: (0), assign: i, scope: 0 }
+{ id: 2, instruction: evaluate, input: (less than, i, 42), assign: LOOP_CHECK, scope: 0 }
+{ id: 3, instruction: jump, input: (LOOP_CHECK, 1), scope: 0 }
+
+{ id: 4, instruction: "print", input: ("Iteration: {}", i), scope: 1 }
+{ id: 5, instruction: "increment", input: (i), scope: 1}
+{ id: 6, instruction: "goto", input: (3), scope: 1}
+
+{ id: 7, instruction: "print", input: ("After loop", scope: 0) }
+</code></pre></div></div>
+
+<p>Here we assign <code class="language-plaintext highlighter-rouge">0</code> to <code class="language-plaintext highlighter-rouge">i</code>. Then we check if <code class="language-plaintext highlighter-rouge">i</code> is less than <code class="language-plaintext highlighter-rouge">42</code>. If so, we navigate to scope 1. In scope 1, we print our message, increment i, then navigate back to the loop check. This code will continue executing until we fail the loop check. Once we fail, we don’t jump to scope 1 and so instructions with the ids of 4, 5, and 6 are skipped. Thus, we print “After loop” and the program terminates.</p>
+
+<p>At this point, we’ve outlined the basics of instruction execution flow for DTR.</p>
+
+<h4 id="valid-types"><strong><u>Valid Types</u></strong></h4>
+
+<p><strong>Basic Types</strong></p>
+
+<p>A.K.A. primitive types.</p>
+
+<p>Digicus supports the following:</p>
+<ul>
+  <li>Address</li>
+  <li>BigInteger</li>
+  <li>Boolean</li>
+  <li>Float</li>
+  <li>Integer</li>
+  <li>String</li>
+</ul>
+
+<p><strong>Container Types</strong></p>
+
+<p>Types that contain types.</p>
+
+<p>Digicus supports the following:</p>
+<ul>
+  <li><strong>List:</strong> homogenous, single unary (ex. <code class="language-plaintext highlighter-rouge">List&lt;Integer&gt;</code>)</li>
+  <li><strong>Dictionary:</strong> homogenous in dimension, binary arity (ex. <code class="language-plaintext highlighter-rouge">Dictionary&lt;String, Integer&gt;</code>)</li>
+  <li><strong>Range:</strong> an iterator over some values (ex. <code class="language-plaintext highlighter-rouge">Range&lt;Integer&gt;</code>)</li>
+  <li><strong>Tuple</strong>: n-ary arity (ex. <code class="language-plaintext highlighter-rouge">Tuple&lt;Integer, Integer, String&gt;</code>)</li>
+</ul>
+
+<hr />
+
+<h1 id="conclusion"><strong><u>Conclusion</u></strong></h1>
+
+<p>We believe Digicus will revolutionize the way budding smart contract newcomers onboard into this powerful and wonderful ecosystem. Furthermore, as with scratch <strong>we expect folks to eventually graduate from Digicus native smart contracts to leveraging the core programming language of their blockchain of choice</strong>. At this point, Digicus will become a <em>sidecar</em> IDE; opened in a window adjacent to their text editor, smart contract developers will be able to leverage the incredible tooling of Digicus to <em>enhance</em> their current development flow.</p>
+
+<p>Presented visually, we believe the evolution of Digicus will look like this:</p>
+
+<div style="text-align:center">
+  <img src="../images/stairway_to_success.png" alt="Digicus Stairway to Success" /> 
+</div>
+
+<p>As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on <a href="https://spaced-out-thoughts-dev-foundation.github.io/">our website</a>.</p>
+
+<p>Until then, please feel free to follow <a href="https://github.com/spaced-out-thoughts-dev-foundation">our coding journey here</a> and experiment with <a href="https://ide.digicus.dev/">the IDE here</a>.</p>
+
+<h4 id="latest-status"><strong><u>Latest Status</u></strong></h4>
+
+<p>At time of writing (<em>August 2024</em>) we have accomplished our SCF #26 Activation Award deliverables (<a href="https://www.youtube.com/watch?v=NhFTr5Cj4lU">demo’d here</a>) and just recently <a href="https://youtu.be/z4zRXWfrTxc?si=6MkSZJOf7qaN5hUe&amp;t=2696">pitched during the SCF #29 Community Award demos</a>; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.</p>
+
+<hr />
+
+<h1 id="grant-acknowledgements"><strong><u>Grant Acknowledgements</u></strong></h1>
+
+<p>We’re forever grateful for support via the following ecosystem grants:</p>
+
+<ul>
+  <li><a href="https://communityfund.stellar.org/">Stellar Community Fund</a> SCF #26 Activation Award</li>
+  <li><a href="https://communityfund.stellar.org/">Stellar Community Fund</a> SCF #29 Community Award</li>
+</ul>
+
+<p>Furthermore, as this work is ambitious and ongoing, we’re actively seeking additional funding opportunities.</p>
+
+<hr />
+
+<h1 id="references"><strong><u>References</u></strong></h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://ethereum.org/content/whitepaper/whitepaper-pdf/Ethereum_Whitepaper_-_Buterin_2014.pdf">Ethereum: A Next-Generation Smart Contract and Decentralized Application Platform. By Vitalik Buterin (2014)</a> <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p><a href="https://www.truevaluemetrics.org/DBpdfs/BlockChain/Nick-Szabo-Smart-Contracts-Building-Blocks-for-Digital-Markets-1996-14591.pdf">Smart Contracts: Building Blocks for Digital Markets - Nick Szabo 1996 (partial rewrite of original)</a> <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p><a href="https://soliditylang.org/">Solidity: A statically-typed curly-braces programming language designed for developing smart contracts that run on Ethereum</a> <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p><a href="https://stellar.org/soroban">Soroban Smart Contracts</a> <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p><a href="https://www.hyperledger.org/participate/basics-v2">Hyperledge Foundation: Learn the Basics</a> <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p><a href="https://www.openzeppelin.com/">OpenZepplin: Securely Code, Deploy and Operate your Smart Contracts</a> <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p><a href="https://web.media.mit.edu/~mres/papers/Scratch-CACM-final.pdf">Scratch: Programming for All </a> <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:8" role="doc-endnote">
+      <p><a href="https://ieeexplore.ieee.org/document/9680565">SmartBuilder: A Block-based Visual Programming Framework for Smart Contract Development: Mpyana Mwamba Merlec; Youn Kyu Lee; Hoh Peter In</a> <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:9" role="doc-endnote">
+      <p><a href="https://www.aergo.io">Aergo blockchain</a> <a href="#fnref:9" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:10" role="doc-endnote">
+      <p><a href="https://arxiv.org/abs/1801.00687">Scilla: a Smart Contract Intermediate-Level LAnguage: Ilya Sergey, Amrit Kumar, Aquinas Hobor</a> <a href="#fnref:10" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:11" role="doc-endnote">
+      <p><a href="https://llvm.org/pubs/2004-01-30-CGO-LLVM.pdf">LLVM: A Compilation Framework for Lifelong Program Analysis &amp; Transformation: Chris Lattner, Vikram Adve</a> <a href="#fnref:11" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:12" role="doc-endnote">
+      <p><a href="https://en.wikipedia.org/wiki/Rob_Pike">Rob Pike - Wikipedia</a> <a href="#fnref:12" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:13" role="doc-endnote">
+      <p><a href="https://www.youtube.com/watch?v=yE5Tpp2BSGw">Rob Pike - What We Got Right, What We Got Wrong, GopherConAU 2023</a> <a href="#fnref:13" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:14" role="doc-endnote">
+      <p><a href="https://github.com/spaced-out-thoughts-dev-foundation/bean-**stock**">Bean Stock Compiler Plugin Hub</a> <a href="#fnref:14" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:15" role="doc-endnote">
+      <p><a href="https://github.com/features/copilot">Giuthub Copilot</a> <a href="#fnref:15" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:16" role="doc-endnote">
+      <p><a href="https://github.com/hyperledger/solang">Solang: Solidity to Solana</a> <a href="#fnref:16" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:17" role="doc-endnote">
+      <p><a href="https://polkadot.network/features/technology/">Polkadot: any type of data across any type of blockchain</a> <a href="#fnref:17" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:18" role="doc-endnote">
+      <p><a href="https://en.wikipedia.org/wiki/Program_counter">Program Counter - Wikipedia</a> <a href="#fnref:18" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:19" role="doc-endnote">
+      <p><a href="https://en.wikipedia.org/wiki/Loop_unrolling">Loop unrolling - Wikipedia</a> <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>]]></content><author><name></name></author><summary type="html"><![CDATA[Scratch for Smart Contracts]]></summary></entry><entry><title type="html">Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust</title><link href="http://localhost:4000/2024/07/10/if-let-back-to-rust.html" rel="alternate" type="text/html" title="Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust" /><published>2024-07-10T00:00:00-06:00</published><updated>2024-07-10T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/10/if-let-back-to-rust</id><content type="html" xml:base="http://localhost:4000/2024/07/10/if-let-back-to-rust.html"><![CDATA[<p>In a previous post title <em>Rust Specific Construct Representations ep. 2: Let-Else</em>, I demonstrated how we can translate <code class="language-plaintext highlighter-rouge">if let</code> from Rust to DTR.</p>
 
 <p>Consider the simplest example:</p>
 
