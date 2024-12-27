@@ -1,7 +1,4 @@
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
 layout: home
 ---
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,14 +10,14 @@ layout: home
 
 <br>
 
-<h2 style=" font-family: 'Playwrite IT Moderna', cursive"> A small Ruby shop determined to make programming smart contracts as easy as possible. </h2>
+<h2 style=" font-family: 'Playwrite IT Moderna', cursive"> A small Ruby and Go shop experimenting in visual programming with a knack for performance engineering. </h2>
 
 <br>
 
 ***
 
 <h2>Portfolio</h2>
-* [Digicus](digicus): a block-based programming language supporting visual construction, manipulation, and comprehension of smart contracts
+* [Digicus](digicus) [original work]: a block-based programming language supporting visual construction, manipulation, and comprehension of smart contracts
 
 ***
 
