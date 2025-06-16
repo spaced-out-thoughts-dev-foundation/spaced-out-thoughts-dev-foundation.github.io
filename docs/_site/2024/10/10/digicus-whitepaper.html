@@ -9,17 +9,17 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Scratch for Smart Contracts" />
 <meta property="og:description" content="Scratch for Smart Contracts" />
-<link rel="canonical" href="http://localhost:4000/2024/10/10/digicus-whitepaper.html" />
-<meta property="og:url" content="http://localhost:4000/2024/10/10/digicus-whitepaper.html" />
+<link rel="canonical" href="http://0.0.0.0:4000/2024/10/10/digicus-whitepaper.html" />
+<meta property="og:url" content="http://0.0.0.0:4000/2024/10/10/digicus-whitepaper.html" />
 <meta property="og:site_name" content="Spaced Out Thoughts Development Foundation" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2024-10-10T00:00:00-06:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Digicus Whitepaper" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-10T00:00:00-06:00","datePublished":"2024-10-10T00:00:00-06:00","description":"Scratch for Smart Contracts","headline":"Digicus Whitepaper","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2024/10/10/digicus-whitepaper.html"},"url":"http://localhost:4000/2024/10/10/digicus-whitepaper.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2024-10-10T00:00:00-06:00","datePublished":"2024-10-10T00:00:00-06:00","description":"Scratch for Smart Contracts","headline":"Digicus Whitepaper","mainEntityOfPage":{"@type":"WebPage","@id":"http://0.0.0.0:4000/2024/10/10/digicus-whitepaper.html"},"url":"http://0.0.0.0:4000/2024/10/10/digicus-whitepaper.html"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Spaced Out Thoughts Development Foundation" /></head>
+<link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://0.0.0.0:4000/feed.xml" title="Spaced Out Thoughts Development Foundation" /></head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-T8C6QMG0PJ"></script>
 <script>
@@ -216,7 +216,7 @@ me[at]robdurst[dot]com
 
 <p><strong>Architecture:</strong></p>
 
-<center><img src="../images/revamped_architecture_doc.png" alt="current architecture diagram" /></center>
+<center><img src="../../images/revamped_architecture_doc.png" alt="current architecture diagram" /></center>
 
 <p>Our compiler plugin framework is leveraged by Digit via the Bean Stock Compiler Plugin (pod) Hub <sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">14</a></sup>. Bean Stock sources pods via <code class="language-plaintext highlighter-rouge">git submodules</code>, where each submodule has a <code class="language-plaintext highlighter-rouge">bean_stock_manifest.yaml</code> file describing the pod. Here is an example:</p>
 
@@ -236,7 +236,7 @@ me[at]robdurst[dot]com
 <p>Below is an initial mockup of the MVP user interface.</p>
 
 <div style="text-align:center">
-  <img src="../images/digicus-ide-mockup.png" alt="Digit Overview" /> 
+  <img src="../../images/digicus-ide-mockup.png" alt="Digit Overview" /> 
 </div>
 
 <p>When developing with Digicus, users will be able to name the contract, drag and drop block components into the interactive function creator, and then they will be able to perform minimal, chain agnostic testing of the contract. The UI/UX for this will be based heavily off of the well-tested, mature Scratch programming platform. Furthermore, a plethora of features will be supported to make this a first class smart contract development interface, including but not limited to:</p>
@@ -275,7 +275,7 @@ from_dtr(dtr: String) --&gt; String
 <p>However, given the flexibility of the compiler plugin designed, one day, Digit will be able to support the following:</p>
 
 <div style="text-align:center">
-  <img src="../images/digit_overview.png" alt="Digit Overview" /> 
+  <img src="../../images/digit_overview.png" alt="Digit Overview" /> 
 </div>
 
 <p>Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries <sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">16</a></sup> and even blockchain interoperability<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup>. Digicus aims to go one step further, the generalization of smart contracts as whole. <em>We believe this is layer 3 at its finest!</em></p>
@@ -699,29 +699,12 @@ from_dtr(dtr: String) --&gt; String
 <p>Presented visually, we believe the evolution of Digicus will look like this:</p>
 
 <div style="text-align:center">
-  <img src="../images/stairway_to_success.png" alt="Digicus Stairway to Success" /> 
+  <img src="../../images/stairway_to_success.png" alt="Digicus Stairway to Success" /> 
 </div>
 
 <p>As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on <a href="https://spaced-out-thoughts-dev-foundation.github.io/">our website</a>.</p>
 
 <p>Until then, please feel free to follow <a href="https://github.com/spaced-out-thoughts-dev-foundation">our coding journey here</a> and experiment with <a href="https://ide.digicus.dev/">the IDE here</a>.</p>
-
-<h4 id="latest-status"><strong><u>Latest Status</u></strong></h4>
-
-<p>At time of writing (<em>August 2024</em>) we have accomplished our SCF #26 Activation Award deliverables (<a href="https://www.youtube.com/watch?v=NhFTr5Cj4lU">demo’d here</a>) and just recently <a href="https://youtu.be/z4zRXWfrTxc?si=6MkSZJOf7qaN5hUe&amp;t=2696">pitched during the SCF #29 Community Award demos</a>; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.</p>
-
-<hr />
-
-<h1 id="grant-acknowledgements"><strong><u>Grant Acknowledgements</u></strong></h1>
-
-<p>We’re forever grateful for support via the following ecosystem grants:</p>
-
-<ul>
-  <li><a href="https://communityfund.stellar.org/">Stellar Community Fund</a> SCF #26 Activation Award</li>
-  <li><a href="https://communityfund.stellar.org/">Stellar Community Fund</a> SCF #29 Community Award</li>
-</ul>
-
-<p>Furthermore, as this work is ambitious and ongoing, we’re actively seeking additional funding opportunities.</p>
 
 <hr />
 

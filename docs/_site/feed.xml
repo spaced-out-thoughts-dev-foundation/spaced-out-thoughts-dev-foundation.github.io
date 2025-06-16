@@ -1,346 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2024-10-19T18:01:53-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">DAO Overview</title><link href="http://localhost:4000/2024/10/19/dao.html" rel="alternate" type="text/html" title="DAO Overview" /><published>2024-10-19T00:00:00-06:00</published><updated>2024-10-19T00:00:00-06:00</updated><id>http://localhost:4000/2024/10/19/dao</id><content type="html" xml:base="http://localhost:4000/2024/10/19/dao.html"><![CDATA[<p>The Spaced Out Thoughts Development Foundation is evolving from an informal entity to a DAO (<a href="https://en.wikipedia.org/wiki/Decentralized_autonomous_organization">a Decentralized Autonomous Organization</a>) in order to establish a self-sufficient, trustless organization with the goal of incentivizing development of <a href="https://spaced-out-thoughts-dev-foundation.github.io/digicus/">Digicus</a>, a platform to make <strong>smart contract development as easy as possible</strong>.</p>
-
-<p>A DAO is an abstraction over a smart contract and a smart contract is <em>simply</em> (a bit tongue in cheek, we know) a collection of functions autonomously executed in a VM running sidecar to a blockchain, operating on a shared set of data, maintained by the underlying network. Why consider a DAO over a traditional web2 organization?</p>
-
-<ol>
-  <li>public visibility: <em>all actions, rules, etc. are in the open for anyone to read</em></li>
-  <li>strong preference for as many nines as possible: <em>blockchains typically operate at an availability rarely seen in conventional tech, paramount for operational governance of an organization</em></li>
-  <li>operating in a resource constrained environment is not an issue: <em>while we get (2), a tradeoff is we have to accept an exceptionally constrained execution environment in terms of resources, speed, etc.</em></li>
-  <li>automated transfer of value: <em>we can leverage oracles to define goals, linking rewards to these goals, automatically transferring rewards upon successful completion</em></li>
-</ol>
-
-<hr />
-
-<h2 id="functions">Functions</h2>
-
-<h4 id="function-1-incentiviation-of-work">[Function 1]: Incentiviation of Work</h4>
-
-<p>Progress is not free. Thus, the primary purpose of this DAO is to incentivize work. We expect two <em>types</em> of contributors:</p>
-
-<ol>
-  <li><strong>core:</strong> folks interested in ongoing work. These people will be <em>members</em> of the DAO, have voting rights, and receive an ongoing <em>salary</em> based on the value they provide (as voted on by their peers).</li>
-  <li><strong>ad hoc:</strong> spontaneous workers. These folks will contribute when they have spare time, but not necessarily in a continuous or ongoing manner.</li>
-</ol>
-
-<p>Based on these two types of workers, funds will initially be allocated as follows: <code class="language-plaintext highlighter-rouge">75%</code> to core contributors and <code class="language-plaintext highlighter-rouge">25%</code> to ad hoc contributors. This <em>law</em> will be codified.</p>
-
-<p>In order to facilitate the distinction between core and ad hoc contributors <em>and</em> in order to define tasks and criteria for completion, we will be leveraging a Github Oracle (<em>to be developed</em>).</p>
-
-<h4 id="function-2-prioritization-of-funds">[Function 2]: Prioritization of Funds</h4>
-
-<p>Since this work is open source, we expect four sources:</p>
-
-<ol>
-  <li><strong>core sponsorship</strong>: angel/anonymous/supporter funding. This category of funding, while similar to (3), grants fractional voting rights similar to a board member in a traditional, stock based organization.</li>
-  <li><strong>ad hoc sponsorship</strong>: while this work is open source and free to use and free to fork, we are the subject matter experts and thus we are the ones most able to ship functional features in a reasonable timeframe. Thus, we will allow third parties to post <em>request for work</em> proposals. These will be very similar to how we post <code class="language-plaintext highlighter-rouge">ad hoc</code> work requests, except that the source of funding will come externally instead of out of the DAO’s internal account.</li>
-  <li><strong>foundational sponsorship</strong>: ongoing and future grants (i.e. <a href="https://dashboard.communityfund.stellar.org/">Stellar Community Fund</a>)</li>
-  <li><strong>fee for service</strong>: it is often said that the creators of tooling, especially tooling that enables insight into the core functionality of a service, often have the best understanding of how those services work. We expect that over time we will develop Soroban expertise that we can lend out to the community for a fee (<em>consultation</em> work). A majority of fee for service rewards will go directly to the DAO member who handles the request, however a small percent will go back to the DAO to support further development.</li>
-</ol>
-
-<p>Time and money are both limited. We will democratically decide:</p>
-
-<ul>
-  <li>how to spend our capital (money and time)</li>
-  <li>which ad hoc requests and fee for service requests to address in what order</li>
-  <li>who is best to address these requests</li>
-</ul>
-
-<hr />
-
-<h2 id="membership">Membership</h2>
-
-<p>As noted, a DAO is supported by two resources: money and time. Based on how folks contribute and how much they contribute will define what privileges they receive.</p>
-
-<center><img src="../images/dao_tiers.png" alt="membership tiers of DAO" /></center>
-
-<hr />
-
-<h2 id="tokenomics">Tokenomics</h2>
-
-<p><strong>TBD</strong></p>
-
-<hr />
-
-<h2 id="operating-philosophy">Operating Philosophy</h2>
-
-<ol>
-  <li>Voting power is earned: <em>votes will be proportional to stake (time and money invested) with a preference for time</em></li>
-  <li>We serve the greater good: <em>everything is public</em></li>
-  <li>Optimize for developer happiness (<a href="https://rubyonrails.org/doctrine">borrowed from the Rails Doctrine</a>): <em>when competing priorities arise, this is the tie breaker, “what will make our users happier?”</em></li>
-  <li>Avoid flame wars at all costs: <em>we make technology and tool decisions based on group consensus and what is best for the job, avoiding basing purely on personal preference at all costs</em></li>
-</ol>
-
-<hr />
-
-<h2 id="contract-design">Contract Design</h2>
-
-<p>As stated in the introduction, this is just an initial basic sketch. We fully expect the design to change as oru assumptions and understanding evolve. Furthermore, the source of truth is always the code. We will do our best to maintain this document, however, please always consult the code as well, especially for particular implementation details.</p>
-
-<center><img src="../images/Dao_Architecture_v1.png" alt="architecture of DAO" /></center>
-
-<p><br /></p>
-<h4 id="components">Components</h4>
-
-<p><strong>[Corpus of Work]</strong>: a Github repository that functions as the source of truth for work. Here each instance of work will have a timeline, a set of well defined deliverables, and a reward (optionally we may assign to a user).
-<br /><br />
-<strong>[GH Action]</strong>: maintains the state of the oracle contract
-<br /><br />
-<strong>[Github Oracle Contract</strong>]: maintains the state of relevant Github information such as work, work progress, work details, etc.
-<br /><br />
-<strong>[DAO Contract]</strong>: leveraging the oracle, facilitates voting, proposals for new work, reward distribution, etc.
-<br /><br />
-<strong>[DAO Hub Backend]</strong>: surfaces information from the DAO contract to be consumed by other services. Likely will also include the hosting a Horizon and a Soroban RPC service as well.
-<br /><br />
-<strong>[DAO Hub Website]</strong>: a visual of the pertinent information from the DAO contract. Will have basic functionality to interact with the contract as well.</p>
-
-<hr />
-
-<h2 id="decentralized-oracle-network">Decentralized Oracle Network</h2>
-
-<p>An oracle:</p>
-<blockquote>
-  <p>Oracles are applications that produce data feeds that make off-chain data sources available to the blockchain for smart contracts… [w]ithout an oracle, a smart contract would be limited entirely to on-chain data. Oracles differ based on the source of data (one or multiple sources), trust models (centralized or decentralized), and system architecture (immediate-read, publish-subscribe, and request-response). We can also distinguish between oracles based on whether they retrieve external data for use by on-chain contracts (input oracles), send information from the blockchain to the off-chain applications (output oracles), or perform computational tasks off-chain (computational oracles)… [s]ince information stored on-chain is unalterable and publicly available, Ethereum nodes can safely use the oracle imported off-chain data to compute state changes without breaking consensus… [t]o do this, an oracle is typically made up of a smart contract running on-chain and some off-chain components. The on-chain contract receives requests for data from other smart contracts, which it passes to the off-chain component (called an oracle node). This oracle node can query data sources—using application programming interfaces (APIs), for example—and send transactions to store the requested data in the smart contract’s storage.
-– Ethereum.org (https://ethereum.org/en/developers/docs/oracles/)</p>
-</blockquote>
-
-<p>A smart contract is</p>
-
-<p>A blockchain is essentially a closed network. Oracles allow info to flow in and out of the network from a trusted source - folks decide which Oracles to trust.</p>
-
-<p>To design an oracle,</p>
-
-<center><img src="../images/github_issue_state_machine.png" alt="architecture of DAO" /></center>
-
-<h3 id="sub-goals">Sub Goals</h3>
-<ul>
-  <li><strong>Cheap</strong>: some folks may wish to operate with minimal resources. It should be possible to operate on a minimal raspberry pi</li>
-</ul>
-
-<p>Oracle Design pattern: <em>pub-sub</em></p>
-
-<p>Decentralized oracle:</p>
-<ul>
-  <li>correctness
-    <ul>
-      <li>authenticity proof</li>
-      <li>consensus</li>
-      <li>Voting &amp; staking</li>
-    </ul>
-  </li>
-  <li>Schelling point? (chain link does this)</li>
-  <li>Reputation of correctness based on past historical performance</li>
-</ul>
-
-<p>Best Source</p>
-
-<h4 id="what-we-want-it-to-do">What we want it to do</h4>
-
-<p>Synchronize critical github issue information.</p>
-
-<p>States of an issue.</p>
-
-<ol>
-  <li>initially posted (lock funds to issue)</li>
-  <li>unclaimed</li>
-  <li>claimed (someone staked and attached github to some address)</li>
-  <li>started (PR opened linking PR)</li>
-  <li>ready for review</li>
-  <li>accepted (will trigger release of funds)</li>
-  <li>[misc. path] timed out, released (but stake not released. Dev gets less back in refund if they give up based on time)</li>
-</ol>
-
-<p>Connecting Github and Stellar</p>
-
-<p>[Organization]:</p>
-<ul>
-  <li>Data
-    <ul>
-      <li>Stellar Address</li>
-      <li>Github handle</li>
-      <li>Domain</li>
-    </ul>
-  </li>
-  <li>Github side
-    <ul>
-      <li>Proof posted in oracle repo (signed data with username using public key)</li>
-    </ul>
-  </li>
-  <li>Stellar side
-    <ul>
-      <li>Proof posted in contract along with mapping</li>
-    </ul>
-  </li>
-  <li>Domain side
-    <ul>
-      <li>Manifest</li>
-    </ul>
-  </li>
-</ul>
-
-<p><strong>Github Side</strong></p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>organizations:
-  - name: "Spaced Out Thoughts Development Foundation"
-    website: "https://spaced-out-thoughts-dev-foundation.github.io/"
-    proof: "TBD"
-    github_name: "robertDurst"
-    public_key: "GD5I4NMCQLYS464YS6ANTI55JLLPO6PPL4KYHP3YKBJ4B7R7MPVQK7IM"
-</code></pre></div></div>
-
-<p>Proof Algorithm
-[library]: https://github.com/spaced-out-thoughts-dev-foundation/github-soroban-proof-generator
-[Pseudocode]:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LINK_TO_ORG = initial SHA of proof-less verified PR to organization repository
-LINK_TO_MANIFEST = manifest url from their domain
-PROOF = sign_with_stellar_key(LINK_TO_ORG &amp; GITHUB_USERNAME &amp; LINK_TO_MANIFEST)
-</code></pre></div></div>
-
-<p>[User]:</p>
-<ul>
-  <li>Data
-    <ul>
-      <li>Stellar Address</li>
-      <li>Github handle</li>
-    </ul>
-  </li>
-  <li>Github side
-    <ul>
-      <li>Proof posted in oracle repo (signed data with username using public key)</li>
-    </ul>
-  </li>
-  <li>Stellar side
-    <ul>
-      <li>Proof posted in contract along with mapping</li>
-    </ul>
-  </li>
-</ul>
-
-<p><strong>Github Side</strong></p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>users:
-  - github_name: "robertDurst"
-    proof: "TBD"
-    public_key: "GD5I4NMCQLYS464YS6ANTI55JLLPO6PPL4KYHP3YKBJ4B7R7MPVQK7IM"
-</code></pre></div></div>
-
-<p>Proof Algorithm
-[library]: https://github.com/spaced-out-thoughts-dev-foundation/github-soroban-proof-generator
-[Pseudocode]:</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>LINK_TO_ORG = initial SHA of proof-less verified PR to organization repository
-PROOF = sign_with_stellar_key(LINK_TO_ORG &amp; GITHUB_USERNAME)
-</code></pre></div></div>
-
-<h2 id="incentives">Incentives</h2>
-
-<ol>
-  <li>review code</li>
-  <li>put up code</li>
-  <li>run a node</li>
-</ol>
-
-<h2 id="things-to-vote-on">Things to Vote on</h2>
-
-<ol>
-  <li>issues to prioritize</li>
-  <li>ecosystem proposals</li>
-  <li>core reviewer acceptance</li>
-</ol>
-
-<h2 id="reputation-score">Reputation Score</h2>
-
-<ul>
-  <li>reviews</li>
-  <li>contirbutions</li>
-  <li>voting</li>
-  <li>hosting a node</li>
-</ul>
-
-<h2 id="contract-actions">Contract Actions</h2>
-
-<ol>
-  <li>[Users] map github usernames to stellar addresses</li>
-  <li>[Repos] list of repos to sync</li>
-  <li>[Issues] per repo issue information
-    <ol>
-      <li>[Github] Phase</li>
-      <li>[Github &amp; Contract] If claimed, which account?</li>
-      <li>[Contract] Stake
-        <ol>
-          <li>Organization</li>
-          <li>Contributor</li>
-          <li>Reviewer</li>
-        </ol>
-      </li>
-    </ol>
-  </li>
-</ol>
-
-<ul>
-  <li>CRUD user</li>
-  <li>CRUD repo</li>
-  <li>CRUD issue</li>
-  <li>stake
-    <ul>
-      <li>post issue
-        <ul>
-          <li>stake
-            <ul>
-              <li>issue accepted</li>
-            </ul>
-          </li>
-          <li>refund
-            <ul>
-              <li>issue times out</li>
-            </ul>
-          </li>
-          <li>distribute to user
-            <ul>
-              <li>pull request accepted</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li>claim issue
-        <ul>
-          <li>stake
-            <ul>
-              <li>issue claimed</li>
-            </ul>
-          </li>
-          <li>refund
-            <ul>
-              <li>partial
-                <ul>
-                  <li>times out</li>
-                  <li>changes mind</li>
-                  <li>too many submissions</li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-      <li>review issue
-        <ul>
-          <li>stake
-            <ul>
-              <li>selected as reviewer</li>
-            </ul>
-          </li>
-          <li>refund
-            <ul>
-              <li>submission fails</li>
-              <li>submission completed successfully</li>
-            </ul>
-          </li>
-          <li>distribute to user
-            <ul>
-              <li>times out review</li>
-            </ul>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-</ul>]]></content><author><name></name></author><summary type="html"><![CDATA[The Spaced Out Thoughts Development Foundation is evolving from an informal entity to a DAO (a Decentralized Autonomous Organization) in order to establish a self-sufficient, trustless organization with the goal of incentivizing development of Digicus, a platform to make smart contract development as easy as possible.]]></summary></entry><entry><title type="html">Digicus Whitepaper</title><link href="http://localhost:4000/2024/10/10/digicus-whitepaper.html" rel="alternate" type="text/html" title="Digicus Whitepaper" /><published>2024-10-10T00:00:00-06:00</published><updated>2024-10-10T00:00:00-06:00</updated><id>http://localhost:4000/2024/10/10/digicus-whitepaper</id><content type="html" xml:base="http://localhost:4000/2024/10/10/digicus-whitepaper.html"><![CDATA[<h1 align="center"><span align="center" style="font-size: 2em;">Scratch for Smart Contracts</span></h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.3">Jekyll</generator><link href="http://0.0.0.0:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://0.0.0.0:4000/" rel="alternate" type="text/html" /><updated>2025-06-15T18:13:25-06:00</updated><id>http://0.0.0.0:4000/feed.xml</id><title type="html">Spaced Out Thoughts Development Foundation</title><subtitle>A small Ruby shop determined to make smart contracts as easy to use as possible.</subtitle><entry><title type="html">Digicus Whitepaper</title><link href="http://0.0.0.0:4000/2024/10/10/digicus-whitepaper.html" rel="alternate" type="text/html" title="Digicus Whitepaper" /><published>2024-10-10T00:00:00-06:00</published><updated>2024-10-10T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2024/10/10/digicus-whitepaper</id><content type="html" xml:base="http://0.0.0.0:4000/2024/10/10/digicus-whitepaper.html"><![CDATA[<h1 align="center"><span align="center" style="font-size: 2em;">Scratch for Smart Contracts</span></h1>
 
 <div align="center">
 Rob Durst<br />
@@ -443,7 +101,7 @@ me[at]robdurst[dot]com
 
 <p><strong>Architecture:</strong></p>
 
-<center><img src="../images/revamped_architecture_doc.png" alt="current architecture diagram" /></center>
+<center><img src="../../images/revamped_architecture_doc.png" alt="current architecture diagram" /></center>
 
 <p>Our compiler plugin framework is leveraged by Digit via the Bean Stock Compiler Plugin (pod) Hub <sup id="fnref:14" role="doc-noteref"><a href="#fn:14" class="footnote" rel="footnote">14</a></sup>. Bean Stock sources pods via <code class="language-plaintext highlighter-rouge">git submodules</code>, where each submodule has a <code class="language-plaintext highlighter-rouge">bean_stock_manifest.yaml</code> file describing the pod. Here is an example:</p>
 
@@ -463,7 +121,7 @@ me[at]robdurst[dot]com
 <p>Below is an initial mockup of the MVP user interface.</p>
 
 <div style="text-align:center">
-  <img src="../images/digicus-ide-mockup.png" alt="Digit Overview" /> 
+  <img src="../../images/digicus-ide-mockup.png" alt="Digit Overview" /> 
 </div>
 
 <p>When developing with Digicus, users will be able to name the contract, drag and drop block components into the interactive function creator, and then they will be able to perform minimal, chain agnostic testing of the contract. The UI/UX for this will be based heavily off of the well-tested, mature Scratch programming platform. Furthermore, a plethora of features will be supported to make this a first class smart contract development interface, including but not limited to:</p>
@@ -502,7 +160,7 @@ from_dtr(dtr: String) --&gt; String
 <p>However, given the flexibility of the compiler plugin designed, one day, Digit will be able to support the following:</p>
 
 <div style="text-align:center">
-  <img src="../images/digit_overview.png" alt="Digit Overview" /> 
+  <img src="../../images/digit_overview.png" alt="Digit Overview" /> 
 </div>
 
 <p>Digit enables the seamless translation of contracts not only from source to DTR, but from source A to Target B. There are numerous ecosystem examples of targeted transpilation libraries <sup id="fnref:16" role="doc-noteref"><a href="#fn:16" class="footnote" rel="footnote">16</a></sup> and even blockchain interoperability<sup id="fnref:17" role="doc-noteref"><a href="#fn:17" class="footnote" rel="footnote">17</a></sup>. Digicus aims to go one step further, the generalization of smart contracts as whole. <em>We believe this is layer 3 at its finest!</em></p>
@@ -926,29 +584,12 @@ from_dtr(dtr: String) --&gt; String
 <p>Presented visually, we believe the evolution of Digicus will look like this:</p>
 
 <div style="text-align:center">
-  <img src="../images/stairway_to_success.png" alt="Digicus Stairway to Success" /> 
+  <img src="../../images/stairway_to_success.png" alt="Digicus Stairway to Success" /> 
 </div>
 
 <p>As time goes on, we will work with developers to solicit feedback and conduct surveys in order to ensure we have the greatest possible positive impact on this community. These survey results will be posted on <a href="https://spaced-out-thoughts-dev-foundation.github.io/">our website</a>.</p>
 
 <p>Until then, please feel free to follow <a href="https://github.com/spaced-out-thoughts-dev-foundation">our coding journey here</a> and experiment with <a href="https://ide.digicus.dev/">the IDE here</a>.</p>
-
-<h4 id="latest-status"><strong><u>Latest Status</u></strong></h4>
-
-<p>At time of writing (<em>August 2024</em>) we have accomplished our SCF #26 Activation Award deliverables (<a href="https://www.youtube.com/watch?v=NhFTr5Cj4lU">demo’d here</a>) and just recently <a href="https://youtu.be/z4zRXWfrTxc?si=6MkSZJOf7qaN5hUe&amp;t=2696">pitched during the SCF #29 Community Award demos</a>; we at Spaced Out Thoughts are huge fans and supporters of Stellar and thus seek to leverage our past experience with SDF to work within the ecosystem we know best.</p>
-
-<hr />
-
-<h1 id="grant-acknowledgements"><strong><u>Grant Acknowledgements</u></strong></h1>
-
-<p>We’re forever grateful for support via the following ecosystem grants:</p>
-
-<ul>
-  <li><a href="https://communityfund.stellar.org/">Stellar Community Fund</a> SCF #26 Activation Award</li>
-  <li><a href="https://communityfund.stellar.org/">Stellar Community Fund</a> SCF #29 Community Award</li>
-</ul>
-
-<p>Furthermore, as this work is ambitious and ongoing, we’re actively seeking additional funding opportunities.</p>
 
 <hr />
 
@@ -1014,7 +655,7 @@ from_dtr(dtr: String) --&gt; String
       <p><a href="https://en.wikipedia.org/wiki/Loop_unrolling">Loop unrolling - Wikipedia</a> <a href="#fnref:19" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
     </li>
   </ol>
-</div>]]></content><author><name></name></author><summary type="html"><![CDATA[Scratch for Smart Contracts]]></summary></entry><entry><title type="html">Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust</title><link href="http://localhost:4000/2024/07/10/if-let-back-to-rust.html" rel="alternate" type="text/html" title="Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust" /><published>2024-07-10T00:00:00-06:00</published><updated>2024-07-10T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/10/if-let-back-to-rust</id><content type="html" xml:base="http://localhost:4000/2024/07/10/if-let-back-to-rust.html"><![CDATA[<p>In a previous post title <em>Rust Specific Construct Representations ep. 2: Let-Else</em>, I demonstrated how we can translate <code class="language-plaintext highlighter-rouge">if let</code> from Rust to DTR.</p>
+</div>]]></content><author><name></name></author><summary type="html"><![CDATA[Scratch for Smart Contracts]]></summary></entry><entry><title type="html">Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust</title><link href="http://0.0.0.0:4000/2024/07/10/if-let-back-to-rust.html" rel="alternate" type="text/html" title="Soroban Rust Backend Compiler Plugin Deep Dive: Translating And If Let Back to Rust" /><published>2024-07-10T00:00:00-06:00</published><updated>2024-07-10T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2024/07/10/if-let-back-to-rust</id><content type="html" xml:base="http://0.0.0.0:4000/2024/07/10/if-let-back-to-rust.html"><![CDATA[<p>In a previous post title <em>Rust Specific Construct Representations ep. 2: Let-Else</em>, I demonstrated how we can translate <code class="language-plaintext highlighter-rouge">if let</code> from Rust to DTR.</p>
 
 <p>Consider the simplest example:</p>
 
@@ -1088,7 +729,7 @@ from_dtr(dtr: String) --&gt; String
   <span class="c1">// [2]</span>
   <span class="k">return</span> <span class="n">foobar</span><span class="p">;</span>
 <span class="p">}</span>
-</code></pre></div></div>]]></content><author><name></name></author><summary type="html"><![CDATA[In a previous post title Rust Specific Construct Representations ep. 2: Let-Else, I demonstrated how we can translate if let from Rust to DTR.]]></summary></entry><entry><title type="html">Soroban Rust Backend Compiler Plugin Deep Dive: Translating Branching Logic</title><link href="http://localhost:4000/2024/07/09/dtr_to_rust_branching.html" rel="alternate" type="text/html" title="Soroban Rust Backend Compiler Plugin Deep Dive: Translating Branching Logic" /><published>2024-07-09T00:00:00-06:00</published><updated>2024-07-09T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/09/dtr_to_rust_branching</id><content type="html" xml:base="http://localhost:4000/2024/07/09/dtr_to_rust_branching.html"><![CDATA[<p>DTR, or <a href="http://localhost:4000/digicus/#digicus-textual-representation">Digicus Textual Representation</a>, defines method logic via a set of sequentially executed transactions. DTR instructions have a <em>scope</em> field to represent blocks of contiguously executed code. By jumping between scopes, we can emulate branching.</p>
+</code></pre></div></div>]]></content><author><name></name></author><summary type="html"><![CDATA[In a previous post title Rust Specific Construct Representations ep. 2: Let-Else, I demonstrated how we can translate if let from Rust to DTR.]]></summary></entry><entry><title type="html">Soroban Rust Backend Compiler Plugin Deep Dive: Translating Branching Logic</title><link href="http://0.0.0.0:4000/2024/07/09/dtr_to_rust_branching.html" rel="alternate" type="text/html" title="Soroban Rust Backend Compiler Plugin Deep Dive: Translating Branching Logic" /><published>2024-07-09T00:00:00-06:00</published><updated>2024-07-09T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2024/07/09/dtr_to_rust_branching</id><content type="html" xml:base="http://0.0.0.0:4000/2024/07/09/dtr_to_rust_branching.html"><![CDATA[<p>DTR, or <a href="http://localhost:4000/digicus/#digicus-textual-representation">Digicus Textual Representation</a>, defines method logic via a set of sequentially executed transactions. DTR instructions have a <em>scope</em> field to represent blocks of contiguously executed code. By jumping between scopes, we can emulate branching.</p>
 
 <p>Consider the following DTR:</p>
 <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{ id: 0, instruction: evaluate, input: (equal_to, 1, x), assign: CONDITONAL_RESULT_1, scope: 0}
@@ -1308,7 +949,7 @@ log!("The End");
 
 <div style="text-align: center;">
     <img src="https://media1.tenor.com/m/CgjirlJs7xsAAAAC/nice-nooice.gif" alt="noice" />
-</div>]]></content><author><name></name></author><summary type="html"><![CDATA[DTR, or Digicus Textual Representation, defines method logic via a set of sequentially executed transactions. DTR instructions have a scope field to represent blocks of contiguously executed code. By jumping between scopes, we can emulate branching.]]></summary></entry><entry><title type="html">Rust Specific Construct Representations ep. 2: Let-Else</title><link href="http://localhost:4000/2024/07/03/let-else.html" rel="alternate" type="text/html" title="Rust Specific Construct Representations ep. 2: Let-Else" /><published>2024-07-03T00:00:00-06:00</published><updated>2024-07-03T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/03/let-else</id><content type="html" xml:base="http://localhost:4000/2024/07/03/let-else.html"><![CDATA[<p>Stable since <a href="https://releases.rs/docs/1.65.0/">November 3, 2022</a>, Rust’s <a href="https://doc.rust-lang.org/rust-by-example/flow_control/let_else.html"><code class="language-plaintext highlighter-rouge">let-else</code></a> is a bit of an odd one (<a href="https://rust-lang.github.io/rfcs/3137-let-else.html">RFC</a>).</p>
+</div>]]></content><author><name></name></author><summary type="html"><![CDATA[DTR, or Digicus Textual Representation, defines method logic via a set of sequentially executed transactions. DTR instructions have a scope field to represent blocks of contiguously executed code. By jumping between scopes, we can emulate branching.]]></summary></entry><entry><title type="html">Rust Specific Construct Representations ep. 2: Let-Else</title><link href="http://0.0.0.0:4000/2024/07/03/let-else.html" rel="alternate" type="text/html" title="Rust Specific Construct Representations ep. 2: Let-Else" /><published>2024-07-03T00:00:00-06:00</published><updated>2024-07-03T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2024/07/03/let-else</id><content type="html" xml:base="http://0.0.0.0:4000/2024/07/03/let-else.html"><![CDATA[<p>Stable since <a href="https://releases.rs/docs/1.65.0/">November 3, 2022</a>, Rust’s <a href="https://doc.rust-lang.org/rust-by-example/flow_control/let_else.html"><code class="language-plaintext highlighter-rouge">let-else</code></a> is a bit of an odd one (<a href="https://rust-lang.github.io/rfcs/3137-let-else.html">RFC</a>).</p>
 
 <p>As defined by the linked <code class="language-plaintext highlighter-rouge">Rust by Example</code> docs above:</p>
 <blockquote>
@@ -1359,7 +1000,7 @@ log!("The End");
 { instruction: exit_with_message, input: ("\"Can't parse ok foobar\""), scope: 2}
 </code></pre></div></div>
 
-<p><strong>Note:</strong> here we don’t have to “jump back to scope 0” since <code class="language-plaintext highlighter-rouge">exit_with_message</code> is a terminal instruction.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Stable since November 3, 2022, Rust’s let-else is a bit of an odd one (RFC).]]></summary></entry><entry><title type="html">Rust Specific Construct Representations ep. 1: If-Let</title><link href="http://localhost:4000/2024/07/01/if-let.html" rel="alternate" type="text/html" title="Rust Specific Construct Representations ep. 1: If-Let" /><published>2024-07-01T00:00:00-06:00</published><updated>2024-07-01T00:00:00-06:00</updated><id>http://localhost:4000/2024/07/01/if-let</id><content type="html" xml:base="http://localhost:4000/2024/07/01/if-let.html"><![CDATA[<p>The <code class="language-plaintext highlighter-rouge">if-let</code> (<a href="https://rust-lang.github.io/rfcs/0160-if-let.html">RFC</a>) was initially proposed August 16, 2014. A brief description from the RFC:</p>
+<p><strong>Note:</strong> here we don’t have to “jump back to scope 0” since <code class="language-plaintext highlighter-rouge">exit_with_message</code> is a terminal instruction.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[Stable since November 3, 2022, Rust’s let-else is a bit of an odd one (RFC).]]></summary></entry><entry><title type="html">Rust Specific Construct Representations ep. 1: If-Let</title><link href="http://0.0.0.0:4000/2024/07/01/if-let.html" rel="alternate" type="text/html" title="Rust Specific Construct Representations ep. 1: If-Let" /><published>2024-07-01T00:00:00-06:00</published><updated>2024-07-01T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2024/07/01/if-let</id><content type="html" xml:base="http://0.0.0.0:4000/2024/07/01/if-let.html"><![CDATA[<p>The <code class="language-plaintext highlighter-rouge">if-let</code> (<a href="https://rust-lang.github.io/rfcs/0160-if-let.html">RFC</a>) was initially proposed August 16, 2014. A brief description from the RFC:</p>
 
 <blockquote>
   <p>Introduce a new if let PAT = EXPR { BODY } construct. This allows for refutable pattern matching without the syntactic and semantic overhead of a full match, and without the corresponding extra rightward drift. Informally this is known as an “if-let statement”.</p>
@@ -1436,7 +1077,7 @@ log!("The End");
   <li>the right hand side</li>
 </ol>
 
-<p>The result of this operation is the value indicated by the <code class="language-plaintext highlighter-rouge">assign</code> field of the instruction.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[The if-let (RFC) was initially proposed August 16, 2014. A brief description from the RFC:]]></summary></entry><entry><title type="html">Representing Loops: An Exploration of Non-Sequential Logic Execution</title><link href="http://localhost:4000/2024/06/27/loops.html" rel="alternate" type="text/html" title="Representing Loops: An Exploration of Non-Sequential Logic Execution" /><published>2024-06-27T00:00:00-06:00</published><updated>2024-06-27T00:00:00-06:00</updated><id>http://localhost:4000/2024/06/27/loops</id><content type="html" xml:base="http://localhost:4000/2024/06/27/loops.html"><![CDATA[<p>Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.</p>
+<p>The result of this operation is the value indicated by the <code class="language-plaintext highlighter-rouge">assign</code> field of the instruction.</p>]]></content><author><name></name></author><summary type="html"><![CDATA[The if-let (RFC) was initially proposed August 16, 2014. A brief description from the RFC:]]></summary></entry><entry><title type="html">Representing Loops: An Exploration of Non-Sequential Logic Execution</title><link href="http://0.0.0.0:4000/2024/06/27/loops.html" rel="alternate" type="text/html" title="Representing Loops: An Exploration of Non-Sequential Logic Execution" /><published>2024-06-27T00:00:00-06:00</published><updated>2024-06-27T00:00:00-06:00</updated><id>http://0.0.0.0:4000/2024/06/27/loops</id><content type="html" xml:base="http://0.0.0.0:4000/2024/06/27/loops.html"><![CDATA[<p>Most programming languages that target DTR have some sort of looping behavior. As an example, consider the logic to calculate the sum of the first 10 integers, written in Rust.</p>
 
 <div class="language-rust highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">let</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 
